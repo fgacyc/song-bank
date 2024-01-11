@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { SelectField } from "@/components/Inputs/Select";
 import { TextAreaField, TextField } from "@/components/Inputs/Text";
 import markdownit from "markdown-it";
@@ -64,6 +65,7 @@ export default function Home() {
             hint="Wrap chords in location with [ ] brackets"
             onChange={(e) => setChords(e.currentTarget.value)}
           />
+
           <label className="form-control w-full">
             <div className="label">
               <span className="label-text">Preview</span>
