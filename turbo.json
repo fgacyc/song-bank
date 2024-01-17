@@ -21,5 +21,8 @@
     "clean": {
       "cache": false
     }
-  }
+  },
+  "globalDependencies": [".env"],
+  "globalDotEnv": [".env"],
+  "globalEnv": ["NODE_ENV", "SKIP_ENV_VALIDATION"]
 }
