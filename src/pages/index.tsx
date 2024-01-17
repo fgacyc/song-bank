@@ -31,7 +31,7 @@ export default function Home() {
       >
         <div className="container flex max-w-[300px] flex-col items-center gap-5 px-4 py-16 sm:max-w-[500px] md:max-w-[600px]">
           <div className="flex flex-col items-center">
-            <h1 className="text-primary text-center text-5xl font-extrabold tracking-tight sm:text-[2.5rem]">
+            <h1 className="text-center text-5xl font-extrabold tracking-tight text-primary sm:text-[2.5rem]">
               CYC Worship
             </h1>
             <p className="pt-2 text-center text-5xl font-extrabold tracking-tight text-white sm:text-[2.0rem]">
@@ -54,8 +54,11 @@ export default function Home() {
                 "BM + CHI + EN",
               ]}
             />
-            <TextField name="Song Key" required />
-            <TextField name="Original Video URL" />
+            <TextField name="Original Key" required />
+            <TextField
+              name="Original Video URL"
+              hint="Original Youtube Video Link"
+            />
             <TextField name="Original Worship Band" required />
           </div>
           <TextAreaField
@@ -70,9 +73,9 @@ export default function Home() {
             <div className="label">
               <span className="label-text">Preview</span>
             </div>
-            <div className="card h-100 w-full">
+            <div className="h-100 card w-full">
               <div
-                className="card-body card-bordered border-warning max-h-[15vh] w-full overflow-auto rounded-md"
+                className="card-body card-bordered max-h-[25vh] w-full overflow-auto rounded-md border-warning"
                 dangerouslySetInnerHTML={{
                   __html: md.render(
                     chords ||
@@ -82,6 +85,10 @@ export default function Home() {
               />
             </div>
           </label>
+          <div className="flex w-full flex-row justify-center gap-5">
+            <button className="btn btn-success flex-grow">Submit</button>
+            <button className="btn btn-outline btn-secondary">Reset</button>
+          </div>
         </div>
       </main>
     </>
