@@ -75,7 +75,7 @@ Provides a simple and easy-to-use interface that allows band members and singers
 
 ## 6. Use case Diagram for basic requirements
 
-![FGA Worship Song Bank Use Case Diagram drawio](https://github.com/fgacyc/song-bank/blob/main/images/FGA_Song_Bank_Use_Case_Diagram.png?raw=true)
+![FGA Worship Song Bank Use Case Diagram drawio](https://github.com/fgacyc/song-bank/blob/main/image/FGA_Song_Bank_Use_Case_Diagram.png?raw=true)
 
 
 Source：https://drive.google.com/file/d/1aemlKPyW9C2N1CE54wDn50GfyGw2y7Hv/view?usp=sharing
