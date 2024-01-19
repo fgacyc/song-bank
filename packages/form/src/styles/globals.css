@@ -42,3 +42,8 @@
   background: white;
   z-index: 5;
 }
+
+*::-webkit-scrollbar,
+::-webkit-scrollbar-button {
+  display: none;
+}
