@@ -8,18 +8,6 @@ await import("./src/env.js");
 const config = {
   reactStrictMode: true,
 
-  images: {
-    domains: ["via.placeholder.com", "assets.example.com"],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "assets.example.com",
-        port: "",
-        pathname: "/account123/**",
-      },
-    ],
-  },
-
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
    *

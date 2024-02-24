@@ -1,63 +1,78 @@
-/* eslint-disable @next/next/no-img-element */
-import Gallery from "@/components/Gallery";
 import Head from "next/head";
-import { RiSearch2Line } from "react-icons/ri";
-// import Link from "next/link";
-// import { IoIosSearch } from "react-icons/io";
-// import { Field, Form, Formik, type FormikProps } from "formik";
-// import * as Yup from "yup";
+import { useEffect, useRef, useState } from "react";
+import SearchBar from "@/components/SearchBar";
+import ListView from "@/components/ListView";
+import GalleryView from "@/components/GalleryView";
+import { CiGrid2H, CiGrid41 } from "react-icons/ci";
+import { songList } from "@/mock-data";
 
 export default function Home() {
+  const [view, setView] = useState("list");
+  const [grid, setGrid] = useState("grid-cols-1");
+  const [searchString, setSearchString] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onKeyDownHandler = (event: KeyboardEvent) => {
+    if (event.key === "/" && inputRef.current) {
+      console.log(`Hit: ${event.key}`);
+      event.preventDefault();
+      inputRef.current.focus();
+      inputRef.current.defaultValue = "";
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", onKeyDownHandler);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDownHandler);
+    };
+  }, []);
+
   return (
     <>
       <Head>
-        <title>Home</title>
-        <meta name="description" content="Search engine for songs" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Search Songs</title>
+        <meta name="description" content="landing page" />
+        <link rel="icon" href="/img/logo.png" />
       </Head>
-      <main className="flex h-dvh justify-between bg-[#eaeaea] p-5">
-        {/* side navigation */}
-        <div className="w-fit rounded-3xl bg-white p-5">
-          <img
-            src="https://placehold.co/100"
-            alt="logo"
-            className="rounded-full"
+      <div>
+        <div className="sticky top-[70px] z-10 flex h-[50px] items-center justify-between bg-white px-3">
+          <SearchBar
+            searchString={searchString}
+            setSearchString={setSearchString}
+            songList={songList}
+            inputRef={inputRef}
           />
-        </div>
-        <div className="w-full px-5">
-          {/* top navigation */}
-          <div className="flex items-center justify-between rounded-3xl bg-white p-3">
-            {/* search bar */}
-            <form
-              action=""
-              className="flex w-4/5 items-center rounded-2xl bg-[#eaeaea] px-5 py-3"
+          <div className="grid w-[70px] grid-cols-2 gap-1">
+            <button
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-md border"
+              onClick={() => {
+                setView("list");
+                setGrid("grid-cols-1");
+              }}
             >
-              <label className="pe-2" htmlFor="search">
-                <RiSearch2Line />
-              </label>
-              <input
-                className="w-full bg-inherit"
-                type="text"
-                id="search" // htmlFor
-                name="search"
-                placeholder="Search"
-              />
-            </form>
-            {/* profile picture */}
-            <img
-              src="https:placehold.co/50"
-              alt="pfp"
-              className="rounded-full"
-            />
-          </div>
-          {/* songs */}
-          <div className="pt-3">
-            <div className="grid h-[85dvh] grid-cols-4 content-start gap-5 overflow-auto">
-              <Gallery />
-            </div>
+              <CiGrid2H className="h-[20px] w-[20px]" />
+            </button>
+            <button
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-md border"
+              onClick={() => {
+                setView("gallery");
+                setGrid("grid-cols-5");
+              }}
+            >
+              <CiGrid41 className="h-[20px] w-[20px]" />
+            </button>
           </div>
         </div>
-      </main>
+        <div className={`grid gap-3 p-3 ${grid}`}>
+          {view === "list" ? (
+            <ListView songList={songList} />
+          ) : (
+            <GalleryView songList={songList} />
+          )}
+        </div>
+      </div>
     </>
   );
 }
