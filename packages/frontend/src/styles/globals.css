@@ -4,7 +4,8 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Assistant:wght@300&display=swap");
 
-input:focus-within {
+input:focus-within,
+select:focus-within {
   outline: none;
 }
 

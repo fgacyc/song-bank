@@ -1,35 +1,31 @@
-import {
-  useState,
-  type Dispatch,
-  type SetStateAction,
-  type RefObject,
-} from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import { IoIosClose } from "react-icons/io";
 import { RiSearch2Line } from "react-icons/ri";
-import SearchBarAutocomplete from "./SearchBarAutocomplete";
-import { type songList } from "@/mock-data";
+
+interface SongListProps {
+  songName: string;
+  artist: string;
+  language: string;
+  type: string;
+  originalKey: string;
+  imgSrc: string;
+  imgAlt: string;
+}
 
 interface SearchBarProps {
   searchString: string;
   setSearchString: Dispatch<SetStateAction<string>>;
-  songList: typeof songList;
-  inputRef: RefObject<HTMLInputElement>;
+  songList: SongListProps[];
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchString,
   setSearchString,
-  songList,
-  inputRef,
 }) => {
-  const [showSearchBarAutocomplete, setShowSearchBarAutocomplete] =
-    useState(false);
-
   return (
     <div>
       <div className="flex h-[30px] items-center justify-evenly rounded-md border">
         <input
-          ref={inputRef}
           type="text"
           placeholder="Search"
           className="ps-2"
@@ -37,8 +33,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
           onChange={(e) => {
             setSearchString(e.target.value);
           }}
-          onFocus={() => setShowSearchBarAutocomplete(true)}
-          onBlur={() => setShowSearchBarAutocomplete(false)}
         />
         <button
           type="reset"
@@ -50,9 +44,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
           {searchString === "" ? <RiSearch2Line /> : <IoIosClose />}
         </button>
       </div>
-      {showSearchBarAutocomplete && (
-        <SearchBarAutocomplete songList={songList} />
-      )}
     </div>
   );
 };

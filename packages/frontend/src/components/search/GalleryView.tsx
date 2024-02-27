@@ -1,38 +1,42 @@
-import { type songList } from "@/mock-data";
 import Image from "next/image";
+import Link from "next/link";
+
+interface SongListProps {
+  songName: string;
+  artist: string;
+  language: string;
+  type: string;
+  originalKey: string;
+  imgSrc: string;
+  imgAlt: string;
+}
 
 interface GalleryViewProps {
   searchString?: string;
-  songList: typeof songList;
+  songList: SongListProps[];
 }
 
 const GalleryView: React.FC<GalleryViewProps> = ({ songList }) => {
   return (
     <>
-      {/* {items
-        .filter((item) => {
-          if (!filterKey) {
-            return true;
-          } else
-            return item.songName
-              .toLowerCase()
-              .includes(filterKey.toLowerCase());
-        }) */}
       {songList.map((items, i) => (
-        <div
+        <Link
+          href={"/song"}
           key={i}
-          className="flex flex-col justify-center rounded-md border p-3 shadow"
+          className="flex flex-col justify-center rounded-md border p-3"
         >
           <div className="relative h-[100px] w-full">
             <Image
-              src={items.src}
-              alt={items.alt}
+              src={items.imgSrc}
+              alt={items.imgAlt}
+              priority={true}
               fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="rounded-md object-cover"
             />
           </div>
           <p className="p-1">{items.songName}</p>
-        </div>
+        </Link>
       ))}
     </>
   );
