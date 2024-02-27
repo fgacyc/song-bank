@@ -463,6 +463,96 @@ export default function Home() {
                     action.setSubmitting(false);
                   }
                 }
+              } else {
+                const toastId = toast.loading("Uploading...");
+                let seqFiles;
+                let secFiles;
+                try {
+                  // upload files to S3
+                  if (sequencerFile && sequencerFile?.length > 0) {
+                    toast.update(toastId, {
+                      render: () => {
+                        return "Uploading Sequencer Files";
+                      },
+                    });
+                    seqFiles = await uploadFile(sequencerFile).then((res) => {
+                      toast.update(toastId, {
+                        type: "success",
+                        render: () => {
+                          return `Sequencer Upload Success`;
+                        },
+                        isLoading: false,
+                        autoClose: 4500,
+                      });
+                      return res;
+                    });
+                  }
+
+                  if (secVoiceFile && secVoiceFile?.length > 0) {
+                    toast.update(toastId, {
+                      render: () => {
+                        return "Uploading Second Voice Files";
+                      },
+                    });
+                    secFiles = await uploadFile(secVoiceFile).then((res) => {
+                      console.log(res);
+                      toast.update(toastId, {
+                        type: "success",
+                        render: () => {
+                          return `Second Voice Upload Success`;
+                        },
+                        isLoading: false,
+                        autoClose: 4500,
+                      });
+                      return res;
+                    });
+                  }
+
+                  await fetch("/api/song", {
+                    method: "POST",
+                    body: JSON.stringify({
+                      sequencerFiles: seqFiles ?? "",
+                      subVoiceFile: secFiles?.[0] ?? "",
+                      ...values,
+                    }),
+                  }).then(async (res) => {
+                    const data = await res.json();
+                    if (res.ok) {
+                      action.resetForm();
+                      setEditingMode(false);
+                      toast.update(toastId, {
+                        type: "success",
+                        render: () => `${data.name} Uploaded!`,
+                        icon: () => "🎵",
+                        isLoading: false,
+                        autoClose: 3000,
+                      });
+                    } else {
+                      toast.update(toastId, {
+                        type: "error",
+                        render: () => {
+                          return `Error: ${data.error}`;
+                        },
+                        icon: () => "🤯",
+                        isLoading: false,
+                        autoClose: 4500,
+                      });
+                    }
+                  });
+                } catch (err) {
+                  console.error(err);
+                  toast.update(toastId, {
+                    type: "error",
+                    render: () => {
+                      return `Error: ${String(err)}`;
+                    },
+                    icon: () => "🤯",
+                    isLoading: false,
+                    autoClose: 4500,
+                  });
+                } finally {
+                  action.setSubmitting(false);
+                }
               }
             }}
           >
