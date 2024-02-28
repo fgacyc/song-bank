@@ -5,12 +5,15 @@ import ListView from "@/components/search/ListView";
 import GalleryView from "@/components/search/GalleryView";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import Layout from "@/components/layout/Layout";
+import { useRouter } from "next/router";
 
 const Search = () => {
   const [view, setView] = useState("list");
   const [grid, setGrid] = useState("grid-cols-1");
   const [searchString, setSearchString] = useState("");
   const [songList, setSongList] = useState<SongListProps[]>([]);
+  const router = useRouter();
+  const { query } = router;
 
   interface SongListProps {
     songName: string;
@@ -23,22 +26,20 @@ const Search = () => {
   }
 
   useEffect(() => {
+    setSearchString(query.q as string);
+    console.log(`searchString: ${searchString}`);
     const loadSongList = async () => {
       try {
         const response = await fetch("/data/song-list.json");
         const data = (await response.json()) as SongListProps[];
         setSongList(data);
       } catch (error) {
-        console.error("loadSongList: error", error);
+        console.error("Error loadSongList:", error);
       }
     };
-    loadSongList()
-      .then(() => {
-        console.log("loadSongList: success");
-      })
-      .catch((error) => {
-        console.error("loadSongList: error", error);
-      });
+    loadSongList().catch((error) => {
+      console.error("Error loadSongList:", error);
+    });
   }, []);
 
   return (

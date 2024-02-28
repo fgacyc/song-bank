@@ -22,7 +22,10 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
     <>
       {songList.map((items, i) => (
         <Link
-          href={"/song"}
+          href={`/song/${items.songName
+            .toLowerCase()
+            .trim()
+            .replace(" ", "-")}-chords`}
           key={i}
           className="flex items-center rounded-lg border p-3"
         >

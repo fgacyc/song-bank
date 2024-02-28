@@ -1,6 +1,7 @@
 import React, { useState, type ReactElement } from "react";
 import DirLayout from "@/components/dir/layout/Layout";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 let videoSrc = "https://www.youtube.com/watch?v=5KiQDoWo5t4";
 const songName = "You Are Good";
@@ -19,6 +20,7 @@ if (videoSrc.includes("watch?v=")) {
 
 const Song = () => {
   const [currentKey, setCurrentKey] = useState(originalKey);
+  const router = useRouter();
 
   return (
     <div className="flex gap-5">

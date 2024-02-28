@@ -18,10 +18,10 @@ const headerData: headerDataProps[] = [
 const Header = () => {
   return (
     <nav className="fixed top-0 z-20 flex h-[70px] w-dvw items-center justify-between border bg-white p-[10px] px-5">
-      <div className="flex items-center justify-center">
+      <Link href={"/"} className="flex items-center justify-center">
         <Image src={"/img/logo.png"} alt="logo" width={50} height={50} />
         <h1 className="text ps-5 text-2xl font-semibold">FGA Worship</h1>
-      </div>
+      </Link>
       <div className="flex items-center gap-3">
         {headerData.map((item, i) => (
           <Link key={i} href={item.link} className="rounded border p-1">
