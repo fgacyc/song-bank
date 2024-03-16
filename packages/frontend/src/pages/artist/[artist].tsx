@@ -1,5 +1,5 @@
 import React, { type ReactElement } from "react";
-import DirLayout from "@/components/dir/layout/Layout";
+import Layout from "@/components/dir/layout/Layout";
 
 const Artist = () => {
   return (
@@ -12,5 +12,5 @@ const Artist = () => {
 export default Artist;
 
 Artist.getLayout = function getLayout(page: ReactElement) {
-  return <DirLayout>{page}</DirLayout>;
+  return <Layout>{page}</Layout>;
 };

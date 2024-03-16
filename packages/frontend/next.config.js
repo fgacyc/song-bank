@@ -17,6 +17,10 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  images: {
+    domains: ["i.ytimg.com"], // Add 'i.ytimg.com' to the list of domains
+  },
 };
 
 export default config;

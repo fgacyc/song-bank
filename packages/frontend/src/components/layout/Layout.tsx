@@ -16,12 +16,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <link rel="icon" href="/img/logo.png" />
       </Head>
       <Header />
-      <div className="flex">
-        <Navigation />
-        <main className="relative left-[90px] top-[90px] z-0 w-[92dvw]">
-          {children}
-        </main>
-      </div>
+      <Navigation />
+      <main className="relative left-[70px] top-[70px] z-0 min-h-[91dvh] w-[95dvw] bg-neutral-100">
+        {children}
+      </main>
     </>
   );
 };
