@@ -1,7 +1,5 @@
-// import Image from "next/image";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
 
 export type Song = {
   id?: string;
@@ -27,8 +25,6 @@ export type Song = {
 interface ListViewProps {
   songList?: Song[];
 }
-
-// const classStyle = "rounded-sm border bg-gray-100 px-1 text-sm font-thin";
 
 const ListView: React.FC<ListViewProps> = ({ songList }) => {
   const getYoutubeVideoId = (youtubeUrl: string) => {

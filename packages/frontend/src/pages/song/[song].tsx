@@ -1,6 +1,7 @@
 import React, { useState, type ReactElement, useEffect } from "react";
 import Layout from "@/components/dir/layout/Layout";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 type Song = {
   id?: string;
@@ -24,6 +25,7 @@ type Song = {
 };
 
 const Song = () => {
+  const router = useRouter();
   const [songList, setSongList] = useState<Song[]>([]);
 
   useEffect(() => {
@@ -40,15 +42,96 @@ const Song = () => {
     void loadSongList();
   }, []);
 
+  const getVideoId = (url: string) => {
+    const params = new URLSearchParams(new URL(url).search);
+    return params.get("v");
+  };
+
   return (
     <>
-      {songList.map((items, i) => {
-        return (
-          <div key={i}>
-            <p>Title : {items.album}</p>
-          </div>
-        );
-      })}
+      {songList
+        .filter(
+          (items) =>
+            router.query.song &&
+            `${items.name.toLowerCase().replace(/ /g, "-")}-chords` ===
+              router.query.song.toString(),
+        )
+        .map((items, i) => {
+          const videoId = getVideoId(items.original_youtube_url ?? "");
+          const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+          return (
+            <div key={i} className="flex gap-5">
+              {/* left */}
+              <div>
+                <div className="rounded border p-5">
+                  <iframe
+                    src={embedUrl}
+                    allowFullScreen
+                    className="rounded"
+                  ></iframe>
+                  <div className="flex flex-col gap-2 py-3">
+                    <p className="flex flex-col">
+                      <span className="font-semibold">Song Name</span>
+                      <span className="text-sm text-neutral-500">
+                        {items.name}{" "}
+                        {items.alt_name &&
+                          items.alt_name.trim() !== "-" &&
+                          items.alt_name}
+                      </span>
+                    </p>
+                    <p className="flex flex-col">
+                      <span className="font-semibold">Band</span>
+                      <Link
+                        href={`/band/${items.original_band
+                          .toLowerCase()
+                          .replace(/ /g, "-")}`}
+                        className="text-sm text-neutral-500 hover:underline"
+                      >
+                        {items.original_band}
+                      </Link>
+                    </p>
+                    {items.album && (
+                      <p className="flex flex-col">
+                        <span className="font-semibold">Album</span>
+                        <Link
+                          href={`/album/${items.album
+                            .toLowerCase()
+                            .replace(/ /g, "-")}`}
+                          className="text-sm text-neutral-500 hover:underline"
+                        >
+                          {items.album}
+                        </Link>
+                      </p>
+                    )}
+                  </div>
+                  <hr />
+                  <div className="flex flex-col gap-2 py-3">
+                    <p className="flex flex-col">
+                      <span className="font-semibold">Original Key</span>
+                      <span className="text-sm text-neutral-500">
+                        {items.original_key} Major
+                      </span>
+                    </p>
+                  </div>
+                  {/* TODO: tags */}
+                </div>
+              </div>
+              {/* right */}
+              <div className="flex flex-col gap-5">
+                <h1 className="rounded border px-5 py-3 text-4xl font-semibold">
+                  {items.name}
+                </h1>
+                <div className="rounded border p-5">
+                  TODO: transpose section
+                </div>
+                {/* TODO: chords & lyrics */}
+                <div className="rounded border p-5">
+                  <p>{items.chord_lyrics}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
     </>
   );
 };
