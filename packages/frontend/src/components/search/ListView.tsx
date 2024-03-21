@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export type Song = {
   id?: string;
@@ -50,26 +51,28 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                   .toLowerCase()
                   .replace(/ /g, "-")}-chords`}
               >
-                <div className="flex rounded bg-white p-3 shadow-md">
-                  <div className="relative h-[165px] w-[300px]">
-                    <Image
-                      src={thumbnailUrl}
-                      alt={items.name}
-                      fill={true}
-                      priority={true}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="rounded-md object-cover"
-                    />
+                <div className="flex flex-col rounded border p-3 shadow sm:flex-row">
+                  <div className="h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
+                    <div className="relative h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
+                      <Image
+                        src={thumbnailUrl}
+                        alt={items.name}
+                        fill={true}
+                        priority={true}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="rounded-md object-cover"
+                      />
+                    </div>
                   </div>
-                  <div className="pl-5">
-                    <h1 className="text-3xl">
+                  <div className="pt-3 sm:pl-5 sm:pt-0">
+                    <h1 className="truncate text-base sm:text-lg md:text-2xl lg:text-3xl">
                       <span className="font-semibold">{items.name}</span>{" "}
                       {items.alt_name && items.alt_name.trim() !== "-" && (
                         <span>{items.alt_name}</span>
                       )}
                     </h1>
                     <div className="pt-2">
-                      <p className="text-sm text-neutral-500">
+                      <p className="truncate text-xs text-neutral-500 lg:text-sm">
                         By{" "}
                         <span className="font-semibold text-black">
                           {items.original_band}
@@ -84,20 +87,20 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                         )}
                       </p>
                     </div>
-                    <p className="flex gap-1 pt-2 text-sm text-neutral-500">
+                    <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
                       Key of{" "}
                       <span className="font-semibold text-black">
                         {items.original_key} Major
                       </span>
                     </p>
-                    <p className="flex gap-1 pt-2 text-sm text-neutral-500">
+                    <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
                       Language :
                       <span className="flex gap-1">
                         {items.song_language.split(" + ").map((lang, i) => {
                           return (
-                            <div key={i} className="rounded border px-1">
+                            <span key={i} className="rounded border px-1">
                               {lang}
-                            </div>
+                            </span>
                           );
                         })}
                       </span>

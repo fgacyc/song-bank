@@ -51,7 +51,7 @@ const GalleryView: React.FC<GalleryViewProps> = ({ songList }) => {
                   .toLowerCase()
                   .replace(/ /g, "-")}-chords`}
               >
-                <div className="flex flex-col items-center justify-center rounded border bg-white p-3 shadow-md">
+                <div className="flex flex-col items-center justify-center rounded border bg-white p-3 shadow">
                   <div className="relative h-[130px] w-full">
                     <Image
                       src={thumbnailUrl}

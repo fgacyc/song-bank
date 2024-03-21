@@ -39,7 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         type="text"
         placeholder="Search"
         className="ps-2"
-        value={searchString}
+        defaultValue={searchString}
         onChange={(e) => {
           setSearchString(e.target.value);
         }}
@@ -51,7 +51,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
           setSearchString("");
         }}
       >
-        {searchString === "" ? <RiSearch2Line /> : <IoIosClose />}
+        {searchString === "" || searchString === undefined ? (
+          <RiSearch2Line />
+        ) : (
+          <IoIosClose />
+        )}
       </button>
     </div>
   );

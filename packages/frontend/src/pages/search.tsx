@@ -52,6 +52,20 @@ const Search = () => {
     void loadSongList();
   }, [q]);
 
+  useEffect(() => {
+    if (!searchString) return;
+    router
+      .push("/search?q=" + encodeURI(searchString))
+      .catch((err) => console.log(err));
+  }, [searchString, router]);
+
+  let filteredSongList = songList;
+  if (router.query.q && router.query.q?.toString().trim() !== "") {
+    filteredSongList = songList.filter((items) =>
+      items.name.toLowerCase().includes(searchString.toLowerCase()),
+    );
+  }
+
   return (
     <>
       <div className="sticky top-[70px] z-10 flex justify-between border-b bg-white p-3">
@@ -61,11 +75,11 @@ const Search = () => {
             setSearchString={setSearchString}
             songList={songList}
           />
-          <FilterTags />
+          {/* <FilterTags /> */}
         </div>
         <div className="grid w-[70px] grid-cols-2 gap-1">
           <button
-            className="flex h-[30px] w-[30px] items-center justify-center rounded-md border"
+            className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
             onClick={() => {
               setView("list");
               setGrid("grid-cols-1");
@@ -74,7 +88,7 @@ const Search = () => {
             <CiGrid2H className="h-[20px] w-[20px]" />
           </button>
           <button
-            className="flex h-[30px] w-[30px] items-center justify-center rounded-md border"
+            className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
             onClick={() => {
               setView("gallery");
               setGrid("grid-cols-5");
@@ -86,9 +100,9 @@ const Search = () => {
       </div>
       <div className={`grid gap-3 p-3 ${grid}`}>
         {view === "list" ? (
-          <ListView songList={songList} />
+          <ListView songList={filteredSongList} />
         ) : (
-          <GalleryView songList={songList} />
+          <GalleryView songList={filteredSongList} />
         )}
       </div>
     </>
