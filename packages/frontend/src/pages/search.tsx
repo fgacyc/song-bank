@@ -39,7 +39,7 @@ const Search = () => {
 
   useEffect(() => {
     setSearchString(q as string);
-    const loadSongList = async () => {
+    void (async () => {
       await fetch("/api/song", {
         method: "GET",
       }).then(
@@ -48,8 +48,7 @@ const Search = () => {
             setSongList(result);
           }),
       );
-    };
-    void loadSongList();
+    })();
   }, [q]);
 
   useEffect(() => {

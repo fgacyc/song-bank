@@ -47,9 +47,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
             return (
               <Link
                 key={i}
-                href={`/song/${items.name
-                  .toLowerCase()
-                  .replace(/ /g, "-")}-chords`}
+                href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
               >
                 <div className="flex flex-col rounded border p-3 shadow sm:flex-row">
                   <div className="h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
@@ -65,7 +63,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                     </div>
                   </div>
                   <div className="pt-3 sm:pl-5 sm:pt-0">
-                    <h1 className="truncate text-base sm:text-lg md:text-2xl lg:text-3xl">
+                    <h1 className="truncate text-base sm:p-1 sm:text-lg md:p-1 md:text-2xl lg:p-1 lg:text-3xl">
                       <span className="font-semibold">{items.name}</span>{" "}
                       {items.alt_name && items.alt_name.trim() !== "-" && (
                         <span>{items.alt_name}</span>

@@ -47,9 +47,7 @@ const GalleryView: React.FC<GalleryViewProps> = ({ songList }) => {
             return (
               <Link
                 key={i}
-                href={`/song/${items.name
-                  .toLowerCase()
-                  .replace(/ /g, "-")}-chords`}
+                href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
               >
                 <div className="flex flex-col items-center justify-center rounded border bg-white p-3 shadow">
                   <div className="relative h-[130px] w-full">

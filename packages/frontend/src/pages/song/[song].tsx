@@ -1,7 +1,13 @@
-import React, { useState, type ReactElement, useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import React, { useState, type ReactElement, useEffect, useRef } from "react";
 import Layout from "@/components/dir/layout/Layout";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import markdownit from "markdown-it";
+// @ts-expect-error no declaration file
+import chords from "markdown-it-chords";
 
 type Song = {
   id?: string;
@@ -24,12 +30,20 @@ type Song = {
   sub_voice_file?: string;
 };
 
+const md = markdownit({
+  breaks: true,
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+md.use(chords);
+
 const Song = () => {
   const router = useRouter();
   const [songList, setSongList] = useState<Song[]>([]);
+  const lyricsRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
-    const loadSongList = async () => {
+    void (async () => {
       await fetch("/api/song", {
         method: "GET",
       }).then(
@@ -38,8 +52,7 @@ const Song = () => {
             setSongList(result);
           }),
       );
-    };
-    void loadSongList();
+    })();
   }, []);
 
   const getVideoId = (url: string) => {
@@ -53,7 +66,7 @@ const Song = () => {
         .filter(
           (items) =>
             router.query.song &&
-            `${items.name.toLowerCase().replace(/ /g, "-")}-chords` ===
+            `${items.name.toLowerCase().replace(/ /g, "-")}` ===
               router.query.song.toString(),
         )
         .map((items, i) => {
@@ -119,7 +132,7 @@ const Song = () => {
                 {/* TODO: tags */}
               </div>
               {/* right */}
-              <div className="flex flex-col gap-5">
+              <div className="flex w-full flex-col gap-5">
                 <h1 className="hidden rounded border px-5 py-3 text-4xl font-semibold md:block">
                   {items.name}
                 </h1>
@@ -128,7 +141,13 @@ const Song = () => {
                 </div>
                 {/* TODO: chords & lyrics */}
                 <div className="rounded border p-5">
-                  <p>{items.chord_lyrics}</p>
+                  <p
+                    ref={lyricsRef}
+                    className="text-neutral-500"
+                    dangerouslySetInnerHTML={{
+                      __html: md.render(items.chord_lyrics),
+                    }}
+                  ></p>
                 </div>
               </div>
             </div>
