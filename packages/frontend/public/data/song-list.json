@@ -1,0 +1,134 @@
+[
+    {
+        "songName": "You Are Good",
+        "artist": "Israel & New Breed",
+        "language": "English",
+        "type": "Praise",
+        "genre": "Gospel",
+        "originalKey": "E Major",
+        "otherTags": ["Foo", "Bar", "Baz"],
+        "imgSrc": "/img/song1.jpg",
+        "imgAlt": "song1"
+    },
+    {
+        "songName": "Perkasa",
+        "artist": "Army Of God Worship",
+        "language": "Malay",
+        "type": "Praise",
+        "genre": "",
+        "originalKey": "F# Minor",
+        "tags": [],
+        "imgSrc": "/img/song2.jpg",
+        "imgAlt": "song2"
+    },
+    {
+        "songName": "Ubahkan Dunia",
+        "artist": "Army Of God Worship",
+        "language": "Malay",
+        "type": "Praise",
+        "genre": "",
+        "originalKey": "E Major",
+        "tags": [],
+        "imgSrc": "/img/song3.jpg",
+        "imgAlt": "song3"
+    },
+    {
+        "songName": "Ciptaan Baru",
+        "artist": "GMS Live",
+        "language": "Malay",
+        "type": "Praise",
+        "genre": "",
+        "originalKey": "A Major",
+        "tags": [],
+        "imgSrc": "/img/song4.image",
+        "imgAlt": "song4"
+    },
+    {
+        "songName": "Tertawa",
+        "artist": "GMS Live",
+        "language":"Malay",
+        "type": "Praise",
+        "genre": "",
+        "originalKey": "D Major",
+        "tags": [],
+        "imgSrc": "/img/song5.jpg",
+        "imgAlt": "song5"
+    },
+    {
+        "songName": "Kau 1,2,3...",
+        "artist": "GMS Live",
+        "language": "Malay",
+        "type": "Praise",
+        "genre": "",
+        "originalKey": "A Major",
+        "tags": [],
+        "imgSrc": "/img/song6.jpg",
+        "imgAlt": "song6"
+    },
+    {
+        "songName": "Pilihanku",
+        "artist": "GMS Live", 
+        "language": "Malay",
+        "type": "Praise",
+        "genre": "",
+        "originalKey": "G Major",
+        "tags": [],
+        "imgSrc": "/img/song7.jpg",
+        "imgAlt": "song7"
+    },
+    {
+        "songName": "Kau Menunggu Hidupku",
+        "artist": "Army Of God Worship",
+        "language": "Malay",
+        "type": "Worship",
+        "genre": "",
+        "originalKey" : "Db Major",
+        "tags": [],
+        "imgSrc": "/img/song8.jpg",
+        "imgAlt": "song8"
+    },
+    {
+        "songName": "Semesta Bernyanyi",
+        "artist": "GMS Live",
+        "language": "Malay",
+        "type": "Praise",
+        "genre": "",
+        "originalKey": "G Major",
+        "tags": [],
+        "imgSrc": "/img/song9.jpg",
+        "imgAlt": "song9"
+    },
+    {
+        "songName": "Bahagiaku Penuh",
+        "artist": "GMS Live",
+        "language": "Malay",
+        "type": "Worship",
+        "genre": "",
+        "originalKey": "A Major",
+        "tags": [],
+        "imgSrc": "/img/song10.jpg",
+        "imgAlt": "song10"
+    },
+    {
+        "songName": "Lubuk Hatiku",
+        "artist": "GMS Live",
+        "language": "Malay",
+        "type": "Worship",
+        "genre" : "",
+        "originalKey": "F Major",
+        "tags": [],
+        "imgSrc": "/img/song11.jpg",
+        "imgAlt": "song11"
+    },
+    {
+        "songName": "How I Praise",
+        "artist": "Planetshakers",
+        "language": "English",
+        "type": "Praise",
+        "genre": "",
+        "originalKey" : "A Minor",
+        "tags": [],
+        "imgSrc": "/img/song12.jpg",
+        "imgAlt": "song12"
+    }
+]
