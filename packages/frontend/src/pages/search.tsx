@@ -56,7 +56,7 @@ const Search = () => {
     router
       .push("/search?q=" + encodeURI(searchString))
       .catch((err) => console.log(err));
-  }, [searchString, router]);
+  }, [searchString]);
 
   let filteredSongList = songList;
   if (router.query.q && router.query.q?.toString().trim() !== "") {
@@ -67,7 +67,7 @@ const Search = () => {
 
   return (
     <>
-      <div className="sticky top-[70px] z-10 flex justify-between border-b bg-white p-3">
+      <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
         <div className="flex items-center gap-3">
           <SearchBar
             searchString={searchString}
