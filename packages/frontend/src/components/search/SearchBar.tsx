@@ -52,7 +52,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className="flex h-full w-[30px] items-center justify-center rounded-e-md border-s"
         onClick={() => {
           setSearchString("");
-          router.push("/search").catch((err) => console.log(err));
+          router.push("/search").catch((err) => console.error(err));
         }}
       >
         {searchString === "" || searchString === undefined ? (

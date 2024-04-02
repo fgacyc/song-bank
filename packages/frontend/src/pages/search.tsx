@@ -33,11 +33,12 @@ const Search = () => {
   const [grid, setGrid] = useState("grid-cols-1");
   const [searchString, setSearchString] = useState("");
   const [songList, setSongList] = useState<Song[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { q } = router.query;
 
   useEffect(() => {
+    setIsLoading(true);
     setSearchString(q as string);
     void (async () => {
       await fetch("/api/song", {
@@ -46,16 +47,21 @@ const Search = () => {
         async (res) =>
           await res.json().then((result: Song[]) => {
             setSongList(result);
+            setIsLoading(false);
           }),
       );
     })();
   }, [q]);
 
+  if (isLoading) {
+    <div>search loading</div>;
+  }
+
   useEffect(() => {
     if (!searchString) return;
     router
       .push("/search?q=" + encodeURI(searchString))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, [searchString]);
 
   let filteredSongList = songList;

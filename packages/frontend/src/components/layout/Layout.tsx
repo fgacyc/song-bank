@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Head>
       <Header />
       <Navigation />
-      <main className="relative top-[70px] z-0 min-h-[91dvh] w-full sm:left-[70px] md:left-[70px] lg:left-[70px]">
+      <main className="relative top-[70px] z-0 min-h-[91vh] sm:pl-[70px] md:pl-[70px] lg:pl-[70px]">
         {children}
       </main>
     </>

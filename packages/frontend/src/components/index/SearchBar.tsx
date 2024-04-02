@@ -5,35 +5,44 @@ import { useRouter } from "next/router";
 
 interface SearchBarProps {
   inputRef: React.RefObject<HTMLInputElement>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ inputRef, setIsLoading }) => {
   const [searchString, setSearchString] = useState("");
   const router = useRouter();
 
+  const [inputWidth, setInputWidth] = useState(
+    "sm:w-[220px] md:w-[220px] lg:w-[220px]",
+  );
+
   const handleOnSubmit = async () => {
     if (searchString.trim() != "") {
+      setIsLoading(true);
       try {
         await router.push({
           pathname: "/search",
           query: { q: searchString.trim() },
         });
-      } catch (error) {
-        console.error("Error handleOnSubmit:", error);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
+
   return (
-    <form
-      className="w-dvh flex h-[50dvh] flex-col items-center justify-end"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleOnSubmit().catch((error) => {
-          console.error("Error handleOnSubmit:", error);
-        });
-      }}
-    >
-      <div className="flex flex-col items-center justify-end">
+    <div className="flex h-[50dvh] w-full flex-col items-center justify-end">
+      <form
+        className="flex flex-col items-center justify-end"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleOnSubmit().catch((err) => {
+            console.error(err);
+          });
+        }}
+      >
         <Image
           src={"/img/logo.png"}
           alt="logo"
@@ -48,15 +57,21 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
             ref={inputRef}
             type="text"
             placeholder="Search"
-            className="w-[350px] ps-2"
+            className={`${inputWidth} ps-2 duration-500`}
             value={searchString}
             onChange={(e) => {
               setSearchString(e.target.value);
             }}
+            onFocus={() => {
+              setInputWidth("sm:w-[390px] md:w-[390px] lg:w-[390px]");
+            }}
+            onBlur={() => {
+              setInputWidth("sm:w-[220px] md:w-[220px] lg:w-[220px]");
+            }}
           />
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
