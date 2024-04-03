@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useState, type ReactElement } from "react";
 import SearchBar from "@/components/search/SearchBar";
-import FilterTags from "@/components/search/FilterTags";
+// import FilterTags from "@/components/search/FilterTags";
 import ListView from "@/components/search/ListView";
 import GalleryView from "@/components/search/GalleryView";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
@@ -62,14 +62,15 @@ const Search = () => {
     router
       .push("/search?q=" + encodeURI(searchString))
       .catch((err) => console.error(err));
-  }, [searchString]);
+  }, [router, searchString]);
 
-  let filteredSongList = songList;
-  if (router.query.q && router.query.q?.toString().trim() !== "") {
-    filteredSongList = songList.filter((items) =>
-      items.name.toLowerCase().includes(searchString.toLowerCase()),
-    );
-  }
+  const filteredSongList = useMemo(() => {
+    if (router.query.q && router.query.q?.toString().trim() !== "") {
+      return songList.filter((items) =>
+        items.name.toLowerCase().includes(searchString.toLowerCase()),
+      );
+    }
+  }, [router.query.q, searchString, songList]);
 
   return (
     <>
