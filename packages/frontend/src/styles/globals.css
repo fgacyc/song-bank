@@ -54,3 +54,7 @@ select:focus-within {
   background: white;
   z-index: 5;
 }
+/* .lyrics-title {
+  border: solid;
+  padding-top: 10px;
+} */

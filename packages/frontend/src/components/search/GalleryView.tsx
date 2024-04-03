@@ -24,7 +24,7 @@ export type Song = {
 
 interface GalleryViewProps {
   searchString?: string;
-  songList: Song[];
+  songList?: Song[];
 }
 
 const GalleryView: React.FC<GalleryViewProps> = ({ songList }) => {

@@ -17,7 +17,7 @@ const navigationData: navigationDataProps[] = [
 
 const Navigation = () => {
   return (
-    <nav className="fixed left-0 top-0 z-10 flex h-full w-[70px] flex-col items-center border bg-white pb-5 pt-[90px]">
+    <nav className="fixed left-0 top-0 z-10 hidden h-full w-[70px] flex-col items-center border bg-white pb-5 pt-[90px] sm:flex md:flex lg:flex">
       <div className="flex flex-col items-center gap-3">
         {navigationData.map((item, i) => (
           <Link key={i} href={item.link} className="rounded border p-1">

@@ -55,6 +55,18 @@ const Song = () => {
     })();
   }, []);
 
+  // useEffect(() => {
+  //   if (lyricsRef.current) {
+  //     const currentLyrics = lyricsRef.current.innerHTML;
+  //     const updatedLyrics = currentLyrics.replace(
+  //       /\[(.*?)\]/g,
+  //       (match: string, content: string) =>
+  //         `<span class="lyrics-title">${content}</span>`,
+  //     );
+  //     lyricsRef.current.innerHTML = updatedLyrics;
+  //   }
+  // }, [songList]);
+
   const getVideoId = (url: string) => {
     const params = new URLSearchParams(new URL(url).search);
     return params.get("v");
@@ -73,9 +85,9 @@ const Song = () => {
           const videoId = getVideoId(items.original_youtube_url ?? "");
           const embedUrl = `https://www.youtube.com/embed/${videoId}`;
           return (
-            <div key={i} className="flex flex-col gap-5 md:flex-row">
+            <div key={i} className="flex flex-col gap-5 pb-5 md:flex-row">
               {/* left */}
-              <div className="flex flex-col rounded border p-5">
+              <div className="flex h-fit flex-col rounded border p-5">
                 <div className="h-[300px] w-full border md:h-[150px] md:w-[300px]">
                   <iframe
                     src={embedUrl}

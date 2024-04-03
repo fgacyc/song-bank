@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { type Dispatch, type SetStateAction } from "react";
 import { IoIosClose } from "react-icons/io";
 import { RiSearch2Line } from "react-icons/ri";
@@ -33,13 +34,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   searchString,
   setSearchString,
 }) => {
+  const router = useRouter();
+
   return (
-    <div className="flex h-[30px] items-center justify-evenly rounded-md border">
+    <div className="flex h-[30px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
       <input
         type="text"
         placeholder="Search"
         className="ps-2"
-        defaultValue={searchString}
+        value={searchString}
         onChange={(e) => {
           setSearchString(e.target.value);
         }}
@@ -49,6 +52,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className="flex h-full w-[30px] items-center justify-center rounded-e-md border-s"
         onClick={() => {
           setSearchString("");
+          router.push("/search").catch((err) => console.error(err));
         }}
       >
         {searchString === "" || searchString === undefined ? (

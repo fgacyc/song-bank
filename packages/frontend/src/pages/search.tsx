@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useState, type ReactElement } from "react";
 import SearchBar from "@/components/search/SearchBar";
-import FilterTags from "@/components/search/FilterTags";
+// import FilterTags from "@/components/search/FilterTags";
 import ListView from "@/components/search/ListView";
 import GalleryView from "@/components/search/GalleryView";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
@@ -33,11 +33,12 @@ const Search = () => {
   const [grid, setGrid] = useState("grid-cols-1");
   const [searchString, setSearchString] = useState("");
   const [songList, setSongList] = useState<Song[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { q } = router.query;
 
   useEffect(() => {
+    setIsLoading(true);
     setSearchString(q as string);
     void (async () => {
       await fetch("/api/song", {
@@ -46,28 +47,34 @@ const Search = () => {
         async (res) =>
           await res.json().then((result: Song[]) => {
             setSongList(result);
+            setIsLoading(false);
           }),
       );
     })();
   }, [q]);
 
+  if (isLoading) {
+    <div>search loading</div>;
+  }
+
   useEffect(() => {
     if (!searchString) return;
     router
       .push("/search?q=" + encodeURI(searchString))
-      .catch((err) => console.log(err));
-  }, [searchString, router]);
+      .catch((err) => console.error(err));
+  }, [router, searchString]);
 
-  let filteredSongList = songList;
-  if (router.query.q && router.query.q?.toString().trim() !== "") {
-    filteredSongList = songList.filter((items) =>
-      items.name.toLowerCase().includes(searchString.toLowerCase()),
-    );
-  }
+  const filteredSongList = useMemo(() => {
+    if (router.query.q && router.query.q?.toString().trim() !== "") {
+      return songList.filter((items) =>
+        items.name.toLowerCase().includes(searchString.toLowerCase()),
+      );
+    }
+  }, [router.query.q, searchString, songList]);
 
   return (
     <>
-      <div className="sticky top-[70px] z-10 flex justify-between border-b bg-white p-3">
+      <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
         <div className="flex items-center gap-3">
           <SearchBar
             searchString={searchString}
