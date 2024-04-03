@@ -89,7 +89,7 @@ const handler: NextApiHandler = async (req, res) => {
         ? `https://song-bank.s3.ap-southeast-1.amazonaws.com/${subVoiceFile}`
         : undefined,
       tags: {
-        connect: tags?.map((t) => ({ id: parseInt(t) })),
+        connect: tags?.map((t) => ({ id: t })),
       },
       ag_link: agLink,
       eg_link: egLink,
