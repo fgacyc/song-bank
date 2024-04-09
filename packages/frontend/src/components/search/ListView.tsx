@@ -63,10 +63,10 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                     </div>
                   </div>
                   <div className="pt-3 sm:pl-5 sm:pt-0">
-                    <h1 className="truncate text-base sm:p-1 sm:text-lg md:p-1 md:text-2xl lg:p-1 lg:text-3xl">
+                    <h1 className="truncate text-base sm:py-1 sm:text-lg md:py-1 md:text-2xl lg:py-1 lg:text-3xl">
                       <span className="font-semibold">{items.name}</span>{" "}
                       {items.alt_name && items.alt_name.trim() !== "-" && (
-                        <span>{items.alt_name}</span>
+                        <span className=" font-light">{items.alt_name}</span>
                       )}
                     </h1>
                     <div className="pt-2">
@@ -85,24 +85,28 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                         )}
                       </p>
                     </div>
-                    <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
-                      Key of{" "}
-                      <span className="font-semibold text-black">
-                        {items.original_key} Major
-                      </span>
-                    </p>
-                    <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
-                      Language :
-                      <span className="flex gap-1">
-                        {items.song_language.split(" + ").map((lang, i) => {
-                          return (
-                            <span key={i} className="rounded border px-1">
-                              {lang}
-                            </span>
-                          );
-                        })}
-                      </span>
-                    </p>
+                    {items.original_key && (
+                      <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
+                        Key of{" "}
+                        <span className="font-semibold text-black">
+                          {items.original_key} Major
+                        </span>
+                      </p>
+                    )}
+                    {items.song_language && (
+                      <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
+                        Language :
+                        <span className="flex gap-1">
+                          {items.song_language.split(" + ").map((lang, i) => {
+                            return (
+                              <span key={i} className="rounded border px-1">
+                                {lang}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
               </Link>

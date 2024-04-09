@@ -4,7 +4,7 @@ import { RiSearch2Line } from "react-icons/ri";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const List = () => {
+const LoadingList = () => {
   return (
     <>
       <div className="flex flex-col overflow-hidden rounded border p-3 shadow sm:flex-row md:items-center lg:items-stretch">
@@ -31,7 +31,7 @@ const List = () => {
 
 const Loading = () => {
   return (
-    <main className="relative top-[70px] z-0 min-h-[91vh] sm:pl-[70px] md:pl-[70px] lg:pl-[70px]">
+    <>
       <div className="sticky top-[70px] z-10 flex justify-between border-b bg-white p-3">
         <div className="flex w-full items-center gap-3">
           <div className="flex h-[30px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
@@ -54,11 +54,11 @@ const Loading = () => {
         </div>
       </div>
       <div className="flex flex-col gap-5 px-5 pt-5">
-        <List />
-        <List />
-        <List />
+        <LoadingList />
+        <LoadingList />
+        <LoadingList />
       </div>
-    </main>
+    </>
   );
 };
 

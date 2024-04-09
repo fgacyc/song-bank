@@ -6,7 +6,7 @@ import React, { useEffect, useRef, type RefObject, useState } from "react";
 import { IoPerson } from "react-icons/io5";
 import Header from "../components/layout/Header";
 import Navigation from "../components/layout/Navigation";
-import Loading from "@/components/index/Loading";
+import Loading from "@/components/Loading";
 
 const Home = () => {
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
@@ -28,14 +28,16 @@ const Home = () => {
         </Head>
         <Header />
         <Navigation />
-        <Loading />
+        <main className="relative top-[70px] z-0 min-h-[91vh] sm:pl-[70px] md:pl-[70px] lg:pl-[70px]">
+          <Loading />
+        </main>
       </>
     );
   } else {
     return (
       <>
         <Head>
-          <title>FGA Worship</title>
+          <title>Song Bank</title>
           <meta name="description" content="index" />
           <link rel="icon" href="/img/logo.png" />
         </Head>

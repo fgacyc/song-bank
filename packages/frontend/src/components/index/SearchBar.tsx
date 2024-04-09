@@ -19,17 +19,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputRef, setIsLoading }) => {
   const handleOnSubmit = async () => {
     if (searchString.trim() != "") {
       setIsLoading(true);
-      try {
-        await router.push({
-          pathname: "/search",
-          query: { q: searchString.trim() },
-        });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
+      localStorage.setItem("song-search", searchString.trim());
+      await router.push("/search");
     }
+
+    setIsLoading(false);
   };
 
   return (
