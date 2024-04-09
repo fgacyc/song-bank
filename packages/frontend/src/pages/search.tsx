@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState, type ReactElement } from "react";
 import SearchBar from "@/components/search/SearchBar";
-// import FilterTags from "@/components/search/FilterTags";
 import ListView from "@/components/search/ListView";
 import GalleryView from "@/components/search/GalleryView";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import Layout from "@/components/layout/Layout";
-import { useRouter } from "next/router";
+import Loading from "@/components/Loading";
 
 export type Song = {
   id?: string;
@@ -31,88 +30,81 @@ export type Song = {
 const Search = () => {
   const [view, setView] = useState("list");
   const [grid, setGrid] = useState("grid-cols-1");
-  const [searchString, setSearchString] = useState("");
   const [songList, setSongList] = useState<Song[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const { q } = router.query;
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
-    setIsLoading(true);
-    setSearchString(q as string);
     void (async () => {
       await fetch("/api/song", {
         method: "GET",
-      }).then(
-        async (res) =>
-          await res.json().then((result: Song[]) => {
-            setSongList(result);
-            setIsLoading(false);
-          }),
-      );
+      }).then(async (res) => {
+        const param = localStorage.getItem("song-search");
+        if (param) {
+          setSearchString(String(param));
+          localStorage.removeItem("song-search");
+        }
+        await res.json().then((result: Song[]) => {
+          setSongList(result);
+          setIsLoading(false);
+        });
+      });
     })();
-  }, [q]);
-
-  if (isLoading) {
-    <div>search loading</div>;
-  }
-
-  useEffect(() => {
-    if (!searchString) return;
-    router
-      .push("/search?q=" + encodeURI(searchString))
-      .catch((err) => console.error(err));
-  }, [router, searchString]);
+  }, []);
 
   const filteredSongList = useMemo(() => {
-    if (router.query.q && router.query.q?.toString().trim() !== "") {
-      return songList.filter((items) =>
-        items.name.toLowerCase().includes(searchString.toLowerCase()),
-      );
-    }
-  }, [router.query.q, searchString, songList]);
+    if (searchString && searchString.toString() !== "") {
+      return songList.filter((song) => {
+        return song.name
+          .toLowerCase()
+          .includes(searchString.toString().toLowerCase());
+      });
+    } else return songList;
+  }, [searchString, songList]);
 
-  return (
-    <>
-      <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
-        <div className="flex items-center gap-3">
-          <SearchBar
-            searchString={searchString}
-            setSearchString={setSearchString}
-            songList={songList}
-          />
-          {/* <FilterTags /> */}
+  if (isLoading) {
+    return <Loading />;
+  } else
+    return (
+      <>
+        <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
+          <div className="flex items-center gap-3">
+            <SearchBar
+              searchString={searchString}
+              setSearchString={setSearchString}
+              songList={songList}
+            />
+          </div>
+          <div className="grid w-[70px] grid-cols-2 gap-1">
+            <button
+              className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
+              onClick={() => {
+                setView("list");
+                setGrid("grid-cols-1");
+              }}
+            >
+              <CiGrid2H className="h-[20px] w-[20px]" />
+            </button>
+            <button
+              className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
+              onClick={() => {
+                setView("gallery");
+                setGrid("grid-cols-5");
+              }}
+            >
+              <CiGrid41 className="h-[20px] w-[20px]" />
+            </button>
+          </div>
         </div>
-        <div className="grid w-[70px] grid-cols-2 gap-1">
-          <button
-            className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
-            onClick={() => {
-              setView("list");
-              setGrid("grid-cols-1");
-            }}
-          >
-            <CiGrid2H className="h-[20px] w-[20px]" />
-          </button>
-          <button
-            className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
-            onClick={() => {
-              setView("gallery");
-              setGrid("grid-cols-5");
-            }}
-          >
-            <CiGrid41 className="h-[20px] w-[20px]" />
-          </button>
+        <div className={`grid gap-3 p-3 ${grid}`}>
+          {view === "list" ? (
+            <ListView songList={filteredSongList} />
+          ) : (
+            <GalleryView songList={filteredSongList} />
+          )}
         </div>
-      </div>
-      <div className={`grid gap-3 p-3 ${grid}`}>
-        {view === "list" ? (
-          <ListView songList={filteredSongList} />
-        ) : (
-          <GalleryView songList={filteredSongList} />
-        )}
-      </div>
-    </>
-  );
+      </>
+    );
 };
 
 export default Search;
