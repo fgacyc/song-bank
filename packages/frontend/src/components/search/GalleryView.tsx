@@ -50,7 +50,7 @@ const GalleryView: React.FC<GalleryViewProps> = ({ songList }) => {
                 href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
               >
                 <div className="flex flex-col items-center justify-center rounded border bg-white p-3 shadow">
-                  <div className="relative h-[130px] w-full">
+                  <div className="relative h-[135px] w-full">
                     <Image
                       src={thumbnailUrl}
                       alt={items.name}
@@ -61,7 +61,9 @@ const GalleryView: React.FC<GalleryViewProps> = ({ songList }) => {
                     />
                   </div>
                   <div className="w-full p-1">
-                    <p className="text-lg font-semibold">{items.name}</p>
+                    <p className="truncate text-lg font-semibold">
+                      {items.name}
+                    </p>
                   </div>
                 </div>
               </Link>

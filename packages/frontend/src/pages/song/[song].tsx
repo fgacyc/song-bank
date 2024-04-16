@@ -46,26 +46,19 @@ const Song = () => {
     void (async () => {
       await fetch("/api/song", {
         method: "GET",
-      }).then(
-        async (res) =>
-          await res.json().then((result: Song[]) => {
-            setSongList(result);
-          }),
-      );
+      })
+        .then(
+          async (res) =>
+            await res
+              .json()
+              .then((result: Song[]) => {
+                setSongList(result);
+              })
+              .catch((err) => console.error(err)),
+        )
+        .catch((err) => console.error(err));
     })();
   }, []);
-
-  // useEffect(() => {
-  //   if (lyricsRef.current) {
-  //     const currentLyrics = lyricsRef.current.innerHTML;
-  //     const updatedLyrics = currentLyrics.replace(
-  //       /\[(.*?)\]/g,
-  //       (match: string, content: string) =>
-  //         `<span class="lyrics-title">${content}</span>`,
-  //     );
-  //     lyricsRef.current.innerHTML = updatedLyrics;
-  //   }
-  // }, [songList]);
 
   const getVideoId = (url: string) => {
     const params = new URLSearchParams(new URL(url).search);
@@ -148,9 +141,8 @@ const Song = () => {
                 <h1 className="hidden rounded border px-5 py-3 text-4xl font-semibold md:block">
                   {items.name}
                 </h1>
-                <div className="rounded border p-5">
-                  TODO: transpose section
-                </div>
+                {/* TODO: transpose key section */}
+                <div className="rounded border p-5"></div>
                 {/* TODO: chords & lyrics */}
                 <div className="rounded border p-5">
                   <p

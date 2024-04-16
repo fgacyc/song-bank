@@ -38,17 +38,26 @@ const Search = () => {
     void (async () => {
       await fetch("/api/song", {
         method: "GET",
-      }).then(async (res) => {
-        const param = localStorage.getItem("song-search");
-        if (param) {
-          setSearchString(String(param));
-          localStorage.removeItem("song-search");
-        }
-        await res.json().then((result: Song[]) => {
-          setSongList(result);
-          setIsLoading(false);
+      })
+        .then(async (res) => {
+          const param = localStorage.getItem("song-search");
+          if (param) {
+            setSearchString(String(param));
+            localStorage.removeItem("song-search");
+          }
+          await res
+            .json()
+            .then((result: Song[]) => {
+              setSongList(result);
+              setIsLoading(false);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        })
+        .catch((err) => {
+          console.error(err);
         });
-      });
     })();
   }, []);
 
@@ -89,14 +98,17 @@ const Search = () => {
               className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
               onClick={() => {
                 setView("gallery");
-                setGrid("grid-cols-5");
+                setGrid("sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4");
               }}
             >
               <CiGrid41 className="h-[20px] w-[20px]" />
             </button>
           </div>
         </div>
-        <div className={`grid gap-3 p-3 ${grid}`}>
+        <div className="grid grid-cols-1 gap-3 p-3 sm:hidden">
+          <ListView songList={filteredSongList} />
+        </div>
+        <div className={`hidden gap-3 p-3 sm:grid ${grid}`}>
           {view === "list" ? (
             <ListView songList={filteredSongList} />
           ) : (

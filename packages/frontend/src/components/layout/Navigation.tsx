@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { RiSearch2Line } from "react-icons/ri";
-import { TbFolder } from "react-icons/tb";
+// import { TbFolder } from "react-icons/tb";
 
 interface navigationDataProps {
   link: string;
@@ -12,7 +12,7 @@ const iconStyle = "h-[20px] w-[20px]";
 
 const navigationData: navigationDataProps[] = [
   { link: "/search", icon: <RiSearch2Line className={iconStyle} /> },
-  { link: "/browse", icon: <TbFolder className={iconStyle} /> },
+  // { link: "/browse", icon: <TbFolder className={iconStyle} /> },
 ];
 
 const Navigation = () => {

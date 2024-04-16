@@ -53,10 +53,10 @@ const Loading = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col gap-5 px-5 pt-5">
-        <LoadingList />
-        <LoadingList />
-        <LoadingList />
+      <div className="flex flex-col gap-5 p-5">
+        {Array.from({ length: 7 }, (_, i) => (
+          <LoadingList key={i} />
+        ))}
       </div>
     </>
   );

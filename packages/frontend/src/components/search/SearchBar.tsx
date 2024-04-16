@@ -36,9 +36,9 @@ const Input: React.FC<{
   const formikRef = useFormikContext<{ searchString: string }>();
   return (
     <input
+      className="ps-2"
       type="text"
       placeholder="Search"
-      className="ps-2"
       name="searchString"
       value={formikRef.values.searchString}
       onChange={async (e) => {
@@ -63,7 +63,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }}
       >
         {() => (
-          <Form className="flex flex-row items-center">
+          <Form className="flex w-full items-center justify-between">
             <Input setSearchString={setSearchString} />
             <button
               type="submit"
