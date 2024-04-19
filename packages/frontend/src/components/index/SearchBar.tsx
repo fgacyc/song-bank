@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 
 interface SearchBarProps {
   inputRef: React.RefObject<HTMLInputElement>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ inputRef, setIsLoading }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
   const [searchString, setSearchString] = useState("");
   const router = useRouter();
 
@@ -18,12 +17,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputRef, setIsLoading }) => {
 
   const handleOnSubmit = async () => {
     if (searchString.trim() != "") {
-      setIsLoading(true);
       localStorage.setItem("song-search", searchString.trim());
       await router.push("/search");
     }
-
-    setIsLoading(false);
   };
 
   return (

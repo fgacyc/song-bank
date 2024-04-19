@@ -49,17 +49,15 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                 href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
               >
                 <div className="flex flex-col overflow-hidden rounded border p-3 shadow sm:flex-row">
-                  <div className="h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
-                    <div className="relative h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
-                      <Image
-                        src={thumbnailUrl}
-                        alt={items.name}
-                        fill={true}
-                        priority={true}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="rounded-md object-cover"
-                      />
-                    </div>
+                  <div className="relative h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
+                    <Image
+                      src={thumbnailUrl}
+                      alt={items.name}
+                      fill={true}
+                      priority={true}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="rounded-md object-cover"
+                    />
                   </div>
                   <div className="pt-3 sm:pl-5 sm:pt-0">
                     <h1 className="truncate text-base sm:py-1 sm:text-lg md:py-1 md:text-2xl lg:py-1 lg:text-3xl">
@@ -71,15 +69,25 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                     <div className="pt-2">
                       <p className="truncate text-xs text-neutral-500 lg:text-sm">
                         By{" "}
-                        <span className="font-semibold text-black">
+                        <Link
+                          href={`/band/${items.original_band
+                            .toLowerCase()
+                            .replace(/ /g, "-")}`}
+                          className="font-semibold text-black hover:underline"
+                        >
                           {items.original_band}
-                        </span>{" "}
+                        </Link>{" "}
                         {items.album && (
                           <span>
                             on album{" "}
-                            <span className="font-semibold text-black">
+                            <Link
+                              href={`/album/${items.album
+                                .toLowerCase()
+                                .replace(/ /g, "-")}`}
+                              className="font-semibold text-black hover:underline"
+                            >
                               {items.album}
-                            </span>
+                            </Link>
                           </span>
                         )}
                       </p>
