@@ -5,6 +5,7 @@ import GalleryView from "@/components/search/GalleryView";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import Layout from "@/components/layout/Layout";
 import Loading from "@/components/Loading";
+import FilterTags from "@/components/search/FilterTags";
 
 export type Song = {
   id?: string;
@@ -51,13 +52,9 @@ const Search = () => {
               setSongList(result);
               setIsLoading(false);
             })
-            .catch((err) => {
-              console.error(err);
-            });
+            .catch((err) => console.error(err));
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch((err) => console.error(err));
     })();
   }, []);
 
@@ -83,6 +80,7 @@ const Search = () => {
               setSearchString={setSearchString}
               songList={songList}
             />
+            <FilterTags />
           </div>
           <div className="grid w-[70px] grid-cols-2 gap-1">
             <button
