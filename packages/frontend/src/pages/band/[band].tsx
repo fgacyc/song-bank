@@ -1,16 +1,17 @@
 import React, { type ReactElement } from "react";
 import Layout from "@/components/dir/layout/Layout";
+import BandBreadcrumb from "@/components/dir/BandBreadcrumb";
 
-const Artist = () => {
+const Band = () => {
   return (
     <>
-      <div>Artist</div>
+      <BandBreadcrumb original_band={"band"} />
     </>
   );
 };
 
-export default Artist;
+export default Band;
 
-Artist.getLayout = function getLayout(page: ReactElement) {
+Band.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
