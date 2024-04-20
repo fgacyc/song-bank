@@ -17,14 +17,14 @@ const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
     <div className="hidden items-end gap-2 rounded border px-3 py-1 sm:flex">
       <Link
         href={"/search"}
-        className="text-neutral-500 decoration-1 underline-offset-2 hover:underline"
+        className="text-neutral-500 decoration-1 hover:underline"
       >
         Home
       </Link>
       <IoIosArrowForward className="pb-1" />
       <Link
         href={`/band/${original_band.toLowerCase().replace(/ /g, "-")}`}
-        className="text-neutral-500 decoration-1 underline-offset-2 hover:underline"
+        className="text-neutral-500 decoration-1 hover:underline"
       >
         {original_band}
       </Link>
@@ -32,7 +32,7 @@ const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
       {album && (
         <Link
           href={`/album/${album.toLowerCase().replace(/ /g, "-")}`}
-          className="text-neutral-500 decoration-1 underline-offset-2 hover:underline"
+          className="text-neutral-500 decoration-1 hover:underline"
         >
           {album}
         </Link>

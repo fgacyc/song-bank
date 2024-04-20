@@ -11,7 +11,7 @@ const BandBreadcrumb: React.FC<BandBreadcrumb> = ({ original_band }) => {
     <div className="hidden items-end gap-2 rounded border px-3 py-1 sm:flex">
       <Link
         href={"/search"}
-        className="text-neutral-500 decoration-1 underline-offset-2 hover:underline"
+        className="text-neutral-500 decoration-1 hover:underline"
       >
         Home
       </Link>
