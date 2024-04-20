@@ -59,13 +59,21 @@ const Search = () => {
   }, []);
 
   const filteredSongList = useMemo(() => {
-    if (searchString && searchString.toString() !== "") {
-      return songList.filter((song) => {
-        return song.name
-          .toLowerCase()
-          .includes(searchString.toString().toLowerCase());
-      });
-    } else return songList;
+    if (!searchString || searchString.toString() === "") {
+      return songList;
+    }
+
+    const filteredSongs = songList.filter((song) => {
+      const matchedName = song.name
+        .toLowerCase()
+        .includes(searchString.toString().toLowerCase());
+      const matchedAltName = song.alt_name
+        ?.toLowerCase()
+        .includes(searchString.toString().toLowerCase());
+      return matchedName || matchedAltName;
+    });
+
+    return filteredSongs;
   }, [searchString, songList]);
 
   if (isLoading) {
