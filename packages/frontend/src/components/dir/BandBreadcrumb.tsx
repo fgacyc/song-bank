@@ -3,7 +3,7 @@ import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 
 interface BandBreadcrumb {
-  original_band: string;
+  original_band: string | undefined;
 }
 
 const BandBreadcrumb: React.FC<BandBreadcrumb> = ({ original_band }) => {
