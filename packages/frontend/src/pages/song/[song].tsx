@@ -111,17 +111,6 @@ const Song = () => {
                               items.alt_name}
                           </span>
                         </p>
-                        <p className="flex flex-col truncate">
-                          <span className="font-semibold">Band</span>
-                          <Link
-                            href={`/band/${items.original_band
-                              .toLowerCase()
-                              .replace(/ /g, "-")}`}
-                            className="text-sm text-neutral-500 hover:underline"
-                          >
-                            {items.original_band}
-                          </Link>
-                        </p>
                         {items.album && (
                           <p className="flex flex-col truncate">
                             <span className="font-semibold">Album</span>
@@ -135,6 +124,17 @@ const Song = () => {
                             </Link>
                           </p>
                         )}
+                        <p className="flex flex-col truncate">
+                          <span className="font-semibold">Band</span>
+                          <Link
+                            href={`/band/${items.original_band
+                              .toLowerCase()
+                              .replace(/ /g, "-")}`}
+                            className="text-sm text-neutral-500 hover:underline"
+                          >
+                            {items.original_band}
+                          </Link>
+                        </p>
                       </div>
                       <hr />
                       <div className="flex flex-col gap-2 py-3">

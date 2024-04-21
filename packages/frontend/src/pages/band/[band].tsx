@@ -30,6 +30,12 @@ const Band = () => {
   const router = useRouter();
   const [songList, setSongList] = useState<Album[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<Album[]>([]);
+  const [filteredSongListWithAlbum, setFilteredSongListWithAlbum] = useState<
+    Album[]
+  >([]);
+  const [filteredSongListWithoutAlbum, setFilteredSongListWithoutAlbum] =
+    useState<Album[]>([]);
+  const [uniqueAlbumList, setUniqueAlbumList] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -53,62 +59,177 @@ const Band = () => {
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {
       return (
-        items.original_band.toLowerCase().replace(/ /g, "-") ===
+        items.original_band.toLowerCase().trim().replace(/ /g, "-") ===
         router.query.band?.toString()
       );
     });
+    setFilteredSongList(filteredSongList);
+
+    const filteredSongListWithAlbum = filteredSongList.filter((items) => {
+      return items.album?.toString().trim() !== "";
+    });
+    setFilteredSongListWithAlbum(filteredSongListWithAlbum);
+
+    const filteredSongListWithoutAlbum = filteredSongList.filter((items) => {
+      return items.album?.toString().trim() === "";
+    });
+    setFilteredSongListWithoutAlbum(filteredSongListWithoutAlbum);
+
+    const uniqueAlbumSet = new Set();
+    filteredSongListWithAlbum.forEach((items) => {
+      uniqueAlbumSet.add(items.album);
+    });
+    const uniqueAlbumList = [...uniqueAlbumSet];
+    setUniqueAlbumList(uniqueAlbumList as string[]);
 
     console.log(filteredSongList);
-    setFilteredSongList(filteredSongList);
+    console.log(filteredSongListWithAlbum);
+    console.log(filteredSongListWithoutAlbum);
+    console.log(uniqueAlbumList);
   }, [songList, router.query.band]);
+
+  const getYoutubeVideoId = (youtubeUrl: string) => {
+    const regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
+    const match = youtubeUrl.match(regex);
+    return match ? match[1] : null;
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
   } else {
-    const uniqueAlbumsSet = new Set<string>();
-    filteredSongList.forEach((item) => {
-      if (item.album && item.album.trim() !== "") {
-        uniqueAlbumsSet.add(item.album);
-      }
-    });
-
-    const uniqueAlbumsArray: string[] = Array.from(uniqueAlbumsSet);
-
-    console.log(uniqueAlbumsArray); // remove this soon
     return (
       <>
-        <BandBreadcrumb
-          original_band={
-            filteredSongList && filteredSongList.length > 0
-              ? filteredSongList[0]?.original_band
-              : "Band"
-          }
-        />
-        <div className="grid grid-cols-4 gap-5 pt-5">
-          {uniqueAlbumsArray.map((items, i) => {
-            return (
-              <Link
-                href={`/album/${items.toLowerCase().replace(/ /g, "-")}`}
-                key={i}
-                className="flex flex-col items-center justify-center gap-3 rounded border p-5"
-              >
-                <div className="relative h-[250px] w-full">
-                  <Image
-                    src={""}
-                    alt={""}
-                    fill={true}
-                    priority={true}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                </div>
-                <h1 className="flex gap-1 text-sm">
-                  <span className="font-semibold">{items}</span>
-                  <span className="text-neutral-500">- 2024</span>
-                </h1>
-              </Link>
-            );
-          })}
+        <BandBreadcrumb original_band={filteredSongList[0]?.original_band} />
+        <div className="flex flex-col items-start justify-center gap-5 py-5 md:flex-row">
+          {/* left */}
+          <div className="flex w-full flex-col gap-5 md:w-fit">
+            {/* left 1 */}
+            <div className="h-fit rounded border p-5">
+              <div className="text-wrap pt-4">
+                <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
+                <p className="w-full pb-5 text-5xl font-semibold sm:w-[260px] md:w-[280px] lg:w-[300px]">
+                  {filteredSongList[0]?.original_band}
+                </p>
+              </div>
+              <hr />
+              <div className="flex flex-col py-3">
+                <h1 className="font-semibold">Total Songs</h1>
+                <p className="text-sm text-neutral-500">
+                  {filteredSongList.length}
+                </p>
+              </div>
+              <div className="flex flex-col">
+                <h1 className="font-semibold">Total Albums</h1>
+                <p className="text-sm text-neutral-500">
+                  {uniqueAlbumList.length}
+                </p>
+              </div>
+            </div>
+
+            {/* left 2 */}
+            {filteredSongListWithoutAlbum.length > 0 && (
+              <div className="flex flex-col gap-1 rounded border p-5">
+                <h1 className="font-semibold">Songs Without Album</h1>
+                {filteredSongListWithoutAlbum.map((items, i) => {
+                  return (
+                    <p key={i} className="text-sm text-neutral-500">
+                      {i + 1}.{" "}
+                      <Link
+                        href={`/song/${items.name
+                          .toLowerCase()
+                          .trim()
+                          .replace(/ /g, "-")}`}
+                        className="hover:underline"
+                      >
+                        {items.name}
+                      </Link>
+                    </p>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* right */}
+          <div className="grid w-full grid-cols-3 gap-5">
+            {uniqueAlbumList.map((album, i) => {
+              const songsInAlbum = filteredSongListWithAlbum.filter(
+                (items) => items.album === album,
+              );
+              const numberOfSongsInAlbum = songsInAlbum.length;
+
+              const songsToShow =
+                numberOfSongsInAlbum === 1
+                  ? 1
+                  : numberOfSongsInAlbum >= 4
+                    ? 4
+                    : 2;
+              const songsToShowInAlbum = songsInAlbum.slice(0, songsToShow);
+
+              let gridCol = "";
+              if (numberOfSongsInAlbum == 1) {
+                gridCol = "grid-cols-1";
+              } else if (
+                numberOfSongsInAlbum == 2 ||
+                numberOfSongsInAlbum == 3
+              ) {
+                gridCol = "grid-cols-2";
+              } else if (numberOfSongsInAlbum >= 4) {
+                gridCol = "grid-cols-2";
+              }
+              return (
+                <Link
+                  key={i}
+                  href={`/album/${album
+                    .toLowerCase()
+                    .trim()
+                    .replace(/ /g, "-")}`}
+                  className="flex flex-col items-center justify-between gap-1 rounded border p-5"
+                >
+                  <div
+                    className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded border`}
+                  >
+                    {songsToShowInAlbum.map((items, j) => {
+                      console.log(`${album}: ${j}`);
+                      const originalYoutubeUrl =
+                        items.original_youtube_url ?? "";
+                      const youtubeVideoId =
+                        getYoutubeVideoId(originalYoutubeUrl);
+                      const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+                      return (
+                        <div
+                          key={j}
+                          className="flex w-full border-spacing-52 items-center justify-center overflow-hidden"
+                        >
+                          <div className="relative h-[135%] w-full">
+                            <Image
+                              src={
+                                youtubeVideoId
+                                  ? thumbnailUrl
+                                  : "/img/no-cover.jpg"
+                              }
+                              alt={items.name}
+                              fill={true}
+                              priority={true}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              className="object-cover"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <h1>
+                    <span className="font-medium">{album}</span>{" "}
+                    <span className="text-sm text-neutral-500">
+                      - {numberOfSongsInAlbum} songs
+                    </span>
+                  </h1>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </>
     );
