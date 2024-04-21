@@ -30,7 +30,7 @@ export type Song = {
 
 const Search = () => {
   const [view, setView] = useState("list");
-  const [grid, setGrid] = useState("grid-cols-1");
+  const [gridCol, setGridCol] = useState("grid-cols-1");
   const [songList, setSongList] = useState<Song[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
@@ -95,7 +95,7 @@ const Search = () => {
               className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
               onClick={() => {
                 setView("list");
-                setGrid("grid-cols-1");
+                setGridCol("grid-cols-1");
               }}
             >
               <CiGrid2H className="h-[20px] w-[20px]" />
@@ -104,7 +104,7 @@ const Search = () => {
               className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
               onClick={() => {
                 setView("gallery");
-                setGrid("sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4");
+                setGridCol("sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4");
               }}
             >
               <CiGrid41 className="h-[20px] w-[20px]" />
@@ -114,7 +114,7 @@ const Search = () => {
         <div className="grid grid-cols-1 gap-3 p-3 sm:hidden">
           <ListView songList={filteredSongList} />
         </div>
-        <div className={`hidden gap-3 p-3 sm:grid ${grid}`}>
+        <div className={`hidden gap-3 p-3 sm:grid ${gridCol}`}>
           {view === "list" ? (
             <ListView songList={filteredSongList} />
           ) : (

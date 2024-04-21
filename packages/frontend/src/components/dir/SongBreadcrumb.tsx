@@ -28,14 +28,17 @@ const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
       >
         {original_band}
       </Link>
-      <IoIosArrowForward className="pb-1" />
+
       {album && (
-        <Link
-          href={`/album/${album.toLowerCase().replace(/ /g, "-")}`}
-          className="text-neutral-500 decoration-1 hover:underline"
-        >
-          {album}
-        </Link>
+        <>
+          <IoIosArrowForward className="pb-1" />
+          <Link
+            href={`/album/${album.toLowerCase().replace(/ /g, "-")}`}
+            className="text-neutral-500 decoration-1 hover:underline"
+          >
+            {album}
+          </Link>
+        </>
       )}
       <IoIosArrowForward className="pb-1" />
       <span>{name}</span>
