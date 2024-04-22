@@ -135,7 +135,7 @@ const Search = () => {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-3 p-3 sm:hidden">
+        <div className="grid grid-cols-1 gap-3 sm:hidden sm:p-3">
           <ListView songList={filteredSongList} />
         </div>
         <div className={`hidden gap-3 p-3 sm:grid ${gridCol}`}>

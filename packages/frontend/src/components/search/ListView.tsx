@@ -47,7 +47,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
               <Link
                 key={i}
                 href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
-                className="flex flex-col overflow-hidden rounded border p-3 sm:flex-row"
+                className="flex flex-col overflow-hidden pb-3 sm:flex-row sm:rounded sm:border sm:p-3"
               >
                 <div className="relative h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
                   <Image
@@ -56,10 +56,10 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                     fill={true}
                     priority={true}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="rounded-md object-cover"
+                    className="object-cover sm:rounded-md"
                   />
                 </div>
-                <div className="pt-3 sm:pl-5 sm:pt-0">
+                <div className="p-3 sm:pl-5 sm:pt-0">
                   <h1 className="truncate text-base sm:py-1 sm:text-lg md:py-1 md:text-2xl lg:py-1 lg:text-3xl">
                     <span className="font-semibold">{items.name}</span>{" "}
                     {items.alt_name && items.alt_name.trim() !== "-" && (

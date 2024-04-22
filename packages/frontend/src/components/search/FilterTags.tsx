@@ -17,7 +17,7 @@ const FilterTags: React.FC<FilterTagsProps> = ({ activeTag, setActiveTag }) => {
   };
 
   return (
-    <div className="hidden gap-3 ps-1 md:flex">
+    <div className="hidden gap-3 truncate ps-1 sm:flex">
       {tags.map((tag: string, i) => {
         return (
           <button
