@@ -96,9 +96,9 @@ const Band = () => {
     return (
       <>
         <BandBreadcrumb original_band={filteredSongList[0]?.original_band} />
-        <div className="flex flex-col items-start justify-center gap-5 py-5 md:flex-row">
+        <div className="flex flex-col items-start justify-center gap-5 truncate pb-5 sm:pt-5 lg:flex-row">
           {/* left */}
-          <div className="flex w-full flex-col gap-5 md:w-fit">
+          <div className="flex w-full flex-col gap-5 lg:w-fit">
             {/* left 1 */}
             <div className="h-fit rounded border p-5">
               <div className="text-wrap pt-4">
@@ -124,7 +124,7 @@ const Band = () => {
 
             {/* left 2 */}
             {filteredSongListWithoutAlbum.length > 0 && (
-              <div className="flex flex-col gap-1 rounded border p-5">
+              <div className="flex flex-col gap-1 truncate rounded border p-5">
                 <h1 className="font-semibold">Songs Without Album</h1>
                 {filteredSongListWithoutAlbum.map((items, i) => {
                   return (
@@ -147,7 +147,7 @@ const Band = () => {
           </div>
 
           {/* right */}
-          <div className="grid w-full grid-cols-3 gap-5">
+          <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
             {uniqueAlbumList.map((album, i) => {
               const songsInAlbum = filteredSongListWithAlbum.filter(
                 (items) => items.album === album,
@@ -180,7 +180,7 @@ const Band = () => {
                     ?.toLowerCase()
                     .trim()
                     .replace(/ /g, "-")}`}
-                  className="flex flex-col items-center justify-between gap-1 rounded border p-5"
+                  className="flex flex-col items-center justify-between gap-1 truncate rounded border p-5"
                 >
                   <div
                     className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded border`}

@@ -93,7 +93,7 @@ const Song = () => {
                 <div className="flex flex-col gap-5 pb-5 md:flex-row">
                   {/* left */}
                   <div className="flex h-fit flex-col rounded border p-5">
-                    <div className="h-[300px] w-full md:h-[150px] md:w-[300px]">
+                    <div className="h-[150px] w-full md:h-[150px] md:w-[300px]">
                       <iframe
                         src={embedUrl}
                         allowFullScreen

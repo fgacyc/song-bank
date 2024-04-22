@@ -94,11 +94,11 @@ const Album = () => {
             filteredSongList ? filteredSongList[0]?.original_band : "Band"
           }
         />
-        <div className="flex gap-5 pt-5">
+        <div className="block gap-5 sm:pt-5 md:flex">
           {/* left */}
           <div className="h-fit rounded border p-5">
             <div
-              className={`grid h-[25dvh] w-full gap-[1px] ${gridCol} overflow-hidden rounded sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[250px] lg:w-[300px]`}
+              className={`grid h-[300px] w-full gap-[1px] md:h-[200px] md:w-[200px] lg:h-[270px] ${gridCol} overflow-hidden rounded lg:w-[300px]`}
             >
               {albumCoverImage?.map((items, i) => {
                 const originalYoutubeUrl = items.original_youtube_url ?? "";
@@ -175,8 +175,8 @@ const Album = () => {
             </div>
           </div>
           {/* right */}
-          <div className="w-full">
-            <div className="grid grid-cols-2 gap-5">
+          <div className="w-full pb-5 pt-5 md:pt-0">
+            <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-2">
               {filteredSongList?.map((items, i) => {
                 const originalYoutubeUrl = items.original_youtube_url ?? "";
                 const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
@@ -187,9 +187,9 @@ const Album = () => {
                       .toLowerCase()
                       .replace(/ /g, "-")}`}
                     key={i}
-                    className="flex gap-5 rounded border p-5"
+                    className="flex gap-5 truncate rounded border p-5 lg:block xl:flex"
                   >
-                    <div className="relative h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[110px] lg:w-[200px]">
+                    <div className="relative w-[100px] sm:h-[100px] sm:w-[200px] md:h-[105px] md:w-[200px] lg:h-[150px] lg:w-full xl:h-[105px] xl:w-[200px]">
                       <Image
                         src={
                           youtubeVideoId ? thumbnailUrl : "/img/no-cover.jpg"
@@ -201,15 +201,15 @@ const Album = () => {
                         className="rounded-md object-cover"
                       />
                     </div>
-                    <div>
-                      <h1 className="truncate text-lg">
+                    <div className="lg:pt-2 xl:pt-0">
+                      <h1 className="truncate text-sm md:text-base lg:text-lg">
                         <span className="font-semibold">{items.name}</span>{" "}
                         {items.alt_name && items.alt_name.trim() !== "-" && (
-                          <span className=" font-light">{items.alt_name}</span>
+                          <span className="font-light">{items.alt_name}</span>
                         )}
                       </h1>
                       <p className="flex flex-col gap-1 truncate pt-1 text-xs text-neutral-500 lg:text-sm">
-                        <span>
+                        <span className="text-sm lg:text-base">
                           By{" "}
                           <Link
                             href={`/band/${items.original_band
