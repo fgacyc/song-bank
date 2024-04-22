@@ -47,7 +47,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
               <Link
                 key={i}
                 href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
-                className="flex flex-col overflow-hidden rounded border p-3 shadow sm:flex-row"
+                className="flex flex-col overflow-hidden rounded border p-3 sm:flex-row"
               >
                 <div className="relative h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
                   <Image

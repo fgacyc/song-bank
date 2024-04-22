@@ -3,31 +3,9 @@ import { IoIosClose } from "react-icons/io";
 import { RiSearch2Line } from "react-icons/ri";
 import { Form, Formik, useFormikContext } from "formik";
 
-export type Song = {
-  id?: string;
-  name: string;
-  alt_name?: string;
-  song_language: string;
-  original_key: string;
-  original_band: string;
-  album?: string;
-  original_youtube_url?: string;
-  chord_lyrics: string;
-  main_key_link?: string;
-  sub_key_link?: string;
-  eg_link?: string;
-  ag_link?: string;
-  bass_link?: string;
-  drum_link?: string;
-  tags?: string[];
-  sequencer_files?: string[];
-  sub_voice_file?: string;
-};
-
 interface SearchBarProps {
   searchString: string;
   setSearchString: Dispatch<SetStateAction<string>>;
-  songList?: Song[];
 }
 
 const Input: React.FC<{

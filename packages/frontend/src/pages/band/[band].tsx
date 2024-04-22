@@ -66,12 +66,12 @@ const Band = () => {
     setFilteredSongList(filteredSongList);
 
     const filteredSongListWithAlbum = filteredSongList.filter((items) => {
-      return items.album?.toString().trim() !== "";
+      return items.album && items.album.toString().trim() !== "";
     });
     setFilteredSongListWithAlbum(filteredSongListWithAlbum);
 
     const filteredSongListWithoutAlbum = filteredSongList.filter((items) => {
-      return items.album?.toString().trim() === "";
+      return items.album === null || items.album?.toString().trim() === "";
     });
     setFilteredSongListWithoutAlbum(filteredSongListWithoutAlbum);
 
@@ -81,11 +81,6 @@ const Band = () => {
     });
     const uniqueAlbumList = [...uniqueAlbumSet];
     setUniqueAlbumList(uniqueAlbumList as string[]);
-
-    console.log(filteredSongList);
-    console.log(filteredSongListWithAlbum);
-    console.log(filteredSongListWithoutAlbum);
-    console.log(uniqueAlbumList);
   }, [songList, router.query.band]);
 
   const getYoutubeVideoId = (youtubeUrl: string) => {
@@ -182,7 +177,7 @@ const Band = () => {
                 <Link
                   key={i}
                   href={`/album/${album
-                    .toLowerCase()
+                    ?.toLowerCase()
                     .trim()
                     .replace(/ /g, "-")}`}
                   className="flex flex-col items-center justify-between gap-1 rounded border p-5"

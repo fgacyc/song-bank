@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import FilterTags from "./search/FilterTags";
 import { IoIosClose } from "react-icons/io";
+import { RiSearch2Line } from "react-icons/ri";
 
 const LoadingList = () => {
   return (
@@ -37,8 +37,10 @@ const Loading = () => {
     const param = localStorage.getItem("song-search");
     if (param) {
       setSearchString(String(param));
+      console.log(param);
     }
   }, []);
+  const tags = ["Lyrics", "Title", "Album", "Band", "Key", "Language"];
   return (
     <>
       <div className="sticky top-[70px] z-10 flex justify-between border-b bg-white p-3">
@@ -54,10 +56,19 @@ const Loading = () => {
               type="reset"
               className="flex h-full w-[30px] items-center justify-center rounded-e-md border-s"
             >
-              <IoIosClose />
+              {searchString === "" ? <RiSearch2Line /> : <IoIosClose />}
             </button>
           </div>
-          <FilterTags />
+          <div className="hidden gap-3 ps-1 md:flex">
+            {tags.map((tag, i) => (
+              <button
+                key={i}
+                className="rounded border px-2 py-1 text-xs text-neutral-500"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="hidden w-[74px] grid-cols-2 gap-1 sm:grid md:grid lg:grid">
           <button className="flex h-[30px] w-[30px] items-center justify-center rounded-md border">

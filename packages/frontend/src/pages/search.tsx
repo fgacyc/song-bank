@@ -34,6 +34,7 @@ const Search = () => {
   const [songList, setSongList] = useState<Song[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
+  const [activeTag, setActiveTag] = useState("");
 
   useEffect(() => {
     void (async () => {
@@ -64,17 +65,41 @@ const Search = () => {
     }
 
     const filteredSongs = songList.filter((song) => {
-      const matchedName = song.name
-        .toLowerCase()
-        .includes(searchString.toString().toLowerCase());
-      const matchedAltName = song.alt_name
-        ?.toLowerCase()
-        .includes(searchString.toString().toLowerCase());
-      return matchedName || matchedAltName;
+      if (activeTag === "") {
+        const matchedName = song.name
+          .toLowerCase()
+          .includes(searchString.toString().toLowerCase());
+        const matchedAltName = song.alt_name
+          ?.toLowerCase()
+          .includes(searchString.toString().toLowerCase());
+        return matchedName || matchedAltName;
+      } else {
+        switch (activeTag) {
+          case "Lyrics":
+            return song.chord_lyrics
+              ?.toLowerCase()
+              .includes(searchString.toString().toLowerCase());
+          case "Album":
+            return song.album
+              ?.toLowerCase()
+              .includes(searchString.toString().toLowerCase());
+          case "Band":
+            return song.original_band
+              ?.toLowerCase()
+              .includes(searchString.toString().toLowerCase());
+          case "Key":
+            return song.original_key
+              ?.toLowerCase()
+              .includes(searchString.toString().toLowerCase());
+          case "Language":
+            return song.song_language
+              ?.toLowerCase()
+              .includes(searchString.toString().toLowerCase());
+        }
+      }
     });
-
     return filteredSongs;
-  }, [searchString, songList]);
+  }, [searchString, songList, activeTag]);
 
   if (isLoading) {
     return <Loading />;
@@ -86,9 +111,8 @@ const Search = () => {
             <SearchBar
               searchString={searchString}
               setSearchString={setSearchString}
-              songList={songList}
             />
-            <FilterTags />
+            <FilterTags activeTag={activeTag} setActiveTag={setActiveTag} />
           </div>
           <div className="grid w-[70px] grid-cols-2 gap-1">
             <button

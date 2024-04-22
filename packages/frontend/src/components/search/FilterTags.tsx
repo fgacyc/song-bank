@@ -1,18 +1,36 @@
-import React from "react";
+import React, { type Dispatch, type SetStateAction } from "react";
 
-const tags = ["Lyrics", "Title", "Album", "Band", "Key", "Language"];
+interface FilterTagsProps {
+  activeTag: string;
+  setActiveTag: Dispatch<SetStateAction<string>>;
+}
 
-const FilterTags = () => {
+const tags = ["Lyrics", "Album", "Band", "Key", "Language"];
+
+const FilterTags: React.FC<FilterTagsProps> = ({ activeTag, setActiveTag }) => {
+  const handleSetActiveTag = (tag: string) => {
+    if (activeTag === tag) {
+      setActiveTag("");
+    } else {
+      setActiveTag(tag);
+    }
+  };
+
   return (
     <div className="hidden gap-3 ps-1 md:flex">
-      {tags.map((tag, i) => (
-        <button
-          key={i}
-          className="rounded border px-2 py-1 text-xs text-neutral-500"
-        >
-          {tag}
-        </button>
-      ))}
+      {tags.map((tag: string, i) => {
+        return (
+          <button
+            key={i}
+            className={`${
+              activeTag === tag ? "bg-neutral-100" : ""
+            } rounded border px-2 py-1 text-xs text-neutral-500`}
+            onClick={() => handleSetActiveTag(tag)}
+          >
+            {tag}
+          </button>
+        );
+      })}
     </div>
   );
 };
