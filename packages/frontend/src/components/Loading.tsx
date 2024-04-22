@@ -37,7 +37,6 @@ const Loading = () => {
     const param = localStorage.getItem("song-search");
     if (param) {
       setSearchString(String(param));
-      console.log(param);
     }
   }, []);
   const tags = ["Lyrics", "Title", "Album", "Band", "Key", "Language"];

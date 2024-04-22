@@ -47,7 +47,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
               <Link
                 key={i}
                 href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
-                className="flex flex-col overflow-hidden pb-3 sm:flex-row sm:rounded sm:border sm:p-3"
+                className="flex flex-col overflow-hidden sm:flex-row sm:rounded sm:border-2 sm:p-3 sm:pb-3"
               >
                 <div className="relative h-[25dvh] w-full sm:h-[125px] sm:w-[260px] md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
                   <Image
@@ -72,7 +72,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                       href={`/band/${items.original_band
                         .toLowerCase()
                         .replace(/ /g, "-")}`}
-                      className="font-semibold text-black hover:underline"
+                      className="pointer-events-none hover:underline md:pointer-events-auto md:font-semibold md:text-black"
                     >
                       {items.original_band}
                     </Link>{" "}
@@ -83,7 +83,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                           href={`/album/${items.album
                             ?.toLowerCase()
                             .replace(/ /g, "-")}`}
-                          className="font-semibold text-black hover:underline"
+                          className="pointer-events-none hover:underline md:pointer-events-auto md:font-semibold md:text-black"
                         >
                           {items.album}
                         </Link>
@@ -92,10 +92,7 @@ const ListView: React.FC<ListViewProps> = ({ songList }) => {
                   </p>
                   {items.original_key && (
                     <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
-                      Key of{" "}
-                      <span className="font-semibold text-black">
-                        {items.original_key} Major
-                      </span>
+                      Key of {items.original_key} Major
                     </p>
                   )}
                   {items.song_language && (

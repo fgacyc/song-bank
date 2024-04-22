@@ -36,6 +36,7 @@ const Band = () => {
   const [filteredSongListWithoutAlbum, setFilteredSongListWithoutAlbum] =
     useState<Album[]>([]);
   const [uniqueAlbumList, setUniqueAlbumList] = useState<string[]>([]);
+  const [channelProfile, setChannelProfile] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -83,12 +84,47 @@ const Band = () => {
     setUniqueAlbumList(uniqueAlbumList as string[]);
   }, [songList, router.query.band]);
 
-  const getYoutubeVideoId = (youtubeUrl: string) => {
+  const getYoutubeVideoId = (youtubeUrl: string | undefined) => {
     const regex =
       /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
-    const match = youtubeUrl.match(regex);
+    const match = youtubeUrl?.match(regex);
     return match ? match[1] : null;
   };
+
+  useEffect(() => {
+    const apiKey = "AIzaSyACcxuHB_5vduPISTHPH5XjJNlZWjSd8R4";
+
+    void (async () => {
+      const videoId = getYoutubeVideoId(
+        filteredSongList[0]?.original_youtube_url,
+      );
+      await fetch(
+        `https://youtube.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`,
+        { method: "GET" },
+      ).then(async (res) => {
+        await res.json().then((result) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          const channelId = result.items[0]?.snippet.channelId;
+          if (channelId) {
+            void (async () => {
+              await fetch(
+                `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${apiKey}`,
+                { method: "GET" },
+              ).then(async (res) => {
+                await res.json().then((result) => {
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  const channelProfile: string =
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    result.items[0]?.snippet.thumbnails.high.url;
+                  setChannelProfile(channelProfile);
+                });
+              });
+            })();
+          }
+        });
+      });
+    })();
+  }, [filteredSongList]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -96,17 +132,34 @@ const Band = () => {
     return (
       <>
         <BandBreadcrumb original_band={filteredSongList[0]?.original_band} />
-        <div className="flex flex-col items-start justify-center gap-5 truncate pb-5 sm:pt-5 lg:flex-row">
+        <div className="flex flex-col gap-5 pb-5 sm:pt-5 md:flex-row">
           {/* left */}
-          <div className="flex w-full flex-col gap-5 lg:w-fit">
+          <div className="flex w-full flex-col gap-5 md:w-[340px] lg:w-[470px]">
             {/* left 1 */}
-            <div className="h-fit rounded border p-5">
-              <div className="text-wrap pt-4">
-                <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
-                <p className="w-full pb-5 text-5xl font-semibold sm:w-[260px] md:w-[280px] lg:w-[300px]">
-                  {filteredSongList[0]?.original_band}
-                </p>
+            <div className="h-fit rounded border-2 p-5">
+              <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start">
+                {channelProfile && (
+                  <div className="flex justify-center md:w-full">
+                    <div className="relative h-[100px] w-[100px] md:h-[200px] md:w-[200px] lg:h-[300px] lg:w-[300px]">
+                      <Image
+                        src={channelProfile}
+                        alt={"test"}
+                        fill={true}
+                        priority={true}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
+                <div className="text-wrap pt-4">
+                  <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
+                  <p className="w-full pb-5 text-5xl font-semibold">
+                    {filteredSongList[0]?.original_band}
+                  </p>
+                </div>
               </div>
+
               <hr />
               <div className="flex flex-col py-3">
                 <h1 className="font-semibold">Total Songs</h1>
@@ -124,7 +177,7 @@ const Band = () => {
 
             {/* left 2 */}
             {filteredSongListWithoutAlbum.length > 0 && (
-              <div className="flex flex-col gap-1 truncate rounded border p-5">
+              <div className="flex flex-col gap-1 truncate rounded border-2 p-5">
                 <h1 className="font-semibold">Songs Without Album</h1>
                 {filteredSongListWithoutAlbum.map((items, i) => {
                   return (
@@ -135,7 +188,7 @@ const Band = () => {
                           .toLowerCase()
                           .trim()
                           .replace(/ /g, "-")}`}
-                        className="hover:underline"
+                        className="underline md:no-underline md:hover:underline"
                       >
                         {items.name}
                       </Link>
@@ -147,7 +200,7 @@ const Band = () => {
           </div>
 
           {/* right */}
-          <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {uniqueAlbumList.map((album, i) => {
               const songsInAlbum = filteredSongListWithAlbum.filter(
                 (items) => items.album === album,
@@ -180,13 +233,12 @@ const Band = () => {
                     ?.toLowerCase()
                     .trim()
                     .replace(/ /g, "-")}`}
-                  className="flex flex-col items-center justify-between gap-1 truncate rounded border p-5"
+                  className="flex h-fit flex-col items-center justify-between gap-1 truncate rounded border-2 p-5"
                 >
                   <div
-                    className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded border`}
+                    className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded`}
                   >
                     {songsToShowInAlbum.map((items, j) => {
-                      console.log(`${album}: ${j}`);
                       const originalYoutubeUrl =
                         items.original_youtube_url ?? "";
                       const youtubeVideoId =
@@ -195,7 +247,7 @@ const Band = () => {
                       return (
                         <div
                           key={j}
-                          className="flex w-full border-spacing-52 items-center justify-center overflow-hidden"
+                          className="flex items-center justify-center overflow-hidden"
                         >
                           <div className="relative h-[135%] w-full">
                             <Image
@@ -215,7 +267,7 @@ const Band = () => {
                       );
                     })}
                   </div>
-                  <h1>
+                  <h1 className="pt-1">
                     <span className="font-medium">{album}</span>{" "}
                     <span className="text-sm text-neutral-500">
                       - {numberOfSongsInAlbum} songs

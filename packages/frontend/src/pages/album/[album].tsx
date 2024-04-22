@@ -73,7 +73,6 @@ const Album = () => {
     } else {
       setGridCol("");
     }
-    console.log(filteredSongList);
   }, [songList, router.query.album]);
 
   const getYoutubeVideoId = (youtubeUrl: string) => {
@@ -96,7 +95,7 @@ const Album = () => {
         />
         <div className="block gap-5 sm:pt-5 md:flex">
           {/* left */}
-          <div className="h-fit rounded border p-5">
+          <div className="h-fit rounded border-2 p-5">
             <div
               className={`grid h-[300px] w-full gap-[1px] md:h-[200px] md:w-[200px] lg:h-[270px] ${gridCol} overflow-hidden rounded lg:w-[300px]`}
             >
@@ -161,7 +160,7 @@ const Album = () => {
                         .replace(/ /g, "-")
                     : "Band"
                 }`}
-                className="text-sm text-neutral-500 hover:underline"
+                className="text-sm text-neutral-500 underline md:no-underline md:hover:underline"
               >
                 {filteredSongList ? filteredSongList[0]?.original_band : "Band"}
               </Link>
@@ -187,7 +186,7 @@ const Album = () => {
                       .toLowerCase()
                       .replace(/ /g, "-")}`}
                     key={i}
-                    className="flex gap-5 truncate rounded border p-5 lg:block xl:flex"
+                    className="flex gap-5 truncate rounded border-2 p-5 lg:block xl:flex"
                   >
                     <div className="relative w-[100px] sm:h-[100px] sm:w-[200px] md:h-[105px] md:w-[200px] lg:h-[150px] lg:w-full xl:h-[105px] xl:w-[200px]">
                       <Image
@@ -209,13 +208,13 @@ const Album = () => {
                         )}
                       </h1>
                       <p className="flex flex-col gap-1 truncate pt-1 text-xs text-neutral-500 lg:text-sm">
-                        <span className="text-sm lg:text-base">
+                        <span>
                           By{" "}
                           <Link
                             href={`/band/${items.original_band
                               .toLowerCase()
                               .replace(/ /g, "-")}`}
-                            className="font-semibold text-black hover:underline"
+                            className="pointer-events-none md:pointer-events-auto md:font-semibold md:text-black md:hover:underline"
                           >
                             {items.original_band}
                           </Link>{" "}
@@ -223,7 +222,7 @@ const Album = () => {
                         {items.original_key && (
                           <span className="flex gap-1 truncate text-xs text-neutral-500 lg:text-sm">
                             Key of{" "}
-                            <span className="font-semibold text-black">
+                            <span className="md:font-semibold md:text-black">
                               {items.original_key} Major
                             </span>
                           </span>

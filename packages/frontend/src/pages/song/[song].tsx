@@ -92,8 +92,8 @@ const Song = () => {
                 />
                 <div className="flex flex-col gap-5 pb-5 md:flex-row">
                   {/* left */}
-                  <div className="flex h-fit flex-col rounded border p-5">
-                    <div className="h-[150px] w-full md:h-[150px] md:w-[300px]">
+                  <div className="flex h-fit flex-col rounded border-2 p-5">
+                    <div className="h-[150px] w-full md:w-[200px] lg:h-[150px] lg:w-[300px]">
                       <iframe
                         src={embedUrl}
                         allowFullScreen
@@ -118,7 +118,7 @@ const Song = () => {
                               href={`/album/${items.album
                                 .toLowerCase()
                                 .replace(/ /g, "-")}`}
-                              className="text-sm text-neutral-500 hover:underline"
+                              className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
                             >
                               {items.album}
                             </Link>
@@ -130,7 +130,7 @@ const Song = () => {
                             href={`/band/${items.original_band
                               .toLowerCase()
                               .replace(/ /g, "-")}`}
-                            className="text-sm text-neutral-500 hover:underline"
+                            className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
                           >
                             {items.original_band}
                           </Link>
@@ -150,13 +150,13 @@ const Song = () => {
                   </div>
                   {/* right */}
                   <div className="flex w-full flex-col gap-5">
-                    <h1 className="hidden rounded border px-5 py-3 text-4xl font-semibold md:block">
+                    <h1 className="hidden rounded border-2 px-5 py-3 text-4xl font-semibold md:block">
                       {items.name}
                     </h1>
                     {/* TODO: transpose key section */}
-                    <div className="rounded border p-5"></div>
+                    <div className="rounded border-2 p-5"></div>
                     {/* TODO: chords & lyrics */}
-                    <div className="rounded border p-5">
+                    <div className="rounded border-2 p-5">
                       <p
                         ref={lyricsRef}
                         className="text-neutral-500"
