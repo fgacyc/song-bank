@@ -46,7 +46,7 @@ const Search = () => {
             setSearchString(String(param));
             localStorage.removeItem("song-search");
           } else {
-            console.log("hit");
+            console.log("RMB TO FIX THIS ERROR");
           }
           await res
             .json()
@@ -59,10 +59,6 @@ const Search = () => {
         .catch((err) => console.error(err));
     })();
   }, []);
-
-  useEffect(() => {
-    console.log(searchString);
-  }, [searchString]);
 
   const filteredSongList = useMemo(() => {
     if (!searchString || searchString.toString() === "") {
