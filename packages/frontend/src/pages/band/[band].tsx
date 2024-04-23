@@ -4,6 +4,7 @@ import BandBreadcrumb from "@/components/dir/BandBreadcrumb";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 type Album = {
   id?: string;
@@ -37,6 +38,8 @@ const Band = () => {
     useState<Album[]>([]);
   const [uniqueAlbumList, setUniqueAlbumList] = useState<string[]>([]);
   const [channelProfile, setChannelProfile] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeBand, setActiveBand] = useState<number | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -115,6 +118,7 @@ const Band = () => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     result.items[0]?.snippet.thumbnails.high.url;
                   setChannelProfile(channelProfile);
+                  setIsLoading(false);
                 });
               });
             })();
@@ -124,153 +128,170 @@ const Band = () => {
     })();
   }, [filteredSongList]);
 
-  return (
-    <>
-      <BandBreadcrumb original_band={filteredSongList[0]?.original_band} />
-      <div className="flex flex-col gap-5 pb-5 sm:pt-5 md:flex-row">
-        {/* left */}
-        <div className="flex w-full flex-col gap-5 md:w-fit">
-          {/* left 1 */}
-          <div className="h-fit rounded border-2 p-5">
-            <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start">
-              {channelProfile && (
-                <div className="flex justify-center md:w-full">
-                  <div className="relative h-[100px] w-[100px] md:h-[200px] md:w-[200px] lg:h-[300px] lg:w-[300px]">
-                    <Image
-                      src={channelProfile}
-                      alt={"test"}
-                      fill={true}
-                      priority={true}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover"
-                    />
+  if (!isLoading) {
+    return (
+      <>
+        <Head>
+          <title>{filteredSongList[0]?.original_band}</title>
+        </Head>
+        <BandBreadcrumb original_band={filteredSongList[0]?.original_band} />
+        <div className="flex flex-col gap-5 pb-5 sm:pt-5 md:flex-row">
+          {/* left */}
+          <div className="flex w-full flex-col gap-5 md:w-fit">
+            {/* left 1 */}
+            <div className="h-fit rounded border-2 p-5">
+              <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start">
+                {channelProfile && (
+                  <div className="flex justify-center md:w-full">
+                    <div className="relative h-[100px] w-[100px] md:h-[200px] md:w-[200px] lg:h-[300px] lg:w-[300px]">
+                      <Image
+                        src={channelProfile}
+                        alt={router.query.band as string}
+                        fill={true}
+                        priority={true}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
+                )}
+                <div className="text-wrap pt-4">
+                  <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
+                  <p className="w-full pb-5 text-5xl font-semibold">
+                    {filteredSongList[0]?.original_band}
+                  </p>
                 </div>
-              )}
-              <div className="text-wrap pt-4">
-                <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
-                <p className="w-full pb-5 text-5xl font-semibold">
-                  {filteredSongList[0]?.original_band}
+              </div>
+
+              <hr />
+              <div className="flex flex-col py-3">
+                <h1 className="font-semibold">Total Songs</h1>
+                <p className="text-sm text-neutral-500">
+                  {filteredSongList.length}
+                </p>
+              </div>
+              <div className="flex flex-col">
+                <h1 className="font-semibold">Total Albums</h1>
+                <p className="text-sm text-neutral-500">
+                  {uniqueAlbumList.length}
                 </p>
               </div>
             </div>
 
-            <hr />
-            <div className="flex flex-col py-3">
-              <h1 className="font-semibold">Total Songs</h1>
-              <p className="text-sm text-neutral-500">
-                {filteredSongList.length}
-              </p>
-            </div>
-            <div className="flex flex-col">
-              <h1 className="font-semibold">Total Albums</h1>
-              <p className="text-sm text-neutral-500">
-                {uniqueAlbumList.length}
-              </p>
-            </div>
+            {/* left 2 */}
+            {filteredSongListWithoutAlbum.length > 0 && (
+              <div className="flex flex-col gap-1 truncate rounded border-2 p-5">
+                <h1 className="font-semibold">Songs Without Album</h1>
+                {filteredSongListWithoutAlbum.map((items, i) => {
+                  return (
+                    <p key={i} className="text-sm text-neutral-500">
+                      {i + 1}.{" "}
+                      <Link
+                        href={`/song/${items.name
+                          .toLowerCase()
+                          .trim()
+                          .replace(/ /g, "-")}`}
+                        className="underline md:no-underline md:hover:underline"
+                      >
+                        {items.name}
+                      </Link>
+                    </p>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
-          {/* left 2 */}
-          {filteredSongListWithoutAlbum.length > 0 && (
-            <div className="flex flex-col gap-1 truncate rounded border-2 p-5">
-              <h1 className="font-semibold">Songs Without Album</h1>
-              {filteredSongListWithoutAlbum.map((items, i) => {
-                return (
-                  <p key={i} className="text-sm text-neutral-500">
-                    {i + 1}.{" "}
-                    <Link
-                      href={`/song/${items.name
-                        .toLowerCase()
-                        .trim()
-                        .replace(/ /g, "-")}`}
-                      className="underline md:no-underline md:hover:underline"
-                    >
-                      {items.name}
-                    </Link>
-                  </p>
-                );
-              })}
-            </div>
-          )}
-        </div>
+          {/* right */}
+          <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {uniqueAlbumList.map((album, i) => {
+              const songsInAlbum = filteredSongListWithAlbum.filter(
+                (items) => items.album === album,
+              );
+              const numberOfSongsInAlbum = songsInAlbum.length;
 
-        {/* right */}
-        <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {uniqueAlbumList.map((album, i) => {
-            const songsInAlbum = filteredSongListWithAlbum.filter(
-              (items) => items.album === album,
-            );
-            const numberOfSongsInAlbum = songsInAlbum.length;
+              const songsToShow =
+                numberOfSongsInAlbum === 1
+                  ? 1
+                  : numberOfSongsInAlbum >= 4
+                    ? 4
+                    : 2;
+              const songsToShowInAlbum = songsInAlbum.slice(0, songsToShow);
 
-            const songsToShow =
-              numberOfSongsInAlbum === 1
-                ? 1
-                : numberOfSongsInAlbum >= 4
-                  ? 4
-                  : 2;
-            const songsToShowInAlbum = songsInAlbum.slice(0, songsToShow);
-
-            let gridCol = "";
-            if (numberOfSongsInAlbum == 1) {
-              gridCol = "grid-cols-1";
-            } else if (numberOfSongsInAlbum == 2 || numberOfSongsInAlbum == 3) {
-              gridCol = "grid-cols-2";
-            } else if (numberOfSongsInAlbum >= 4) {
-              gridCol = "grid-cols-2";
-            }
-            return (
-              <Link
-                key={i}
-                href={`/album/${album
-                  ?.toLowerCase()
-                  .trim()
-                  .replace(/ /g, "-")}`}
-                className="flex h-fit flex-col items-center justify-between gap-1 truncate rounded border-2 p-5"
-              >
-                <div
-                  className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded`}
+              let gridCol = "";
+              if (numberOfSongsInAlbum == 1) {
+                gridCol = "grid-cols-1";
+              } else if (
+                numberOfSongsInAlbum == 2 ||
+                numberOfSongsInAlbum == 3
+              ) {
+                gridCol = "grid-cols-2";
+              } else if (numberOfSongsInAlbum >= 4) {
+                gridCol = "grid-cols-2";
+              }
+              return (
+                <Link
+                  key={i}
+                  href={`/album/${album
+                    ?.toLowerCase()
+                    .trim()
+                    .replace(/ /g, "-")}`}
+                  className={`${
+                    activeBand === i ? "bg-[#f5f5f6] shadow-md" : ""
+                  } flex h-fit flex-col items-center justify-between gap-1 truncate rounded border-2 p-5`}
+                  onMouseEnter={() => {
+                    setActiveBand(i);
+                  }}
+                  onMouseLeave={() => {
+                    setActiveBand(null);
+                  }}
                 >
-                  {songsToShowInAlbum.map((items, j) => {
-                    const originalYoutubeUrl = items.original_youtube_url ?? "";
-                    const youtubeVideoId =
-                      getYoutubeVideoId(originalYoutubeUrl);
-                    const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
-                    return (
-                      <div
-                        key={j}
-                        className="flex items-center justify-center overflow-hidden"
-                      >
-                        <div className="relative h-[135%] w-full">
-                          <Image
-                            src={
-                              youtubeVideoId
-                                ? thumbnailUrl
-                                : "/img/no-cover.jpg"
-                            }
-                            alt={items.name}
-                            fill={true}
-                            priority={true}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover"
-                          />
+                  <div
+                    className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded`}
+                  >
+                    {songsToShowInAlbum.map((items, j) => {
+                      const originalYoutubeUrl =
+                        items.original_youtube_url ?? "";
+                      const youtubeVideoId =
+                        getYoutubeVideoId(originalYoutubeUrl);
+                      const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+                      return (
+                        <div
+                          key={j}
+                          className="flex items-center justify-center overflow-hidden"
+                        >
+                          <div className="relative h-[135%] w-full">
+                            <Image
+                              src={
+                                youtubeVideoId
+                                  ? thumbnailUrl
+                                  : "/img/no-cover.jpg"
+                              }
+                              alt={items.name}
+                              fill={true}
+                              priority={true}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              className="object-cover"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <h1 className="pt-1">
-                  <span className="font-medium">{album}</span>{" "}
-                  <span className="text-sm text-neutral-500">
-                    - {numberOfSongsInAlbum} songs
-                  </span>
-                </h1>
-              </Link>
-            );
-          })}
+                      );
+                    })}
+                  </div>
+                  <h1 className="pt-1">
+                    <span className="font-medium">{album}</span>{" "}
+                    <span className="text-sm text-neutral-500">
+                      - {numberOfSongsInAlbum} songs
+                    </span>
+                  </h1>
+                </Link>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export default Band;

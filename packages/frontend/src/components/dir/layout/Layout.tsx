@@ -13,14 +13,7 @@ const Layout: React.FC<DirLayoutProps> = ({ children }) => {
   return (
     <>
       <Head>
-        <title>
-          {router.query.song &&
-            (router.query.song as string)
-              .replace(/-/g, " ")
-              .split(" ")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ")}
-        </title>
+        <title>Song Bank</title>
         <meta name="" content="" />
         <link rel="icon" href="/img/logo.png" />
       </Head>

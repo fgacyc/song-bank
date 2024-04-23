@@ -45,6 +45,8 @@ const Search = () => {
           if (param) {
             setSearchString(String(param));
             localStorage.removeItem("song-search");
+          } else {
+            console.log("hit");
           }
           await res
             .json()
@@ -57,6 +59,10 @@ const Search = () => {
         .catch((err) => console.error(err));
     })();
   }, []);
+
+  useEffect(() => {
+    console.log(searchString);
+  }, [searchString]);
 
   const filteredSongList = useMemo(() => {
     if (!searchString || searchString.toString() === "") {
@@ -124,7 +130,9 @@ const Search = () => {
             className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
             onClick={() => {
               setView("gallery");
-              setGridCol("sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4");
+              setGridCol(
+                "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5",
+              );
             }}
           >
             <CiGrid41 className="h-[20px] w-[20px]" />
@@ -138,7 +146,7 @@ const Search = () => {
         {view === "list" ? (
           <ListView songList={filteredSongList} isLoading={isLoading} />
         ) : (
-          <GalleryView songList={filteredSongList} />
+          <GalleryView songList={filteredSongList} isLoading={isLoading} />
         )}
       </div>
     </>

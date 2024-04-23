@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -30,8 +31,17 @@ interface ListViewProps {
 }
 
 const LoadingList = () => {
+  const [mouseEntered, setMouseEntered] = useState(false);
   return (
-    <div className="flex flex-col truncate rounded sm:flex-row sm:border-2 sm:p-5">
+    <div
+      className={`${
+        mouseEntered && "bg-[#fafafb] shadow-md"
+      } flex flex-col truncate rounded pb-5 sm:flex-row sm:border-2 sm:p-5`}
+      onMouseEnter={() => {
+        setMouseEntered(true);
+      }}
+      onMouseLeave={() => setMouseEntered(false)}
+    >
       <div className="relative h-[25dvh] w-full overflow-hidden sm:h-[125px] sm:w-[260px] sm:rounded md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
         <Skeleton height={"100%"} />
       </div>
@@ -63,10 +73,11 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
     const match = youtubeUrl.match(regex);
     return match ? match[1] : null;
   };
+  const [activeList, setActiveList] = useState<number | null>(null);
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col sm:gap-5">
         {Array.from({ length: 7 }, (_, i) => (
           <LoadingList key={i} />
         ))}
@@ -86,7 +97,15 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
                 <Link
                   key={i}
                   href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
-                  className="flex flex-col overflow-hidden sm:flex-row sm:rounded sm:border-2 sm:p-3 sm:pb-3"
+                  className={`${
+                    activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
+                  } flex flex-col overflow-hidden sm:flex-row sm:rounded sm:border-2 sm:p-3 sm:pb-3`}
+                  onMouseEnter={() => {
+                    setActiveList(i);
+                  }}
+                  onMouseLeave={() => {
+                    setActiveList(null);
+                  }}
                 >
                   <div className="relative h-[25dvh] w-full overflow-hidden sm:h-[125px] sm:w-[260px] sm:rounded md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
                     <Image
@@ -139,9 +158,9 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
                       <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
                         Language :
                         <span className="flex gap-1">
-                          {items.song_language.split(" + ").map((lang, i) => {
+                          {items.song_language.split(" + ").map((lang, j) => {
                             return (
-                              <span key={i} className="rounded border px-1">
+                              <span key={j} className="rounded border px-1">
                                 {lang}
                               </span>
                             );
