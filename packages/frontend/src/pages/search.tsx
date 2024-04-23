@@ -4,7 +4,6 @@ import ListView from "@/components/search/ListView";
 import GalleryView from "@/components/search/GalleryView";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import Layout from "@/components/layout/Layout";
-import Loading from "@/components/Loading";
 import FilterTags from "@/components/search/FilterTags";
 
 export type Song = {
@@ -101,52 +100,49 @@ const Search = () => {
     return filteredSongs;
   }, [searchString, songList, activeTag]);
 
-  if (isLoading) {
-    return <Loading />;
-  } else
-    return (
-      <>
-        <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
-          <div className="flex items-center gap-3">
-            <SearchBar
-              searchString={searchString}
-              setSearchString={setSearchString}
-            />
-            <FilterTags activeTag={activeTag} setActiveTag={setActiveTag} />
-          </div>
-          <div className="grid w-[70px] grid-cols-2 gap-1">
-            <button
-              className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
-              onClick={() => {
-                setView("list");
-                setGridCol("grid-cols-1");
-              }}
-            >
-              <CiGrid2H className="h-[20px] w-[20px]" />
-            </button>
-            <button
-              className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
-              onClick={() => {
-                setView("gallery");
-                setGridCol("sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4");
-              }}
-            >
-              <CiGrid41 className="h-[20px] w-[20px]" />
-            </button>
-          </div>
+  return (
+    <>
+      <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
+        <div className="flex items-center gap-3">
+          <SearchBar
+            searchString={searchString}
+            setSearchString={setSearchString}
+          />
+          <FilterTags activeTag={activeTag} setActiveTag={setActiveTag} />
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:hidden sm:p-3">
-          <ListView songList={filteredSongList} />
+        <div className="grid w-[70px] grid-cols-2 gap-1">
+          <button
+            className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
+            onClick={() => {
+              setView("list");
+              setGridCol("grid-cols-1");
+            }}
+          >
+            <CiGrid2H className="h-[20px] w-[20px]" />
+          </button>
+          <button
+            className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
+            onClick={() => {
+              setView("gallery");
+              setGridCol("sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4");
+            }}
+          >
+            <CiGrid41 className="h-[20px] w-[20px]" />
+          </button>
         </div>
-        <div className={`hidden gap-3 p-3 sm:grid ${gridCol}`}>
-          {view === "list" ? (
-            <ListView songList={filteredSongList} />
-          ) : (
-            <GalleryView songList={filteredSongList} />
-          )}
-        </div>
-      </>
-    );
+      </div>
+      <div className="grid grid-cols-1 gap-3 sm:hidden sm:p-3">
+        <ListView songList={filteredSongList} isLoading={isLoading} />
+      </div>
+      <div className={`hidden gap-3 p-3 sm:grid ${gridCol}`}>
+        {view === "list" ? (
+          <ListView songList={filteredSongList} isLoading={isLoading} />
+        ) : (
+          <GalleryView songList={filteredSongList} />
+        )}
+      </div>
+    </>
+  );
 };
 
 export default Search;

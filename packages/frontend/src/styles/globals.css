@@ -55,3 +55,7 @@ select:focus-within {
   background: white;
   z-index: 5;
 }
+
+.react-loading-skeleton {
+  line-height: 2 !important;
+}

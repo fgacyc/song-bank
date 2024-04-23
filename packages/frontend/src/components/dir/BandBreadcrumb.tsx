@@ -8,7 +8,7 @@ interface BandBreadcrumb {
 
 const BandBreadcrumb: React.FC<BandBreadcrumb> = ({ original_band }) => {
   return (
-    <div className="hidden items-end gap-2 rounded border px-3 py-1 sm:flex">
+    <div className="hidden items-end gap-2 rounded border-2 px-3 py-1 sm:flex">
       <Link
         href={"/search"}
         className="text-neutral-500 decoration-1 hover:underline"

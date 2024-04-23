@@ -14,7 +14,7 @@ const Input: React.FC<{
   const formikRef = useFormikContext<{ searchString: string }>();
   return (
     <input
-      className="ps-2"
+      className="w-full ps-2"
       type="text"
       placeholder="Search"
       name="searchString"
