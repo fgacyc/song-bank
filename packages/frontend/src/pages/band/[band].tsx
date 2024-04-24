@@ -143,11 +143,11 @@ const Band = () => {
           {/* left */}
           <div className="flex w-full flex-col gap-5 md:w-fit">
             {/* left 1 */}
-            <div className="h-fit rounded border-2 p-5">
-              <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start">
+            <div className="h-fit w-full rounded border-2 p-5 md:w-[200px] lg:w-[300px]">
+              <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start md:pt-5">
                 {channelProfile && (
                   <div className="flex justify-center md:w-full">
-                    <div className="relative h-[100px] w-[100px] md:h-[200px] md:w-[200px] lg:h-[300px] lg:w-[300px]">
+                    <div className="relative h-[100px] w-[100px] md:h-[100px] md:w-[100px] lg:h-[200px] lg:w-[200px]">
                       <Image
                         src={channelProfile}
                         alt={router.query.band as string}
@@ -161,14 +161,14 @@ const Band = () => {
                 )}
                 <div className="text-wrap pt-4">
                   <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
-                  <p className="w-full pb-5 text-5xl font-semibold">
+                  <p className="w-full text-3xl font-semibold">
                     {filteredSongList[0]?.original_band}
                   </p>
                 </div>
               </div>
 
               <hr />
-              <div className="flex flex-col py-3">
+              <div className="flex flex-col pb-3 pt-4">
                 <h1 className="font-semibold">Total Songs</h1>
                 <p className="text-sm text-neutral-500">
                   {filteredSongList.length}
@@ -242,7 +242,7 @@ const Band = () => {
                     .replace(/ /g, "-")}`}
                   className={`${
                     activeBand === i ? "bg-[#f5f5f6] shadow-md" : ""
-                  } flex h-fit flex-col items-center justify-between gap-1 truncate rounded border-2 p-5`}
+                  } flex h-full flex-col items-center overflow-hidden rounded border-2 p-5`}
                   onMouseEnter={() => {
                     setActiveBand(i);
                   }}
@@ -251,7 +251,7 @@ const Band = () => {
                   }}
                 >
                   <div
-                    className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded`}
+                    className={`grid ${gridCol} h-[250px] w-full gap-[1px] rounded`}
                   >
                     {songsToShowInAlbum.map((items, j) => {
                       const originalYoutubeUrl =
@@ -282,11 +282,11 @@ const Band = () => {
                       );
                     })}
                   </div>
-                  <h1 className="pt-1">
-                    <span className="font-medium">{album}</span>{" "}
-                    <span className="text-sm text-neutral-500">
+                  <h1 className="flex flex-wrap items-center justify-center gap-1 pt-2">
+                    <div className="font-medium">{album}</div>
+                    <div className="text-center text-neutral-500">
                       - {numberOfSongsInAlbum} songs
-                    </span>
+                    </div>
                   </h1>
                 </Link>
               );

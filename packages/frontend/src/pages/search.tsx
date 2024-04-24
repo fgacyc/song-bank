@@ -1,31 +1,17 @@
-import { useEffect, useMemo, useState, type ReactElement } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type ReactElement,
+} from "react";
 import SearchBar from "@/components/search/SearchBar";
 import ListView from "@/components/search/ListView";
 import GalleryView from "@/components/search/GalleryView";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import Layout from "@/components/layout/Layout";
 import FilterTags from "@/components/search/FilterTags";
-
-export type Song = {
-  id?: string;
-  name: string;
-  alt_name?: string;
-  song_language: string;
-  original_key: string;
-  original_band: string;
-  album?: string;
-  original_youtube_url?: string;
-  chord_lyrics: string;
-  main_key_link?: string;
-  sub_key_link?: string;
-  eg_link?: string;
-  ag_link?: string;
-  bass_link?: string;
-  drum_link?: string;
-  tags?: string[];
-  sequencer_files?: string[];
-  sub_voice_file?: string;
-};
+import { type Song } from "@prisma/client";
 
 const Search = () => {
   const [view, setView] = useState("list");
@@ -34,20 +20,17 @@ const Search = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [activeTag, setActiveTag] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useLayoutEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    void (async () => {
+    if (!mounted) return;
+    const searchSong = async () => {
       await fetch("/api/song", {
         method: "GET",
       })
         .then(async (res) => {
-          const param = localStorage.getItem("song-search");
-          if (param) {
-            setSearchString(String(param));
-            localStorage.removeItem("song-search");
-          } else {
-            console.log("RMB TO FIX THIS ERROR");
-          }
           await res
             .json()
             .then((result: Song[]) => {
@@ -57,8 +40,12 @@ const Search = () => {
             .catch((err) => console.error(err));
         })
         .catch((err) => console.error(err));
-    })();
-  }, []);
+    };
+
+    void searchSong();
+    setSearchString(localStorage.getItem("song-search") ?? "");
+    localStorage.removeItem("song-search");
+  }, [mounted]);
 
   const filteredSongList = useMemo(() => {
     if (!searchString || searchString.toString() === "") {
@@ -67,8 +54,8 @@ const Search = () => {
 
     const filteredSongs = songList.filter((song) => {
       if (activeTag === "") {
-        const matchedName = song.name
-          .toLowerCase()
+        const matchedName = song
+          .name!.toLowerCase()
           .includes(searchString.toString().toLowerCase());
         const matchedAltName = song.alt_name
           ?.toLowerCase()
@@ -102,6 +89,7 @@ const Search = () => {
     return filteredSongs;
   }, [searchString, songList, activeTag]);
 
+  if (!mounted) return null;
   return (
     <>
       <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">

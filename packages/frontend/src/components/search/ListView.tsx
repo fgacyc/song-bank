@@ -1,29 +1,10 @@
+import { type Song } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
-export type Song = {
-  id?: string;
-  name: string;
-  alt_name?: string;
-  song_language: string;
-  original_key: string;
-  original_band: string;
-  album?: string;
-  original_youtube_url?: string;
-  chord_lyrics: string;
-  main_key_link?: string;
-  sub_key_link?: string;
-  eg_link?: string;
-  ag_link?: string;
-  bass_link?: string;
-  drum_link?: string;
-  tags?: string[];
-  sequencer_files?: string[];
-  sub_voice_file?: string;
-};
 
 interface ListViewProps {
   songList?: Song[];
@@ -73,6 +54,8 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
     const match = youtubeUrl.match(regex);
     return match ? match[1] : null;
   };
+
+  const router = useRouter();
   const [activeList, setActiveList] = useState<number | null>(null);
 
   if (isLoading) {
@@ -94,9 +77,13 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
             if (youtubeVideoId) {
               const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
               return (
-                <Link
+                <button
+                  onClick={() =>
+                    void router.push(
+                      `/song/${items.name?.toLowerCase().replace(/ /g, "-")}`,
+                    )
+                  }
                   key={i}
-                  href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
                   className={`${
                     activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
                   } flex flex-col overflow-hidden sm:flex-row sm:rounded sm:border-2 sm:p-3 sm:pb-3`}
@@ -110,7 +97,7 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
                   <div className="relative h-[25dvh] w-full overflow-hidden sm:h-[125px] sm:w-[260px] sm:rounded md:h-[145px] md:w-[280px] lg:h-[165px] lg:w-[300px]">
                     <Image
                       src={thumbnailUrl}
-                      alt={items.name}
+                      alt={items.name!}
                       fill={true}
                       priority={true}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -127,25 +114,37 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
                     </h1>
                     <p className="flex gap-1 truncate pt-2 text-xs text-neutral-500 lg:text-sm">
                       By{" "}
-                      <Link
-                        href={`/band/${items.original_band
-                          .toLowerCase()
-                          .replace(/ /g, "-")}`}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          void router.push(
+                            `/band/${items
+                              .original_band!.toLowerCase()
+                              .replace(/ /g, "-")}`,
+                          );
+                        }}
                         className="pointer-events-none hover:underline md:pointer-events-auto md:font-semibold md:text-black"
                       >
                         {items.original_band}
-                      </Link>{" "}
+                      </button>{" "}
                       {items.album && (
                         <span>
                           on album{" "}
-                          <Link
-                            href={`/album/${items.album
-                              ?.toLowerCase()
-                              .replace(/ /g, "-")}`}
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              void router.push(
+                                `/album/${items.album
+                                  ?.toLowerCase()
+                                  .replace(/ /g, "-")}`,
+                              );
+                            }}
                             className="pointer-events-none hover:underline md:pointer-events-auto md:font-semibold md:text-black"
                           >
                             {items.album}
-                          </Link>
+                          </button>
                         </span>
                       )}
                     </p>
@@ -169,7 +168,7 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
                       </p>
                     )}
                   </div>
-                </Link>
+                </button>
               );
             }
           })}

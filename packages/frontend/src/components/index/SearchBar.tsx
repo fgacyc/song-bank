@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { type RefObject, useState } from "react";
 import Image from "next/image";
 import { RiSearch2Line } from "react-icons/ri";
 import { useRouter } from "next/router";
 
-interface SearchBarProps {
-  inputRef: React.RefObject<HTMLInputElement>;
-}
+type SearchBarProps = {
+  inputRef: RefObject<HTMLInputElement>;
+};
 
 const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
   const [searchString, setSearchString] = useState("");
@@ -15,22 +15,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
     "sm:w-[220px] md:w-[220px] lg:w-[220px]",
   );
 
-  const handleOnSubmit = async () => {
-    if (searchString.trim() != "") {
-      localStorage.setItem("song-search", searchString.trim());
-      await router.push("/search");
-    }
-  };
-
   return (
     <div className="flex h-[50dvh] w-full flex-col items-center justify-end">
       <form
         className="flex flex-col items-center justify-end"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          handleOnSubmit().catch((err) => {
-            console.error(err);
-          });
+          await router.push("/search");
         }}
       >
         <Image
@@ -45,18 +36,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
           <RiSearch2Line />
           <input
             ref={inputRef}
-            type="text"
+            autoFocus
             placeholder="Search"
             className={`${inputWidth} ps-2 duration-500`}
             value={searchString}
             onChange={(e) => {
               setSearchString(e.target.value);
+              localStorage.setItem("song-search", e.target.value.trim());
             }}
             onFocus={() => {
               setInputWidth("sm:w-[390px] md:w-[390px] lg:w-[390px]");
-            }}
-            onBlur={() => {
-              setInputWidth("sm:w-[220px] md:w-[220px] lg:w-[220px]");
             }}
           />
         </div>

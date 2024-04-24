@@ -1,29 +1,9 @@
+import { type Song } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
-export type Song = {
-  id?: string;
-  name: string;
-  alt_name?: string;
-  song_language: string;
-  original_key: string;
-  original_band: string;
-  album?: string;
-  original_youtube_url?: string;
-  chord_lyrics: string;
-  main_key_link?: string;
-  sub_key_link?: string;
-  eg_link?: string;
-  ag_link?: string;
-  bass_link?: string;
-  drum_link?: string;
-  tags?: string[];
-  sequencer_files?: string[];
-  sub_voice_file?: string;
-};
 
 interface GalleryViewProps {
   songList?: Song[];
@@ -98,7 +78,7 @@ const GalleryView: React.FC<GalleryViewProps> = ({ songList, isLoading }) => {
               return (
                 <Link
                   key={i}
-                  href={`/song/${items.name.toLowerCase().replace(/ /g, "-")}`}
+                  href={`/song/${items.name?.toLowerCase().replace(/ /g, "-")}`}
                   className={activeCard === i ? "bg-[#f5f5f6] shadow-md" : ""}
                   onMouseEnter={() => {
                     setActiveCard(i);
@@ -107,11 +87,11 @@ const GalleryView: React.FC<GalleryViewProps> = ({ songList, isLoading }) => {
                     setActiveCard(null);
                   }}
                 >
-                  <div className="flex h-full flex-col items-center justify-center rounded border-2 p-3">
+                  <div className="flex h-full flex-col items-center justify-start rounded border-2 p-3">
                     <div className="relative h-[135px] w-full">
                       <Image
                         src={thumbnailUrl}
-                        alt={items.name}
+                        alt={items.name!}
                         fill={true}
                         priority={true}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -126,7 +106,7 @@ const GalleryView: React.FC<GalleryViewProps> = ({ songList, isLoading }) => {
                         By{" "}
                         <Link
                           href={`/band/${items.original_band
-                            .toLowerCase()
+                            ?.toLowerCase()
                             .replace(/ /g, "-")}`}
                           className="pointer-events-none hover:underline md:pointer-events-auto md:font-semibold md:text-black"
                         >
