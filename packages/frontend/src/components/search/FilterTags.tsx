@@ -5,7 +5,7 @@ interface FilterTagsProps {
   setActiveTag: Dispatch<SetStateAction<string>>;
 }
 
-const tags = ["Lyrics", "Album", "Band", "Key", "Language"];
+const tags = ["Key", "Language"];
 
 const FilterTags: React.FC<FilterTagsProps> = ({ activeTag, setActiveTag }) => {
   const handleSetActiveTag = (tag: string) => {

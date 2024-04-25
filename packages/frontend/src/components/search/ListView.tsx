@@ -1,6 +1,5 @@
 import { type Song } from "@prisma/client";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -72,6 +71,13 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
         {songList &&
           songList.length !== 0 &&
           songList.map((items, i) => {
+            return <div key={i}>{items.album}</div>;
+          })}
+        <hr />
+        <div className="pl-1 text-2xl font-semibold">Song</div>
+        {songList &&
+          songList.length !== 0 &&
+          songList.map((items, i) => {
             const originalYoutubeUrl = items.original_youtube_url ?? "";
             const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
             if (youtubeVideoId) {
@@ -105,8 +111,8 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
                     />
                   </div>
 
-                  <div className="p-3 sm:pl-5 sm:pt-0">
-                    <h1 className="truncate text-base sm:py-1 sm:text-lg md:py-1 md:text-2xl lg:py-1 lg:text-3xl">
+                  <div className="p-5 pt-3 sm:pt-0 md:pl-5">
+                    <h1 className="truncate text-start text-base md:text-2xl">
                       <span className="font-semibold">{items.name}</span>{" "}
                       {items.alt_name && items.alt_name.trim() !== "-" && (
                         <span className=" font-light">{items.alt_name}</span>

@@ -53,41 +53,16 @@ const Search = () => {
     }
 
     const filteredSongs = songList.filter((song) => {
-      if (activeTag === "") {
-        const matchedName = song
-          .name!.toLowerCase()
-          .includes(searchString.toString().toLowerCase());
-        const matchedAltName = song.alt_name
-          ?.toLowerCase()
-          .includes(searchString.toString().toLowerCase());
-        return matchedName || matchedAltName;
-      } else {
-        switch (activeTag) {
-          case "Lyrics":
-            return song.chord_lyrics
-              ?.toLowerCase()
-              .includes(searchString.toString().toLowerCase());
-          case "Album":
-            return song.album
-              ?.toLowerCase()
-              .includes(searchString.toString().toLowerCase());
-          case "Band":
-            return song.original_band
-              ?.toLowerCase()
-              .includes(searchString.toString().toLowerCase());
-          case "Key":
-            return song.original_key
-              ?.toLowerCase()
-              .includes(searchString.toString().toLowerCase());
-          case "Language":
-            return song.song_language
-              ?.toLowerCase()
-              .includes(searchString.toString().toLowerCase());
-        }
-      }
+      const matchedName = song
+        .name!.toLowerCase()
+        .includes(searchString.toString().toLowerCase());
+      const matchedAltName = song.alt_name
+        ?.toLowerCase()
+        .includes(searchString.toString().toLowerCase());
+      return matchedName || matchedAltName;
     });
     return filteredSongs;
-  }, [searchString, songList, activeTag]);
+  }, [searchString, songList]);
 
   if (!mounted) return null;
   return (
