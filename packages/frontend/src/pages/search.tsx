@@ -14,13 +14,13 @@ import FilterTags from "@/components/search/FilterTags";
 import { type Song } from "@prisma/client";
 
 const Search = () => {
+  const [mounted, setMounted] = useState(false);
   const [view, setView] = useState("list");
   const [gridCol, setGridCol] = useState("grid-cols-1");
   const [songList, setSongList] = useState<Song[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [activeTag, setActiveTag] = useState("");
-  const [mounted, setMounted] = useState(false);
 
   useLayoutEffect(() => setMounted(true), []);
 
@@ -47,24 +47,74 @@ const Search = () => {
     localStorage.removeItem("song-search");
   }, [mounted]);
 
-  const filteredSongList = useMemo(() => {
-    if (!searchString || searchString.toString() === "") {
-      return songList;
-    }
+  // const [showExtendedList, setShowExtendedList] = useState(true);
+  // const [showBand, setShowBand] = useState(true);
 
-    const filteredSongs = songList.filter((song) => {
-      const matchedName = song
-        .name!.toLowerCase()
-        .includes(searchString.toString().toLowerCase());
-      const matchedAltName = song.alt_name
-        ?.toLowerCase()
-        .includes(searchString.toString().toLowerCase());
-      return matchedName || matchedAltName;
+  const [filteredBand, setFilteredBand] = useState<Song[]>([]);
+  const [filteredAlbum, setFilteredAlbum] = useState<Song[]>([]);
+  const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
+
+  useMemo(() => {
+    // const uniqueBandSet = new Set();
+    // songList.forEach((items) => {
+    //   if (items.original_band !== "") {
+    //     uniqueBandSet.add(items.original_band);
+    //   }
+    // });
+    // const uniqueBandList = [...uniqueBandSet] as string[];
+    const filteredBand = songList.filter((items) => {
+      return (
+        items.original_band?.toLowerCase().trim() ===
+        searchString.toLowerCase().trim()
+      );
     });
-    return filteredSongs;
-  }, [searchString, songList]);
+    setFilteredBand(filteredBand);
+  }, [songList, searchString]);
 
-  if (!mounted) return null;
+  useMemo(() => {
+    // const uniqueAlbumSet = new Set();
+    // songList.forEach((items) => {
+    //   if (items.album !== "") {
+    //     uniqueAlbumSet.add(items.album);
+    //   }
+    // });
+    // const uniqueAlbumList = [...uniqueAlbumSet] as string[];
+    const filteredAlbum = songList.filter((items) => {
+      return (
+        items.album &&
+        items.album.toLowerCase().trim() === searchString.toLowerCase().trim()
+      );
+    });
+    setFilteredAlbum(filteredAlbum);
+  }, [songList, searchString]);
+
+  useMemo(() => {
+    const filteredSongList = songList.filter((items) => {
+      const matchingName =
+        items.name
+          ?.toLowerCase()
+          .trim()
+          .includes(searchString.toLowerCase().trim()) ??
+        items.alt_name
+          ?.toLowerCase()
+          .trim()
+          .includes(searchString.toLowerCase().trim());
+
+      const matchingBand = items.original_band
+        ?.toLowerCase()
+        .trim()
+        .includes(searchString.toLowerCase().trim());
+      return matchingName && matchingBand;
+    });
+    setFilteredSongList(filteredSongList);
+  }, [songList, searchString]);
+
+  useMemo(() => {
+    console.log("Band", filteredBand);
+    console.log("Album", filteredAlbum);
+    console.log("Song", filteredSongList);
+  }, [filteredBand, filteredAlbum, filteredSongList]);
+
   return (
     <>
       <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
@@ -75,7 +125,7 @@ const Search = () => {
           />
           <FilterTags activeTag={activeTag} setActiveTag={setActiveTag} />
         </div>
-        <div className="grid w-[70px] grid-cols-2 gap-1">
+        {/* <div className="grid w-[70px] grid-cols-2 gap-1">
           <button
             className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
             onClick={() => {
@@ -96,9 +146,9 @@ const Search = () => {
           >
             <CiGrid41 className="h-[20px] w-[20px]" />
           </button>
-        </div>
+        </div> */}
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:hidden sm:p-3">
+      {/* <div className="grid grid-cols-1 gap-3 sm:hidden sm:p-3">
         <ListView songList={filteredSongList} isLoading={isLoading} />
       </div>
       <div className={`hidden gap-3 p-3 sm:grid ${gridCol}`}>
@@ -106,6 +156,40 @@ const Search = () => {
           <ListView songList={filteredSongList} isLoading={isLoading} />
         ) : (
           <GalleryView songList={filteredSongList} isLoading={isLoading} />
+        )}
+      </div> */}
+      <div className="flex border p-5">
+        {/* left */}
+        <div className="flex w-full flex-col gap-3 border p-5">
+          {(filteredBand.length !== 0 || filteredAlbum.length !== 0) && (
+            <>
+              {filteredBand.length !== 0 ? (
+                <>
+                  <h1>Band</h1>
+                  <div>{filteredBand[0]?.original_band}</div>
+                  <hr />
+                </>
+              ) : (
+                <>
+                  <h1>Album</h1>
+                  <div className="border p-5">{filteredAlbum[0]?.album}</div>
+                  <hr />
+                </>
+              )}
+            </>
+          )}
+
+          <div className="border p-5">
+            {filteredSongList.map((items, i) => {
+              return <div key={i}>{items.name}</div>;
+            })}
+          </div>
+        </div>
+        {/* right */}
+        {(filteredBand.length !== 0 || filteredAlbum.length !== 0) && (
+          <div className="w-5/12 border p-5">
+            {filteredBand.length !== 0 ? <div>Band</div> : <div>Album</div>}
+          </div>
         )}
       </div>
     </>

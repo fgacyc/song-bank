@@ -68,12 +68,31 @@ const ListView: React.FC<ListViewProps> = ({ songList, isLoading }) => {
   } else {
     return (
       <>
-        {songList &&
-          songList.length !== 0 &&
-          songList.map((items, i) => {
-            return <div key={i}>{items.album}</div>;
-          })}
-        <hr />
+        <div className="flex gap-3 border">
+          {/* left */}
+          <div className="flex w-full flex-col gap-3">
+            {/* Artist / Album */}
+            {true && (
+              <>
+                <div className="border p-5">
+                  {songList &&
+                    songList.length !== 0 &&
+                    songList.map((items, i) => {
+                      return <div key={i}>{items.original_band}</div>;
+                    })}
+                </div>
+                <hr />
+              </>
+            )}
+            {/* Song */}
+            <div className="border p-5"></div>
+            <hr />
+            {/* Lyrics */}
+            <div className="border p-5"></div>
+          </div>
+          {/* right */}
+          {true && <div className="w-5/12 border p-5"></div>}
+        </div>
         <div className="pl-1 text-2xl font-semibold">Song</div>
         {songList &&
           songList.length !== 0 &&

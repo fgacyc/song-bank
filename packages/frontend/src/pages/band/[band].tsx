@@ -36,7 +36,7 @@ const Band = () => {
   >([]);
   const [filteredSongListWithoutAlbum, setFilteredSongListWithoutAlbum] =
     useState<Album[]>([]);
-  const [uniqueAlbumList, setUniqueAlbumList] = useState<string[]>([]);
+  const [uniqueAlbumList, setUniqueAlbumList] = useState<string[]>([""]);
   const [channelProfile, setChannelProfile] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [activeBand, setActiveBand] = useState<number | null>(null);
