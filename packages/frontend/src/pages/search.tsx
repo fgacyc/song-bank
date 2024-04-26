@@ -59,16 +59,16 @@ const Search = () => {
       );
       const matchingSongName = songName!
         .toLowerCase()
-        .trim()
-        .includes(searchString.toLowerCase().trim());
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, ""));
       const matchingBand = items
         .original_band!.toLowerCase()
-        .trim()
-        .includes(searchString.toLowerCase().trim());
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, ""));
       const matchingAlbum = items.album
         ?.toLowerCase()
-        .trim()
-        .includes(searchString.toLowerCase().trim());
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, ""));
       return matchingSongName || matchingBand || matchingAlbum;
     });
     setFilteredSongList(filteredSongList);
@@ -76,8 +76,8 @@ const Search = () => {
     const showBand =
       filteredSongList[0]?.original_band
         ?.toLowerCase()
-        .trim()
-        .includes(searchString.toLowerCase().trim()) &&
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, "")) &&
       filteredSongList.every(
         (items, _, array) => items.original_band === array[0]?.original_band,
       );
@@ -85,8 +85,8 @@ const Search = () => {
     const showAlbum =
       filteredSongList[0]?.album
         ?.toLowerCase()
-        .trim()
-        .includes(searchString.toLowerCase().trim()) &&
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, "")) &&
       filteredSongList.every(
         (items, _, array) => items.album === array[0]?.album,
       );
