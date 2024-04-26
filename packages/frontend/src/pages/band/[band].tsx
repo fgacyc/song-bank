@@ -1,6 +1,6 @@
 import React, { useEffect, useState, type ReactElement } from "react";
-import Layout from "@/components/dir/layout/Layout";
-import BandBreadcrumb from "@/components/dir/BandBreadcrumb";
+import Layout from "@/components/dynamic/layout/Layout";
+import BandBreadcrumb from "@/components/dynamic/BandBreadcrumb";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";

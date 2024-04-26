@@ -2,13 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import React, { useState, type ReactElement, useEffect, useRef } from "react";
-import Layout from "@/components/dir/layout/Layout";
+import Layout from "@/components/dynamic/layout/Layout";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import markdownit from "markdown-it";
 // @ts-expect-error no declaration file
 import chords from "markdown-it-chords";
-import SongBreadcrumb from "@/components/dir/SongBreadcrumb";
+import SongBreadcrumb from "@/components/dynamic/SongBreadcrumb";
 import Head from "next/head";
 
 type Song = {

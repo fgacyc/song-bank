@@ -1,5 +1,5 @@
-import AlbumBreadcrumb from "@/components/dir/AlbumBreadcrumb";
-import Layout from "@/components/dir/layout/Layout";
+import AlbumBreadcrumb from "@/components/dynamic/AlbumBreadcrumb";
+import Layout from "@/components/dynamic/layout/Layout";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
