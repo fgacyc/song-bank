@@ -17,7 +17,7 @@ const headerData: headerDataProps[] = [
 const Header = () => {
   return (
     <nav className="fixed top-0 z-50 flex h-[70px] w-full items-center justify-between border bg-white p-[10px] px-5">
-      <Link href={"/search"} className="flex items-center justify-center">
+      <Link href={"/"} className="flex items-center justify-center">
         <Image src={"/img/logo.png"} alt="logo" width={50} height={50} />
         <h1 className="text truncate ps-5 text-2xl font-semibold">
           FGA Worship
