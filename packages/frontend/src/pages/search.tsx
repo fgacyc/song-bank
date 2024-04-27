@@ -204,8 +204,13 @@ const Search = () => {
                   </h1>
                   <p className="text-xs text-slate-500 md:text-sm">
                     {
-                      [...new Set(filteredSongList.map((items) => items.album))]
-                        .length
+                      [
+                        ...new Set(
+                          filteredSongList
+                            .filter((items) => items.album)
+                            .map((items) => items.album),
+                        ),
+                      ].length
                     }{" "}
                     albums
                   </p>
@@ -227,7 +232,7 @@ const Search = () => {
                   .replace(/ /g, "-")}`}
                 className={`${
                   leftActiveList === -2 ? "bg-[#f5f5f6] shadow-md" : ""
-                } sm:white flex gap-5 rounded border-b p-5 pl-7 sm:border-2`}
+                } sm:white flex gap-5 rounded border-b px-7 py-5 sm:border-2`}
                 onMouseEnter={() => {
                   setLeftActiveList(-2);
                 }}
@@ -235,10 +240,15 @@ const Search = () => {
                   setLeftActiveList(-1);
                 }}
               >
-                <div className="flex flex-col justify-center">
-                  <h1 className="text-lg font-semibold md:text-2xl">
-                    {filteredSongList[0]?.album}
-                  </h1>
+                <div className="flex w-full items-center justify-between ">
+                  <div>
+                    <h1 className="text-lg font-semibold md:text-2xl">
+                      {filteredSongList[0]?.album}
+                    </h1>
+                    <p className="text-xs text-slate-500 md:text-sm">
+                      {filteredSongList[0]?.original_band}
+                    </p>
+                  </div>
                   <p className="text-xs text-slate-500 md:text-sm">
                     {filteredSongList.length} songs
                   </p>
@@ -402,7 +412,7 @@ const Search = () => {
             ))}
           </div>
         )}
-        {showAlbum && !showBand && (
+        {/* {showAlbum && !showBand && (
           <Link
             href={`/band/${filteredSongList[0]!
               .original_band!.toLowerCase()
@@ -458,7 +468,7 @@ const Search = () => {
               </p>
             </div>
           </Link>
-        )}
+        )} */}
       </div>
     </>
   );
