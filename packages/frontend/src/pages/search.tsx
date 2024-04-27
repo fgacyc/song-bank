@@ -107,8 +107,8 @@ const Search = () => {
       );
       const matchingSongName = songName!
         .toLowerCase()
-        .replace(/ /g, "")
-        .includes(searchString.toLowerCase().replace(/ /g, ""));
+        .replace(/[', ]/g, "")
+        .includes(searchString.toLowerCase().replace(/[', ]/g, ""));
       const matchingBand = items
         .original_band!.toLowerCase()
         .replace(/ /g, "")
@@ -164,7 +164,7 @@ const Search = () => {
         </div>
       </div>
 
-      <div className="flex gap-5 p-5">
+      <div className="flex gap-5 sm:p-5">
         {/* left */}
         <div className="flex w-full flex-col gap-3">
           {/* Band */}
@@ -176,7 +176,7 @@ const Search = () => {
                   .replace(/ /g, "-")}`}
                 className={`${
                   leftActiveList === -2 ? "bg-[#f5f5f6] shadow-md" : ""
-                } flex gap-5 rounded border-2 p-5 pl-7`}
+                } flex gap-5 border-b p-5 pl-7 sm:rounded sm:border-2`}
                 onMouseEnter={() => {
                   setLeftActiveList(-2);
                 }}
@@ -184,7 +184,7 @@ const Search = () => {
                   setLeftActiveList(-1);
                 }}
               >
-                <div className="relative h-[100px] w-[100px] overflow-hidden rounded-full">
+                <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full md:h-[100px] md:w-[100px]">
                   <Image
                     src={channelProfile}
                     alt={
@@ -199,10 +199,10 @@ const Search = () => {
                   />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <h1 className="text-2xl font-semibold">
+                  <h1 className="text-lg font-semibold md:text-2xl">
                     {filteredSongList[0]?.original_band}
                   </h1>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-xs text-slate-500 md:text-sm">
                     {
                       [...new Set(filteredSongList.map((items) => items.album))]
                         .length
@@ -214,7 +214,7 @@ const Search = () => {
                   </p>
                 </div>
               </Link>
-              <hr />
+              <hr className="hidden sm:block" />
             </>
           )}
 
@@ -227,7 +227,7 @@ const Search = () => {
                   .replace(/ /g, "-")}`}
                 className={`${
                   leftActiveList === -2 ? "bg-[#f5f5f6] shadow-md" : ""
-                } flex gap-5 rounded border-2 p-5 pl-7`}
+                } sm:white flex gap-5 rounded border-b p-5 pl-7 sm:border-2`}
                 onMouseEnter={() => {
                   setLeftActiveList(-2);
                 }}
@@ -236,21 +236,21 @@ const Search = () => {
                 }}
               >
                 <div className="flex flex-col justify-center">
-                  <h1 className="text-2xl font-semibold">
+                  <h1 className="text-lg font-semibold md:text-2xl">
                     {filteredSongList[0]?.album}
                   </h1>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-xs text-slate-500 md:text-sm">
                     {filteredSongList.length} songs
                   </p>
                 </div>
               </Link>
-              <hr />
+              <hr className="hidden sm:block" />
             </>
           )}
 
           {/* Song */}
           {(showBand! || showAlbum) && (
-            <h1 className="text-lg font-semibold">
+            <h1 className="pl-3 text-lg font-semibold sm:pl-0">
               Songs from{" "}
               {showAlbum
                 ? filteredSongList[0]?.album
@@ -266,7 +266,7 @@ const Search = () => {
                 key={i}
                 className={`${
                   leftActiveList === i ? "bg-[#f5f5f6] shadow-md" : ""
-                } flex gap-5 rounded border-2 p-3`}
+                } flex flex-col gap-5 rounded border-b pb-3 sm:flex-row sm:border-2 sm:p-3`}
                 onClick={() =>
                   void router.push(
                     `/song/${items.name?.toLowerCase().replace(/ /g, "-")}`,
@@ -275,7 +275,7 @@ const Search = () => {
                 onMouseEnter={() => setLeftActiveList(i)}
                 onMouseLeave={() => setLeftActiveList(-1)}
               >
-                <div className="relative h-[150px] w-[300px] overflow-hidden rounded">
+                <div className="relative h-[30dvh] w-full overflow-hidden sm:h-[110px] sm:w-[200px] sm:min-w-[200px] sm:rounded md:h-[140px] md:w-[250px] md:min-w-[250px] lg:h-[165px] lg:w-[300px] lg:min-w-[300px]">
                   <Image
                     src={thumbnailUrl}
                     alt={items.name!}
@@ -285,18 +285,18 @@ const Search = () => {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <h1 className="text-start text-2xl font-semibold">
+                <div className="flex flex-col gap-2 truncate pb-3 pl-3 sm:pb-0 sm:pl-0">
+                  <h1 className="text-start text-lg font-semibold md:text-2xl">
                     {items.name}
                   </h1>
-                  <div className="flex flex-col gap-1 text-start text-sm text-slate-500">
-                    <p className="">
+                  <div className="flex flex-col gap-1 text-start text-xs text-slate-500 md:text-sm">
+                    <p>
                       {items.original_band && (
                         <>
                           <span>
                             By{" "}
                             <button
-                              className="font-semibold text-black hover:underline"
+                              className="md:font-semibold md:text-black md:hover:underline"
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -312,11 +312,12 @@ const Search = () => {
                           </span>{" "}
                         </>
                       )}
+
                       {items.album && (
                         <span>
                           on album{" "}
                           <button
-                            className="font-semibold text-black hover:underline"
+                            className="md:font-semibold md:text-black md:hover:underline"
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -365,7 +366,7 @@ const Search = () => {
         </div>
         {/* right */}
         {showBand && (
-          <div className="flex h-fit w-5/12 flex-col gap-3">
+          <div className="hidden h-fit w-5/12 flex-col gap-3 lg:flex">
             <h1 className="text-lg font-semibold">
               Albums from {filteredSongList[0]?.original_band}
             </h1>
@@ -408,7 +409,7 @@ const Search = () => {
               .replace(/ /g, "-")}`}
             className={`${
               rightActiveList === -2 ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex h-fit w-fit flex-col items-center gap-5 rounded border-2 p-7`}
+            } hidden h-fit w-fit flex-col items-center gap-5 rounded border-2 p-7 lg:flex`}
             onMouseEnter={() => setRightActiveList(-2)}
             onMouseLeave={() => setRightActiveList(-1)}
           >
