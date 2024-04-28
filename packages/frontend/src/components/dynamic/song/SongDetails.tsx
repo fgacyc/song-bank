@@ -56,7 +56,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
           <p className="flex flex-col truncate">
             <span className="font-semibold">Original Key</span>
             <span className="text-sm text-neutral-500">
-              {items.original_key} Major
+              {items.original_key}
             </span>
           </p>
         </div>

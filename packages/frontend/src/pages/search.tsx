@@ -19,8 +19,12 @@ const Search = () => {
   const [mounted, setMounted] = useState(false);
   const [songList, setSongList] = useState<Song[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
+  const [filteredSongListByLyrics, setFilteredSongListByLyrics] = useState<
+    Song[]
+  >([]);
   const [showBand, setShowBand] = useState<boolean | undefined>(false);
   const [showAlbum, setShowAlbum] = useState<boolean | undefined>(false);
+  const [showLyrics, setShowLyrics] = useState<boolean | undefined>(false);
   const [channelProfile, setChannelProfile] = useState("");
   const [searchString, setSearchString] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -115,6 +119,15 @@ const Search = () => {
     });
     setFilteredSongList(filteredSongList);
 
+    // TODO: lyrics
+    const filteredSongListByLyrics = songList.filter((items) => {
+      return items
+        .chord_lyrics!.toLowerCase()
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, ""));
+    });
+    setFilteredSongListByLyrics(filteredSongListByLyrics);
+
     const showBand =
       filteredSongList[0]?.original_band
         ?.toLowerCase()
@@ -133,6 +146,13 @@ const Search = () => {
         (items, _, array) => items.album === array[0]?.album,
       );
     setShowAlbum(showAlbum);
+
+    // TODO: lyrics
+    if (filteredSongList.length === 0 && filteredSongListByLyrics.length > 0) {
+      setShowLyrics(true);
+    } else {
+      setShowLyrics(false);
+    }
   }, [songList, searchString]);
 
   const getYoutubeVideoId = (youtubeUrl: string) => {
@@ -172,7 +192,11 @@ const Search = () => {
               filteredSongList={filteredSongList}
               getYoutubeVideoId={getYoutubeVideoId}
             />
-            <SearchLyrics />
+            {/* <SearchLyrics /> */}
+            {showLyrics &&
+              filteredSongListByLyrics.map((items, i) => {
+                return <div key={i}>{items.chord_lyrics}</div>;
+              })}
           </div>
           <SearchAlbumList
             showBand={showBand}

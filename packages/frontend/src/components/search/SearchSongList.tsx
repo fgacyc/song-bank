@@ -104,7 +104,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     </span>
                   )}
                 </p>
-                {items.original_key && <p>Key of {items.original_key} Major</p>}
+                {items.original_key && <p>Key of {items.original_key}</p>}
                 {items.song_language && (
                   <p className="flex items-center gap-1">
                     Language :

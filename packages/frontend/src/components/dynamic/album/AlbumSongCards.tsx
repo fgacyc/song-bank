@@ -67,7 +67,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                     <span className="flex gap-1 truncate text-xs text-neutral-500 lg:text-sm">
                       Key of{" "}
                       <span className="md:font-semibold md:text-black">
-                        {items.original_key} Major
+                        {items.original_key}
                       </span>
                     </span>
                   )}
