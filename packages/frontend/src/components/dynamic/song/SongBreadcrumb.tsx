@@ -4,7 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 interface SongBreadcrumbProps {
   name: string | undefined;
-  album: string | undefined;
+  album: string | undefined | null;
   original_band: string;
 }
 

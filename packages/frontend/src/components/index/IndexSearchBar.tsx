@@ -3,11 +3,11 @@ import Image from "next/image";
 import { RiSearch2Line } from "react-icons/ri";
 import { useRouter } from "next/router";
 
-type SearchBarProps = {
+type IndexSearchBarProps = {
   inputRef: RefObject<HTMLInputElement>;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
+const IndexSearchBar: React.FC<IndexSearchBarProps> = ({ inputRef }) => {
   const [searchString, setSearchString] = useState("");
   const router = useRouter();
 
@@ -54,4 +54,4 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputRef }) => {
   );
 };
 
-export default SearchBar;
+export default IndexSearchBar;

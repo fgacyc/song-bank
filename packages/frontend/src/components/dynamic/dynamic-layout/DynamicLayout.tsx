@@ -1,12 +1,12 @@
 import Head from "next/head";
 import React, { type ReactNode } from "react";
-import Header from "./Header";
+import Header from "./DynamicHeader";
 
-interface DirLayoutProps {
+interface DynamicLayoutProps {
   children: ReactNode;
 }
 
-const Layout: React.FC<DirLayoutProps> = ({ children }) => {
+const DynamicLayout: React.FC<DynamicLayoutProps> = ({ children }) => {
   return (
     <>
       <Head>
@@ -20,4 +20,4 @@ const Layout: React.FC<DirLayoutProps> = ({ children }) => {
   );
 };
 
-export default Layout;
+export default DynamicLayout;

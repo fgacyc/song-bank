@@ -3,8 +3,8 @@ import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 
 interface AlbumBreadcrumb {
-  album: string | undefined;
-  original_band: string | undefined;
+  album: string | undefined | null;
+  original_band: string | undefined | null;
 }
 
 const AlbumBreadcrumb: React.FC<AlbumBreadcrumb> = ({

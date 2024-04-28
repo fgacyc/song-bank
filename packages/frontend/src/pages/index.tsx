@@ -1,5 +1,5 @@
-import Footer from "@/components/index/Footer";
-import SearchBar from "@/components/index/SearchBar";
+import IndexFooter from "@/components/index/IndexFooter";
+import IndexSearchBar from "@/components/index/IndexSearchBar";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useLayoutEffect, useRef, type RefObject } from "react";
@@ -24,8 +24,8 @@ const Home = () => {
       <Link href={"/"} className="fixed right-0 p-5">
         <IoPerson className="h-[20px] w-[20px]" />
       </Link>
-      <SearchBar inputRef={inputRef} />
-      <Footer />
+      <IndexSearchBar inputRef={inputRef} />
+      <IndexFooter />
     </>
   );
 };
