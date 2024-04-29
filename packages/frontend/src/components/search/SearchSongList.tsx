@@ -39,7 +39,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
             key={i}
             className={`${
               activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex flex-col gap-5 rounded-lg border-b pb-3 sm:flex-row sm:border-2 sm:p-3`}
+            } flex flex-col gap-5 border-b pb-3 sm:flex-row sm:rounded-lg sm:border-2 sm:p-3`}
             onClick={() =>
               void router.push(
                 `/song/${items.name?.toLowerCase().replace(/ /g, "-")}`,

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { type ReactNode } from "react";
 import Header from "./Header";
-import Navigation from "./Navigation";
+// import Navigation from "./Navigation";
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,10 +16,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <link rel="icon" href="/img/logo.png" />
       </Head>
       <Header />
-      <Navigation />
-      <main className="relative top-[70px] z-0 min-h-[91vh] sm:pl-[70px] md:pl-[70px] lg:pl-[70px]">
-        {children}
-      </main>
+      {/* <Navigation /> */}
+      <main className="relative top-[70px] z-0 min-h-[91vh]">{children}</main>
     </>
   );
 };

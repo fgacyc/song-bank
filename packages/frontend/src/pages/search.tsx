@@ -93,7 +93,7 @@ const Search = () => {
   }, [filteredSongList]);
 
   useMemo(() => {
-    const filteredSongList = songList.filter((items) => {
+    const filteredSongListWithoutFilterTags = songList.filter((items) => {
       const songName = items.name?.concat(
         " ",
         items.alt_name ? items.alt_name : "",
@@ -110,19 +110,55 @@ const Search = () => {
         ?.toLowerCase()
         .replace(/ /g, "")
         .includes(searchString.toLowerCase().replace(/ /g, ""));
-      const matchingLyrics = items.chord_lyrics;
+      // const matchingLyrics = items.chord_lyrics;
       return (
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         matchingSongName || matchingBand || matchingAlbum
       );
     });
-    setFilteredSongList(filteredSongList);
-
     // TODO: lyrics
     // const filteredSongListByLyrics = matchingLyrics.filter((lyrics) => {
     //   return !filteredSongList.some((songs) => songs.id === lyrics.id);
     // });
     // setFilteredSongListByLyrics(filteredSongListByLyrics);
+
+    //   if (filteredSongListByLyrics.length > 0) {
+    //     setShowLyrics(true);
+    //   } else {
+    //     setShowLyrics(false);
+    //   }
+
+    const keyIsSelected = false;
+    const key = "C";
+    const languageIsSelected = false;
+    const language = "EN";
+
+    let filteredSongList = filteredSongListWithoutFilterTags;
+    if (keyIsSelected && languageIsSelected) {
+      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
+        return (
+          items.original_key?.toString().toLowerCase().trim() ===
+            key.toString().toLowerCase() &&
+          items.song_language?.toString().toLowerCase().trim() ===
+            language.toString().toLowerCase()
+        );
+      });
+    } else if (keyIsSelected && !languageIsSelected) {
+      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
+        return (
+          items.original_key?.toString().toLowerCase().trim() ===
+          key.toString().toLowerCase()
+        );
+      });
+    } else if (!keyIsSelected && languageIsSelected) {
+      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
+        return (
+          items.song_language?.toString().toLowerCase().trim() ===
+          language.toString().toLowerCase()
+        );
+      });
+    }
+    setFilteredSongList(filteredSongList);
 
     const showBand =
       filteredSongList[0]?.original_band
@@ -142,13 +178,6 @@ const Search = () => {
         (items, _, array) => items.album === array[0]?.album,
       );
     setShowAlbum(showAlbum);
-
-    // TODO: lyrics
-    //   if (filteredSongListByLyrics.length > 0) {
-    //     setShowLyrics(true);
-    //   } else {
-    //     setShowLyrics(false);
-    //   }
   }, [songList, searchString]);
 
   const getYoutubeVideoId = (youtubeUrl: string) => {
@@ -161,8 +190,8 @@ const Search = () => {
   } else
     return (
       <>
-        <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
-          <div className="flex items-center gap-3">
+        <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex sm:px-5 md:flex lg:flex">
+          <div className="flex items-center justify-between gap-4">
             <SearchBar
               searchString={searchString}
               setSearchString={setSearchString}
@@ -170,7 +199,7 @@ const Search = () => {
             <SearchFilterTags />
           </div>
         </div>
-        <div className="flex gap-5 sm:p-5">
+        <div className="flex gap-5 sm:h-fit sm:p-5">
           <div className="flex w-full flex-col gap-3">
             <SearchBand
               showBand={showBand}

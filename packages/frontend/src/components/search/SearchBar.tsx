@@ -1,21 +1,31 @@
-import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
+import {
+  useEffect,
+  useRef,
+  type Dispatch,
+  type SetStateAction,
+  type MutableRefObject,
+} from "react";
 import { IoIosClose } from "react-icons/io";
 import { RiSearch2Line } from "react-icons/ri";
 import { Form, Formik, type FormikProps, useFormikContext } from "formik";
+
+interface InputProps {
+  setSearchString: Dispatch<SetStateAction<string>>;
+  inputRef: MutableRefObject<HTMLInputElement | null>;
+}
 
 interface SearchBarProps {
   searchString: string;
   setSearchString: Dispatch<SetStateAction<string>>;
 }
 
-const Input: React.FC<{
-  setSearchString: Dispatch<SetStateAction<string>>;
-}> = ({ setSearchString }) => {
+const Input: React.FC<InputProps> = ({ setSearchString, inputRef }) => {
   const formikRef = useFormikContext<{ searchString: string }>();
-  console.log(formikRef.values.searchString);
+
   return (
     <input
-      className="w-full ps-2"
+      ref={inputRef}
+      className="w-full ps-4"
       type="text"
       placeholder="Search"
       value={formikRef.values.searchString}
@@ -43,8 +53,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
     void setValue();
   }, [searchString]);
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   return (
-    <div className="flex h-[30px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
+    <div className="flex h-[35px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
       <Formik<SearchBarForm>
         initialValues={{
           searchString: searchString ?? "",
@@ -57,11 +69,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
       >
         {({ resetForm }) => (
           <Form className="flex w-full items-center justify-between">
-            <Input setSearchString={setSearchString} />
+            <Input setSearchString={setSearchString} inputRef={inputRef} />
             <button
               type="button"
-              onClick={() => resetForm()}
-              className="flex h-full w-[30px] items-center justify-center rounded-e-md border-s"
+              onClick={() => {
+                resetForm();
+                if (inputRef.current !== null) {
+                  inputRef.current.focus();
+                }
+              }}
+              className="flex h-full w-[40px] items-center justify-center rounded-e-md border-s"
             >
               {!searchString ? <RiSearch2Line /> : <IoIosClose />}
             </button>
