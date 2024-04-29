@@ -22,7 +22,7 @@ const SearchAlbum: React.FC<SearchAlbumProps> = ({
               .replace(/ /g, "-")}`}
             className={`${
               activeList ? "bg-[#f5f5f6] shadow-md" : ""
-            } sm:white flex gap-5 rounded border-b px-7 py-5 sm:border-2`}
+            } sm:white flex gap-5 rounded-lg border-b px-7 py-5 sm:border-2`}
             onMouseEnter={() => {
               setActiveList(true);
             }}

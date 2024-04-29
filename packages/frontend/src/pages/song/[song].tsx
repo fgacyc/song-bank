@@ -73,7 +73,7 @@ const DynamicSong = () => {
               <div className="flex flex-col gap-5 pb-5 md:flex-row">
                 <SongDetails embedUrl={embedUrl} items={items} />
                 <div className="flex w-full flex-col gap-5">
-                  <h1 className="hidden rounded border-2 px-5 py-3 text-4xl font-semibold md:block">
+                  <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
                     {items.name}
                   </h1>
                   <SongKeyTransposition />

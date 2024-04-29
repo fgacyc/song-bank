@@ -12,19 +12,14 @@ import SearchFilterTags from "@/components/search/SearchFilterTags";
 import SearchBand from "@/components/search/SearchBand";
 import SearchAlbum from "@/components/search/SearchAlbum";
 import SearchSongList from "@/components/search/SearchSongList";
-import SearchLyrics from "@/components/search/SearchLyrics";
 import SearchAlbumList from "@/components/search/SearchAlbumList";
 
 const Search = () => {
   const [mounted, setMounted] = useState(false);
   const [songList, setSongList] = useState<Song[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
-  const [filteredSongListByLyrics, setFilteredSongListByLyrics] = useState<
-    Song[]
-  >([]);
   const [showBand, setShowBand] = useState<boolean | undefined>(false);
   const [showAlbum, setShowAlbum] = useState<boolean | undefined>(false);
-  const [showLyrics, setShowLyrics] = useState<boolean | undefined>(false);
   const [channelProfile, setChannelProfile] = useState("");
   const [searchString, setSearchString] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -115,18 +110,19 @@ const Search = () => {
         ?.toLowerCase()
         .replace(/ /g, "")
         .includes(searchString.toLowerCase().replace(/ /g, ""));
-      return matchingSongName || matchingBand || matchingAlbum;
+      const matchingLyrics = items.chord_lyrics;
+      return (
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        matchingSongName || matchingBand || matchingAlbum
+      );
     });
     setFilteredSongList(filteredSongList);
 
     // TODO: lyrics
-    const filteredSongListByLyrics = songList.filter((items) => {
-      return items
-        .chord_lyrics!.toLowerCase()
-        .replace(/ /g, "")
-        .includes(searchString.toLowerCase().replace(/ /g, ""));
-    });
-    setFilteredSongListByLyrics(filteredSongListByLyrics);
+    // const filteredSongListByLyrics = matchingLyrics.filter((lyrics) => {
+    //   return !filteredSongList.some((songs) => songs.id === lyrics.id);
+    // });
+    // setFilteredSongListByLyrics(filteredSongListByLyrics);
 
     const showBand =
       filteredSongList[0]?.original_band
@@ -148,11 +144,11 @@ const Search = () => {
     setShowAlbum(showAlbum);
 
     // TODO: lyrics
-    if (filteredSongList.length === 0 && filteredSongListByLyrics.length > 0) {
-      setShowLyrics(true);
-    } else {
-      setShowLyrics(false);
-    }
+    //   if (filteredSongListByLyrics.length > 0) {
+    //     setShowLyrics(true);
+    //   } else {
+    //     setShowLyrics(false);
+    //   }
   }, [songList, searchString]);
 
   const getYoutubeVideoId = (youtubeUrl: string) => {
@@ -174,7 +170,6 @@ const Search = () => {
             <SearchFilterTags />
           </div>
         </div>
-
         <div className="flex gap-5 sm:p-5">
           <div className="flex w-full flex-col gap-3">
             <SearchBand
@@ -191,12 +186,8 @@ const Search = () => {
               showAlbum={showAlbum}
               filteredSongList={filteredSongList}
               getYoutubeVideoId={getYoutubeVideoId}
+              searchString={searchString}
             />
-            {/* <SearchLyrics /> */}
-            {showLyrics &&
-              filteredSongListByLyrics.map((items, i) => {
-                return <div key={i}>{items.chord_lyrics}</div>;
-              })}
           </div>
           <SearchAlbumList
             showBand={showBand}

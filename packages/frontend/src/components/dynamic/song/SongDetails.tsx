@@ -9,7 +9,7 @@ interface SongDetailsProps {
 
 const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   return (
-    <div className="flex h-fit flex-col rounded border-2 p-5">
+    <div className="flex h-fit flex-col rounded-lg border-2 p-5">
       <div className="h-[150px] w-full md:w-[200px] lg:h-[150px] lg:w-[300px]">
         <iframe
           src={embedUrl}

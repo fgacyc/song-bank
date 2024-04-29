@@ -43,7 +43,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
             href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
             className={`${
               activeBand === i ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex h-full flex-col items-center overflow-hidden rounded border-2 p-5`}
+            } flex h-full flex-col items-center overflow-hidden rounded-lg border-2 p-5`}
             onMouseEnter={() => {
               setActiveBand(i);
             }}
@@ -52,7 +52,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
             }}
           >
             <div
-              className={`grid ${gridCol} h-[250px] w-full gap-[1px] rounded`}
+              className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded`}
             >
               {songsToShowInAlbum.map((items, j) => {
                 const originalYoutubeUrl = items.original_youtube_url ?? "";
@@ -79,11 +79,11 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
                 );
               })}
             </div>
-            <h1 className="flex flex-wrap items-center justify-center gap-1 pt-2">
-              <div className="font-medium">{album}</div>
-              <div className="text-center text-neutral-500">
+            <h1 className="gap-1 text-wrap pt-2">
+              <span className="font-medium">{album}</span>{" "}
+              <span className="text-center text-neutral-500">
                 - {numberOfSongsInAlbum} songs
-              </div>
+              </span>
             </h1>
           </Link>
         );

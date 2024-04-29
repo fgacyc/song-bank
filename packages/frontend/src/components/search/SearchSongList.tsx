@@ -8,6 +8,7 @@ interface SearchSongListProps {
   showAlbum: boolean | undefined;
   filteredSongList: Song[];
   getYoutubeVideoId: (youtubeUrl: string) => string | null | undefined;
+  searchString: string;
 }
 
 const SearchSongList: React.FC<SearchSongListProps> = ({
@@ -15,6 +16,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   showAlbum,
   filteredSongList,
   getYoutubeVideoId,
+  searchString,
 }) => {
   const router = useRouter();
   const [activeList, setActiveList] = useState(-1);
@@ -37,7 +39,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
             key={i}
             className={`${
               activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex flex-col gap-5 rounded border-b pb-3 sm:flex-row sm:border-2 sm:p-3`}
+            } flex flex-col gap-5 rounded-lg border-b pb-3 sm:flex-row sm:border-2 sm:p-3`}
             onClick={() =>
               void router.push(
                 `/song/${items.name?.toLowerCase().replace(/ /g, "-")}`,
@@ -119,6 +121,33 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     </span>
                   </p>
                 )}
+                {searchString.trim() !== "" &&
+                  lyrics
+                    ?.split(/[ \n]/g)
+                    .filter(
+                      (words) =>
+                        words.toLowerCase() ===
+                          searchString.trim().toLowerCase() &&
+                        !words.includes("[") &&
+                        !words.includes("]"),
+                    ) && (
+                    <>
+                      ...
+                      {lyrics
+                        .split(/[ \n]/g)
+                        .filter(
+                          (words) =>
+                            words.toLowerCase() ===
+                              searchString.toLowerCase() &&
+                            !words.includes("[") &&
+                            !words.includes("]"),
+                        )
+                        .map((items, i) => {
+                          return <div key={i}>{items}</div>;
+                        })}
+                      ...
+                    </>
+                  )}
               </div>
             </div>
           </button>
@@ -127,5 +156,20 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
     </>
   );
 };
+
+const lyrics = `
+[Verse]
+Yesus Tuhan di tinggikan
+Di muliakan dan naik ke surga
+Dia berikan Roh Kudus-Nya
+Menguatkan dan menolong s'lalu
+Sungguh ku rindu
+Bersekutu dengan-Mu s'lamanya
+[Chorus]
+Allah Roh Kudus jamah hatiku
+Dengan urapan-Mu
+Rindu selalu dekat dengan-Mu
+Tinggal di hadirat-Mu
+`;
 
 export default SearchSongList;

@@ -18,7 +18,7 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
 }) => {
   return (
     <>
-      <div className="h-fit rounded border-2 p-5">
+      <div className="h-fit rounded-lg border-2 p-5">
         <div
           className={`${gridCol} grid h-[300px] w-full gap-[1px] overflow-hidden rounded md:h-[200px] md:w-[200px] lg:h-[270px] lg:w-[300px]`}
         >

@@ -26,7 +26,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
               key={i}
               className={`${
                 activeAlbum === i ? "bg-[#f5f5f6] shadow-md" : ""
-              } flex gap-5 truncate rounded border-2 p-5 lg:block xl:flex`}
+              } flex gap-5 truncate rounded-lg border-2 p-5 lg:block xl:flex`}
               onMouseEnter={() => {
                 setActiveAlbum(i);
               }}
@@ -34,7 +34,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                 setActiveAlbum(null);
               }}
             >
-              <div className="relative w-[100px] sm:h-[100px] sm:w-[200px] md:h-[105px] md:w-[200px] lg:h-[150px] lg:w-full xl:h-[105px] xl:w-[200px]">
+              <div className="relative w-[100px] min-w-[100px] sm:h-[100px] sm:w-[200px] sm:min-w-[200px] md:h-[105px] md:w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]">
                 <Image
                   src={youtubeVideoId ? thumbnailUrl : "/img/no-cover.jpg"}
                   alt={items.name!}
@@ -51,7 +51,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                     <span className="font-light">{items.alt_name}</span>
                   )}
                 </h1>
-                <p className="flex flex-col gap-1 truncate pt-1 text-xs text-neutral-500 lg:text-sm">
+                <p className="flex flex-col gap-1 pt-1 text-xs text-neutral-500 lg:text-sm">
                   <span>
                     By{" "}
                     <Link
@@ -64,7 +64,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                     </Link>{" "}
                   </span>
                   {items.original_key && (
-                    <span className="flex gap-1 truncate text-xs text-neutral-500 lg:text-sm">
+                    <span className="flex gap-1 text-xs text-neutral-500 lg:text-sm">
                       Key of{" "}
                       <span className="md:font-semibold md:text-black">
                         {items.original_key}

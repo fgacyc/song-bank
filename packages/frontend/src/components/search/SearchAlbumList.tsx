@@ -31,7 +31,7 @@ const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
               key={i}
               className={`${
                 activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
-              } rounded border-2 p-3 px-5`}
+              } rounded-lg border-2 p-3 px-5`}
               onMouseEnter={() => setActiveList(i)}
               onMouseLeave={() => setActiveList(-1)}
             >

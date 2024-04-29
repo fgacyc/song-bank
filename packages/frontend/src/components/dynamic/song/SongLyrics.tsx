@@ -22,7 +22,7 @@ const SongLyrics: React.FC<SongLyricsProps> = ({ lyricsRef, chordLyrics }) => {
   return (
     <>
       {/* TODO: chords & lyrics */}
-      <div className="rounded border-2 p-5">
+      <div className="rounded-lg border-2 p-5">
         <p
           ref={lyricsRef}
           className="text-neutral-500"

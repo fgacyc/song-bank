@@ -25,7 +25,7 @@ const SearchBand: React.FC<SearchBandProps> = ({
               .replace(/ /g, "-")}`}
             className={`${
               activeList === -2 ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex gap-5 border-b p-5 pl-7 sm:rounded sm:border-2`}
+            } flex gap-5 border-b p-5 pl-7 sm:rounded-lg sm:border-2`}
             onMouseEnter={() => {
               setActiveList(-2);
             }}

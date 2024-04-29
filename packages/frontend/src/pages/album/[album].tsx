@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, type ReactElement } from "react";
 import { type Song } from "@prisma/client";
-import AlbumSongList from "@/components/dynamic/album/AlbumSongCards";
+import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
 
 const Album = () => {
   const router = useRouter();
