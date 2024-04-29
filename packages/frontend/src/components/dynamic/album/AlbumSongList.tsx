@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { type Song } from "@prisma/client";
+import { useRouter } from "next/router";
 
 interface AlbumSongListProps {
   filteredSongList: Song[] | undefined;
@@ -12,6 +13,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
   filteredSongList,
   getYoutubeVideoId,
 }) => {
+  const router = useRouter();
   const [activeAlbum, setActiveAlbum] = useState<number | null>(null);
   return (
     <div className="w-full pb-5 pt-5 md:pt-0">
@@ -54,14 +56,20 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                 <p className="flex flex-col gap-1 pt-1 text-xs text-neutral-500 lg:text-sm">
                   <span>
                     By{" "}
-                    <Link
-                      href={`/band/${items
-                        .original_band!.toLowerCase()
-                        .replace(/ /g, "-")}`}
+                    <button
                       className="pointer-events-none md:pointer-events-auto md:font-semibold md:text-black md:hover:underline"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        void router.push(
+                          `/band/${items
+                            .original_band!.toLowerCase()
+                            .replace(/ /g, "-")}`,
+                        );
+                      }}
                     >
                       {items.original_band}
-                    </Link>{" "}
+                    </button>{" "}
                   </span>
                   {items.original_key && (
                     <span className="flex gap-1 text-xs text-neutral-500 lg:text-sm">

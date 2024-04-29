@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { type Song } from "@prisma/client";
 import { GiGClef } from "react-icons/gi";
 import { GrLanguage } from "react-icons/gr";
-import Select from "react-select";
+// import Select from "react-select";
 
 const SearchFilterTags = () => {
   const keys = [
@@ -55,9 +55,30 @@ const SearchFilterTags = () => {
   }, [songList]);
 
   return (
-    <div className="ga flex min-w-fit truncate p-3 sm:w-[400px]">
-      <Select placeholder={<GiGClef />} />
-      <Select placeholder={<GrLanguage />} />
+    <div className="flex min-w-fit gap-3 truncate sm:w-[400px]">
+      <select className="rounded border">
+        <option value="">{/* <GiGClef /> */}</option>
+        {keys.map((key, i) => {
+          return (
+            <option key={i} value={key.toLowerCase()}>
+              {key}
+            </option>
+          );
+        })}
+      </select>
+
+      <select className="rounded border">
+        <option value="">{/* <GrLanguage /> */}</option>
+        {uniqueLanguageList.map((language, i) => {
+          return (
+            <option key={i} value={language.toLowerCase()}>
+              {language}
+            </option>
+          );
+        })}
+      </select>
+      {/* <Select placeholder={<GiGClef />} />
+      <Select placeholder={<GrLanguage />} /> */}
     </div>
   );
 };

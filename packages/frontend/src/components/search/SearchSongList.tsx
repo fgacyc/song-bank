@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { type Song } from "@prisma/client";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface SearchSongListProps {
   showBand: boolean | undefined;
@@ -35,16 +36,12 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
         const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
         const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
         return (
-          <button
+          <Link
             key={i}
+            href={`/song/${items.name?.toLowerCase().replace(/ /g, "-")}`}
             className={`${
               activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
             } flex flex-col gap-5 border-b pb-3 sm:flex-row sm:rounded-lg sm:border-2 sm:p-3`}
-            onClick={() =>
-              void router.push(
-                `/song/${items.name?.toLowerCase().replace(/ /g, "-")}`,
-              )
-            }
             onMouseEnter={() => setActiveList(i)}
             onMouseLeave={() => setActiveList(-1)}
           >
@@ -150,7 +147,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                   )}
               </div>
             </div>
-          </button>
+          </Link>
         );
       })}
     </>
