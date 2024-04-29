@@ -24,7 +24,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   return (
     <>
       {(showBand! || showAlbum) && (
-        <h1 className="pl-3 text-lg font-semibold sm:pl-0">
+        <h1 className="pl-3 text-lg font-semibold sm:pl-1">
           Songs from{" "}
           {showAlbum
             ? filteredSongList[0]?.album

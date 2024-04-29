@@ -184,11 +184,6 @@ const Search = () => {
     setShowAlbum(showAlbum);
   }, [songList, searchString, selectedKey, selectedLanguage]);
 
-  useMemo(() => {
-    console.log(selectedKey);
-    console.log(selectedLanguage);
-  }, [selectedKey, selectedLanguage]);
-
   const getYoutubeVideoId = (youtubeUrl: string) => {
     const regex =
       /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
@@ -211,7 +206,7 @@ const Search = () => {
           />
         </div>
       </div>
-      {!isLoading ? (
+      {isLoading ? (
         <SearchLoading />
       ) : (
         <div className="flex gap-5 sm:h-fit sm:p-5">

@@ -20,7 +20,7 @@ const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
     <>
       {showBand && (
         <div className="hidden h-fit w-5/12 flex-col gap-3 lg:flex">
-          <h1 className="text-lg font-semibold">
+          <h1 className="pl-1 text-lg font-semibold">
             Albums from {filteredSongList[0]?.original_band}
           </h1>
           {[
