@@ -56,7 +56,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
-    <div className="flex h-[35px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
+    <div className="flex h-[38px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
       <Formik<SearchBarForm>
         initialValues={{
           searchString: searchString ?? "",

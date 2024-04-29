@@ -191,7 +191,7 @@ const Search = () => {
     return (
       <>
         <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex sm:px-5 md:flex lg:flex">
-          <div className="flex items-center justify-between gap-4">
+          <div className="z-20 flex items-center justify-between gap-4">
             <SearchBar
               searchString={searchString}
               setSearchString={setSearchString}

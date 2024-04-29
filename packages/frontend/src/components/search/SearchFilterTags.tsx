@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { type Song } from "@prisma/client";
 import { GiGClef } from "react-icons/gi";
 import { GrLanguage } from "react-icons/gr";
-// import Select from "react-select";
+// import Select from "node_modules/react-select/dist/declarations/src/Select";
+import Select from "react-select";
 
 const SearchFilterTags = () => {
   const keys = [
@@ -19,6 +20,25 @@ const SearchFilterTags = () => {
     "A#",
     "B",
   ];
+  // const keys = [
+  //   // { value: "C", label: "C" },
+  //   // { value: "C#", label: "C#" },
+  //   // { value: "D", label: "D" },
+  //   // { value: "D#", label: "D#" },
+  //   // { value: "E", label: "E" },
+  //   // { value: "F", label: "F" },
+  //   // { value: "F#", label: "F#" },
+  //   // { value: "G", label: "G" },
+  //   // { value: "G#", label: "G#" },
+  //   // { value: "A", label: "A" },
+  //   // { value: "A#", label: "A#" },
+  //   // { value: "B", label: "B" },
+  // ];
+  const objectOfKeys = keys.map((key) => ({
+    value: key.toLowerCase(),
+    label: key,
+  }));
+
   const [songList, setSongList] = useState<Song[]>();
   const [uniqueLanguageList, setUniqueLanguageList] = useState([""]);
 
@@ -55,30 +75,20 @@ const SearchFilterTags = () => {
   }, [songList]);
 
   return (
-    <div className="flex min-w-fit gap-3 truncate sm:w-[400px]">
-      <select className="rounded border">
-        <option value="">{/* <GiGClef /> */}</option>
-        {keys.map((key, i) => {
-          return (
-            <option key={i} value={key.toLowerCase()}>
-              {key}
-            </option>
-          );
-        })}
-      </select>
-
-      <select className="rounded border">
-        <option value="">{/* <GrLanguage /> */}</option>
-        {uniqueLanguageList.map((language, i) => {
-          return (
-            <option key={i} value={language.toLowerCase()}>
-              {language}
-            </option>
-          );
-        })}
-      </select>
-      {/* <Select placeholder={<GiGClef />} />
-      <Select placeholder={<GrLanguage />} /> */}
+    <div className="flex min-w-fit gap-3 sm:w-[400px]">
+      <Select
+        options={objectOfKeys}
+        placeholder={<GiGClef />}
+        isClearable={true}
+      />
+      <Select
+        options={uniqueLanguageList.map((language) => ({
+          value: language.toLowerCase(),
+          label: language,
+        }))}
+        placeholder={<GrLanguage />}
+        isClearable={true}
+      />
     </div>
   );
 };
