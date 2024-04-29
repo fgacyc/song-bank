@@ -7,17 +7,17 @@ import Link from "next/link";
 interface SearchSongListProps {
   showBand: boolean | undefined;
   showAlbum: boolean | undefined;
+  searchString: string;
   filteredSongList: Song[];
   getYoutubeVideoId: (youtubeUrl: string) => string | null | undefined;
-  searchString: string;
 }
 
 const SearchSongList: React.FC<SearchSongListProps> = ({
   showBand,
   showAlbum,
+  searchString,
   filteredSongList,
   getYoutubeVideoId,
-  searchString,
 }) => {
   const router = useRouter();
   const [activeList, setActiveList] = useState(-1);
@@ -118,7 +118,9 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     </span>
                   </p>
                 )}
-                {searchString.trim() !== "" &&
+
+                {/* TODO: lyrics */}
+                {/* {searchString.trim() !== "" &&
                   lyrics
                     ?.split(/[ \n]/g)
                     .filter(
@@ -144,7 +146,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                         })}
                       ...
                     </>
-                  )}
+                  )} */}
               </div>
             </div>
           </Link>

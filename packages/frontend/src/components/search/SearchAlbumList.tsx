@@ -4,11 +4,15 @@ import { type Song } from "@prisma/client";
 
 interface SearchAlbumListProps {
   showBand: boolean | undefined;
+  searchString: string;
+  songList: Song[];
   filteredSongList: Song[];
 }
 
 const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
   showBand,
+  searchString,
+  songList,
   filteredSongList,
 }) => {
   const [activeList, setActiveList] = useState(-1);
@@ -38,10 +42,16 @@ const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
               <h1 className="font-semibold">{album}</h1>
               <p className="text-sm text-slate-500">
                 {
-                  filteredSongList.filter((items) => {
+                  songList.filter((items) => {
                     return (
+                      items
+                        .original_band!.toLowerCase()
+                        .replace(/ /g, "")
+                        .includes(
+                          searchString.toLowerCase().replace(/ /g, ""),
+                        ) &&
                       items.album?.toLowerCase().replace(/ /g, "") ===
-                      album?.toLowerCase().replace(/ /g, "")
+                        album?.toLowerCase().replace(/ /g, "")
                     );
                   }).length
                 }{" "}

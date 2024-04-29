@@ -13,6 +13,7 @@ import SearchBand from "@/components/search/SearchBand";
 import SearchAlbum from "@/components/search/SearchAlbum";
 import SearchSongList from "@/components/search/SearchSongList";
 import SearchAlbumList from "@/components/search/SearchAlbumList";
+import SearchLoading from "@/components/search/SearchLoading";
 
 const Search = () => {
   const [mounted, setMounted] = useState(false);
@@ -22,6 +23,8 @@ const Search = () => {
   const [showAlbum, setShowAlbum] = useState<boolean | undefined>(false);
   const [channelProfile, setChannelProfile] = useState("");
   const [searchString, setSearchString] = useState("");
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useLayoutEffect(() => setMounted(true), []);
@@ -110,12 +113,12 @@ const Search = () => {
         ?.toLowerCase()
         .replace(/ /g, "")
         .includes(searchString.toLowerCase().replace(/ /g, ""));
-      // const matchingLyrics = items.chord_lyrics;
       return (
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         matchingSongName || matchingBand || matchingAlbum
       );
     });
+
     // TODO: lyrics
     // const filteredSongListByLyrics = matchingLyrics.filter((lyrics) => {
     //   return !filteredSongList.some((songs) => songs.id === lyrics.id);
@@ -128,39 +131,39 @@ const Search = () => {
     //     setShowLyrics(false);
     //   }
 
-    const keyIsSelected = false;
-    const key = "C";
-    const languageIsSelected = false;
-    const language = "EN";
-
     let filteredSongList = filteredSongListWithoutFilterTags;
-    if (keyIsSelected && languageIsSelected) {
+    if (selectedKey && selectedLanguage) {
       filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
         return (
           items.original_key?.toString().toLowerCase().trim() ===
-            key.toString().toLowerCase() &&
-          items.song_language?.toString().toLowerCase().trim() ===
-            language.toString().toLowerCase()
+            selectedKey.toString().toLowerCase() &&
+          items.song_language
+            ?.toString()
+            .toLowerCase()
+            .trim()
+            .includes(selectedLanguage.toString().toLowerCase())
         );
       });
-    } else if (keyIsSelected && !languageIsSelected) {
+    } else if (selectedKey && !selectedLanguage) {
       filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
         return (
           items.original_key?.toString().toLowerCase().trim() ===
-          key.toString().toLowerCase()
+          selectedKey.toString().toLowerCase()
         );
       });
-    } else if (!keyIsSelected && languageIsSelected) {
+    } else if (!selectedKey && selectedLanguage) {
       filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
-        return (
-          items.song_language?.toString().toLowerCase().trim() ===
-          language.toString().toLowerCase()
-        );
+        return items.song_language
+          ?.toString()
+          .toLowerCase()
+          .trim()
+          .includes(selectedLanguage.toString().toLowerCase());
       });
     }
     setFilteredSongList(filteredSongList);
 
     const showBand =
+      searchString.trim() !== "" &&
       filteredSongList[0]?.original_band
         ?.toLowerCase()
         .replace(/ /g, "")
@@ -170,6 +173,7 @@ const Search = () => {
       );
     setShowBand(showBand);
     const showAlbum =
+      searchString.trim() !== "" &&
       filteredSongList[0]?.album
         ?.toLowerCase()
         .replace(/ /g, "")
@@ -178,7 +182,12 @@ const Search = () => {
         (items, _, array) => items.album === array[0]?.album,
       );
     setShowAlbum(showAlbum);
-  }, [songList, searchString]);
+  }, [songList, searchString, selectedKey, selectedLanguage]);
+
+  useMemo(() => {
+    console.log(selectedKey);
+    console.log(selectedLanguage);
+  }, [selectedKey, selectedLanguage]);
 
   const getYoutubeVideoId = (youtubeUrl: string) => {
     const regex =
@@ -186,28 +195,38 @@ const Search = () => {
     const match = youtubeUrl.match(regex);
     return match ? match[1] : null;
   };
-  if (isLoading) {
-  } else
-    return (
-      <>
-        <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex sm:px-5 md:flex lg:flex">
-          <div className="z-20 flex items-center justify-between gap-4">
-            <SearchBar
-              searchString={searchString}
-              setSearchString={setSearchString}
-            />
-            <SearchFilterTags />
-          </div>
+  return (
+    <>
+      <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex sm:px-5 md:flex lg:flex">
+        <div className="z-20 flex items-center justify-between gap-4">
+          <SearchBar
+            searchString={searchString}
+            setSearchString={setSearchString}
+          />
+          <SearchFilterTags
+            selectedKey={selectedKey}
+            setSelectedKey={setSelectedKey}
+            selectedLanguage={selectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
+          />
         </div>
+      </div>
+      {!isLoading ? (
+        <SearchLoading />
+      ) : (
         <div className="flex gap-5 sm:h-fit sm:p-5">
           <div className="flex w-full flex-col gap-3">
             <SearchBand
               showBand={showBand}
+              searchString={searchString}
+              songList={songList}
               filteredSongList={filteredSongList}
               channelProfile={channelProfile}
             />
             <SearchAlbum
               showAlbum={showAlbum}
+              searchString={searchString}
+              songList={songList}
               filteredSongList={filteredSongList}
             />
             <SearchSongList
@@ -220,11 +239,14 @@ const Search = () => {
           </div>
           <SearchAlbumList
             showBand={showBand}
+            searchString={searchString}
+            songList={songList}
             filteredSongList={filteredSongList}
           />
         </div>
-      </>
-    );
+      )}
+    </>
+  );
 };
 
 export default Search;

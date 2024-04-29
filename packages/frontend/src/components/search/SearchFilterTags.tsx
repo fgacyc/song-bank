@@ -1,11 +1,28 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { type Song } from "@prisma/client";
 import { GiGClef } from "react-icons/gi";
 import { GrLanguage } from "react-icons/gr";
-// import Select from "node_modules/react-select/dist/declarations/src/Select";
 import Select from "react-select";
 
-const SearchFilterTags = () => {
+interface SearchFilterTagsProps {
+  selectedKey: string | null;
+  setSelectedKey: Dispatch<SetStateAction<string | null>>;
+  selectedLanguage: string | null;
+  setSelectedLanguage: Dispatch<SetStateAction<string | null>>;
+}
+
+const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
+  selectedKey,
+  setSelectedKey,
+  selectedLanguage,
+  setSelectedLanguage,
+}) => {
   const keys = [
     "C",
     "C#",
@@ -20,28 +37,14 @@ const SearchFilterTags = () => {
     "A#",
     "B",
   ];
-  // const keys = [
-  //   // { value: "C", label: "C" },
-  //   // { value: "C#", label: "C#" },
-  //   // { value: "D", label: "D" },
-  //   // { value: "D#", label: "D#" },
-  //   // { value: "E", label: "E" },
-  //   // { value: "F", label: "F" },
-  //   // { value: "F#", label: "F#" },
-  //   // { value: "G", label: "G" },
-  //   // { value: "G#", label: "G#" },
-  //   // { value: "A", label: "A" },
-  //   // { value: "A#", label: "A#" },
-  //   // { value: "B", label: "B" },
-  // ];
   const objectOfKeys = keys.map((key) => ({
-    value: key.toLowerCase(),
+    value: key,
     label: key,
   }));
 
   const [songList, setSongList] = useState<Song[]>();
-  const [uniqueLanguageList, setUniqueLanguageList] = useState([""]);
-
+  const [objectOfLanguages, setObjectOfLanguages] =
+    useState<{ value: string; label: string }[]>();
   useEffect(() => {
     void (async () => {
       await fetch("/api/song", {
@@ -71,7 +74,11 @@ const SearchFilterTags = () => {
       }
     });
     const uniqueLanguageList = [...uniqueLanguageSet];
-    setUniqueLanguageList(uniqueLanguageList as string[]);
+    const objectOfLanguages = uniqueLanguageList.map((language) => ({
+      value: language as string,
+      label: language as string,
+    }));
+    setObjectOfLanguages(objectOfLanguages);
   }, [songList]);
 
   return (
@@ -80,14 +87,39 @@ const SearchFilterTags = () => {
         options={objectOfKeys}
         placeholder={<GiGClef />}
         isClearable={true}
+        theme={(theme) => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            primary: "gray",
+            primary50: "#d1d1d1",
+            primary25: "#f5f5f5",
+          },
+        })}
+        value={objectOfKeys.find((option) => option.value === selectedKey)}
+        onChange={(e) => {
+          setSelectedKey(e?.value ?? null);
+        }}
       />
       <Select
-        options={uniqueLanguageList.map((language) => ({
-          value: language.toLowerCase(),
-          label: language,
-        }))}
+        options={objectOfLanguages}
         placeholder={<GrLanguage />}
         isClearable={true}
+        theme={(theme) => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            primary: "gray",
+            primary50: "#d1d1d1",
+            primary25: "#f5f5f5",
+          },
+        })}
+        value={objectOfLanguages?.find(
+          (option) => option.value === selectedLanguage,
+        )}
+        onChange={(e) => {
+          setSelectedLanguage(e?.value ?? null);
+        }}
       />
     </div>
   );

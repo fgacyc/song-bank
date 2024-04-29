@@ -5,12 +5,16 @@ import { type Song } from "@prisma/client";
 
 interface SearchBandProps {
   showBand: boolean | undefined;
+  searchString: string;
+  songList: Song[];
   filteredSongList: Song[];
   channelProfile: string;
 }
 
 const SearchBand: React.FC<SearchBandProps> = ({
   showBand,
+  searchString,
+  songList,
   filteredSongList,
   channelProfile,
 }) => {
@@ -55,8 +59,15 @@ const SearchBand: React.FC<SearchBandProps> = ({
                 {
                   [
                     ...new Set(
-                      filteredSongList
-                        .filter((items) => items.album)
+                      songList
+                        .filter((items) =>
+                          items
+                            .original_band!.toLowerCase()
+                            .replace(/ /g, "")
+                            .includes(
+                              searchString.toLowerCase().replace(/ /g, ""),
+                            ),
+                        )
                         .map((items) => items.album),
                     ),
                   ].length
@@ -64,7 +75,17 @@ const SearchBand: React.FC<SearchBandProps> = ({
                 albums
               </p>
               <p className="text-sm text-slate-500">
-                {filteredSongList.length} songs
+                {
+                  [
+                    ...songList.filter((items) =>
+                      items
+                        .original_band!.toLowerCase()
+                        .replace(/ /g, "")
+                        .includes(searchString.toLowerCase().replace(/ /g, "")),
+                    ),
+                  ].length
+                }{" "}
+                songs
               </p>
             </div>
           </Link>
