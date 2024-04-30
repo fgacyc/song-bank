@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { IoIosArrowForward } from "react-icons/io";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 interface SongBreadcrumbProps {
   name: string | undefined;
@@ -8,40 +8,53 @@ interface SongBreadcrumbProps {
   original_band: string;
 }
 
+const icon = (
+  <>
+    <div className="hidden h-[90%] items-center justify-center sm:flex">
+      <MdKeyboardArrowRight />
+    </div>
+    <div className="flex h-full items-center text-xs sm:hidden ">/</div>
+  </>
+);
+
 const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
   name,
   album,
   original_band,
 }) => {
   return (
-    <div className="hidden items-end gap-2 rounded-lg border-2 px-3 py-1 sm:flex">
+    <div className="flex h-[35px] items-end gap-2 truncate rounded-lg border-2  px-3">
       <Link
         href={"/search"}
-        className="text-neutral-500 decoration-1 hover:underline"
+        className="flex h-full items-center text-xs text-neutral-500 decoration-1 hover:underline sm:text-sm md:text-base"
       >
         Home
       </Link>
-      <IoIosArrowForward className="pb-1" />
+      {icon}
       <Link
         href={`/band/${original_band.toLowerCase().replace(/ /g, "-")}`}
-        className="text-neutral-500 decoration-1 hover:underline"
+        className="flex h-full items-center text-xs text-neutral-500 decoration-1 hover:underline sm:text-sm md:text-base"
       >
         {original_band}
       </Link>
 
       {album && (
         <>
-          <IoIosArrowForward className="pb-1" />
+          {icon}
           <Link
             href={`/album/${album.toLowerCase().replace(/ /g, "-")}`}
-            className="text-neutral-500 decoration-1 hover:underline"
+            className="flex h-full items-center text-xs text-neutral-500 decoration-1 hover:underline sm:text-sm md:text-base"
           >
             {album}
           </Link>
         </>
       )}
-      <IoIosArrowForward className="pb-1" />
-      <span>{name}</span>
+      <div className="hidden h-full items-end justify-center gap-2 sm:flex">
+        {icon}
+        <div className="flex h-full items-center sm:text-sm md:text-base">
+          {name}
+        </div>
+      </div>
     </div>
   );
 };

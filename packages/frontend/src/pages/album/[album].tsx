@@ -80,7 +80,7 @@ const Album = () => {
             filteredSongList ? filteredSongList[0]?.original_band : "Band"
           }
         />
-        <div className="block gap-5 sm:pt-5 md:flex">
+        <div className="block gap-5 pt-5 md:flex">
           <AlbumDetails
             albumCoverImage={albumCoverImage}
             filteredSongList={filteredSongList}

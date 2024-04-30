@@ -124,7 +124,7 @@ const Band = () => {
           </title>
         </Head>
         <BandBreadcrumb original_band={filteredSongList[0]!.original_band!} />
-        <div className="flex flex-col gap-5 pb-5 sm:pt-5 md:flex-row">
+        <div className="flex flex-col gap-5 py-5 md:flex-row">
           <div className="flex w-full flex-col gap-5 md:w-fit">
             <BandDetails
               channelProfile={channelProfile}
