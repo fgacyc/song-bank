@@ -28,7 +28,7 @@ const IndexSearchBar = () => {
           <RiSearch2Line />
           <input
             autoFocus
-            placeholder="Search"
+            placeholder="Search songs, albums, bands..."
             className="w-full ps-2"
             value={searchString}
             onChange={(e) => {
