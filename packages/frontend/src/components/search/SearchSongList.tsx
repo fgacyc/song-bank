@@ -24,7 +24,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   return (
     <>
       {searchString.trim() !== "" && filteredSongList.length !== 0 && (
-        <h1 className="flex items-center pl-3 text-lg font-semibold sm:pl-1">
+        <h1 className="flex items-center py-3 pl-3 text-lg font-semibold sm:py-0 sm:pl-1">
           {(showBand! || showAlbum) && (
             <span>
               Songs from{" "}
@@ -34,7 +34,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
               <span className="text-sm font-normal text-neutral-500">-</span>
             </span>
           )}
-          <span className="pt-1 text-sm font-normal text-neutral-500">
+          <span className="pl-1 pt-1 text-sm font-normal text-neutral-500">
             {filteredSongList.length}{" "}
             {filteredSongList.length > 1 ? "results" : "result"}
           </span>

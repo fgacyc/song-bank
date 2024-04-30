@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const LoadingList = () => {
   return (
-    <div className="flex flex-col gap-5 truncate rounded-lg border-2 p-5 sm:flex-row">
+    <div className="flex flex-col gap-5 truncate border-b p-5 pb-7 sm:flex-row sm:rounded-lg sm:border-2 sm:pb-5">
       <div className="relative h-[30dvh] w-full overflow-hidden sm:h-[110px] sm:w-[200px] sm:min-w-[200px] sm:rounded md:h-[140px] md:w-[250px] md:min-w-[250px] lg:h-[165px] lg:w-[300px] lg:min-w-[300px]">
         <Skeleton height={"100%"} />
       </div>
@@ -31,7 +31,7 @@ const LoadingList = () => {
 
 const SearchLoading = () => {
   return (
-    <div className="flex flex-col gap-3 border p-5">
+    <div className="flex flex-col gap-3 border sm:p-5">
       {new Array(7).fill(null).map((_, i) => (
         <LoadingList key={i} />
       ))}

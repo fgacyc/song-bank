@@ -203,7 +203,7 @@ const Search = () => {
         <SearchLoading />
       ) : (
         <div className="flex gap-5 sm:h-fit sm:p-5">
-          <div className="flex w-full flex-col gap-3">
+          <div className="flex w-full flex-col sm:gap-3">
             <SearchBand
               showBand={showBand}
               searchString={searchString}
