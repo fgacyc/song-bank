@@ -23,8 +23,8 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   const [activeList, setActiveList] = useState(-1);
   return (
     <>
-      {searchString !== "" && (
-        <h1 className="flex items-center gap-1 pl-3 text-lg font-semibold sm:pl-1">
+      {searchString.trim() !== "" && filteredSongList.length !== 0 && (
+        <h1 className="flex items-center pl-3 text-lg font-semibold sm:pl-1">
           {(showBand! || showAlbum) && (
             <span>
               Songs from{" "}

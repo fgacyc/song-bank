@@ -14,6 +14,7 @@ import SearchAlbum from "@/components/search/SearchAlbum";
 import SearchSongList from "@/components/search/SearchSongList";
 import SearchAlbumList from "@/components/search/SearchAlbumList";
 import SearchLoading from "@/components/search/SearchLoading";
+import { MdOutlineSearchOff } from "react-icons/md";
 
 const Search = () => {
   const [mounted, setMounted] = useState(false);
@@ -223,6 +224,12 @@ const Search = () => {
               getYoutubeVideoId={getYoutubeVideoId}
               searchString={searchString}
             />
+            {filteredSongList.length == 0 && (
+              <div className="flex h-[75dvh] items-center justify-center gap-2 p-5 text-neutral-500">
+                <MdOutlineSearchOff className="h-[30px] w-[30px]" />
+                <div className="text-lg">No result found</div>
+              </div>
+            )}
           </div>
           <SearchAlbumList
             showBand={showBand}
