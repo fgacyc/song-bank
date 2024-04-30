@@ -23,12 +23,21 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   const [activeList, setActiveList] = useState(-1);
   return (
     <>
-      {(showBand! || showAlbum) && (
-        <h1 className="pl-3 text-lg font-semibold sm:pl-1">
-          Songs from{" "}
-          {showAlbum
-            ? filteredSongList[0]?.album
-            : filteredSongList[0]?.original_band}
+      {searchString !== "" && (
+        <h1 className="flex items-center gap-1 pl-3 text-lg font-semibold sm:pl-1">
+          {(showBand! || showAlbum) && (
+            <span>
+              Songs from{" "}
+              {showAlbum
+                ? filteredSongList[0]?.album
+                : filteredSongList[0]?.original_band}{" "}
+              <span className="text-sm font-normal text-neutral-500">-</span>
+            </span>
+          )}
+          <span className="pt-1 text-sm font-normal text-neutral-500">
+            {filteredSongList.length}{" "}
+            {filteredSongList.length > 1 ? "results" : "result"}
+          </span>
         </h1>
       )}
       {filteredSongList.map((items, i) => {

@@ -33,7 +33,7 @@ const BandDetails: React.FC<BandDetailsProps> = ({
             </div>
           </div>
         )}
-        <div className="text-wrap pt-4">
+        <div className="text-wrap">
           <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
           <p className="w-full text-3xl font-semibold">
             {filteredSongList[0]?.original_band}
