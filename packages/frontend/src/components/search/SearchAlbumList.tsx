@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { type Song } from "@prisma/client";
+import { MdAlbum } from "react-icons/md";
 
 interface SearchAlbumListProps {
   showBand: boolean | undefined;
@@ -35,28 +36,33 @@ const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
               key={i}
               className={`${
                 activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
-              } rounded-lg border-2 p-3 px-5`}
+              } flex items-center rounded-lg border-2 p-3 px-5`}
               onMouseEnter={() => setActiveList(i)}
               onMouseLeave={() => setActiveList(-1)}
             >
-              <h1 className="font-semibold">{album}</h1>
-              <p className="text-sm text-slate-500">
-                {
-                  songList.filter((items) => {
-                    return (
-                      items
-                        .original_band!.toLowerCase()
-                        .replace(/ /g, "")
-                        .includes(
-                          searchString.toLowerCase().replace(/ /g, ""),
-                        ) &&
-                      items.album?.toLowerCase().replace(/ /g, "") ===
-                        album?.toLowerCase().replace(/ /g, "")
-                    );
-                  }).length
-                }{" "}
-                songs
-              </p>
+              <div className="h-full pe-4">
+                <MdAlbum className="h-full w-[36px]" />
+              </div>
+              <div>
+                <h1 className="font-semibold">{album}</h1>
+                <p className="text-sm text-slate-500">
+                  {
+                    songList.filter((items) => {
+                      return (
+                        items
+                          .original_band!.toLowerCase()
+                          .replace(/ /g, "")
+                          .includes(
+                            searchString.toLowerCase().replace(/ /g, ""),
+                          ) &&
+                        items.album?.toLowerCase().replace(/ /g, "") ===
+                          album?.toLowerCase().replace(/ /g, "")
+                      );
+                    }).length
+                  }{" "}
+                  songs
+                </p>
+              </div>
             </Link>
           ))}
         </div>
