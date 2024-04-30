@@ -36,46 +36,6 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
         const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
         const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
 
-        let showLyrics = false;
-        if (
-          searchString.trim() !== "" &&
-          !items
-            .name!.toLowerCase()
-            .replace(/[', ]/g, "")
-            .includes(searchString.toLowerCase().replace(/[', ]/g, "")) &&
-          items
-            .chord_lyrics!.toLowerCase()
-            .replace(/\[.*?\]|\n| /g, " ")
-            .includes(searchString.toLowerCase().trim()) &&
-          items
-            .chord_lyrics!.toLowerCase()
-            .replace(/\[.*?\]|\n| /g, " ")
-            .split(" ")
-            .filter(
-              (word) =>
-                word && searchString.toLowerCase().trim().includes(word),
-            )
-        ) {
-          showLyrics = true;
-        }
-
-        console.log(
-          items
-            .chord_lyrics!.toLowerCase()
-            .replace(/\[.*?\]|\n| /g, " ")
-            .includes(searchString.toLowerCase().trim()),
-        );
-        console.log(
-          items
-            .chord_lyrics!.toLowerCase()
-            .replace(/\[.*?\]|\n| /g, " ")
-            .split(" ")
-            .filter(
-              (word) =>
-                word && searchString.toLowerCase().trim().includes(word),
-            ),
-        );
-
         return (
           <Link
             key={i}
@@ -98,7 +58,10 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
             </div>
             <div className="flex flex-col gap-2 truncate pb-3 pl-3 sm:pb-0 sm:pl-0">
               <h1 className="text-start text-lg font-semibold md:text-2xl">
-                {items.name}
+                {items.name}{" "}
+                {items.alt_name && items.alt_name !== "-" && (
+                  <span className="font-thin">{items.alt_name}</span>
+                )}
               </h1>
               <div className="flex flex-col gap-1 text-start text-xs text-slate-500 md:text-sm">
                 <p>
@@ -107,7 +70,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                       <span>
                         By{" "}
                         <button
-                          className="md:font-semibold md:text-black md:hover:underline"
+                          className="text-black underline lg:font-semibold lg:no-underline lg:hover:underline"
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -128,7 +91,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     <span>
                       on album{" "}
                       <button
-                        className="md:font-semibold md:text-black md:hover:underline"
+                        className="text-black underline lg:font-semibold lg:no-underline lg:hover:underline"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -159,11 +122,30 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     </span>
                   </p>
                 )}
-                {showLyrics && (
-                  <div className="font-semibold text-green-600">
-                    Lyrics matched
-                  </div>
-                )}
+                {searchString.trim() !== "" &&
+                  !items
+                    .name!.toLowerCase()
+                    .replace(/[', ]/g, "")
+                    .includes(
+                      searchString.toLowerCase().replace(/[', ]/g, ""),
+                    ) &&
+                  items
+                    .chord_lyrics!.toLowerCase()
+                    .replace(/\[.*?\]|\n| /g, " ")
+                    .includes(searchString.toLowerCase().trim()) &&
+                  items
+                    .chord_lyrics!.toLowerCase()
+                    .replace(/\[.*?\]|\n| /g, " ")
+                    .split(" ")
+                    .filter(
+                      (word) =>
+                        word &&
+                        searchString.toLowerCase().trim().includes(word),
+                    ) && (
+                    <div className="font-semibold text-green-600">
+                      Lyrics matched
+                    </div>
+                  )}
               </div>
             </div>
           </Link>
@@ -172,12 +154,5 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
     </>
   );
 };
-
-{
-  /* <div key={i}>
-...{words[wordIndex - 1]} {words[wordIndex]}{" "}
-{words[wordIndex + 1]}...
-</div> */
-}
 
 export default SearchSongList;

@@ -46,7 +46,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                   className="rounded-md object-cover"
                 />
               </div>
-              <div className="lg:pt-2 xl:pt-0">
+              <div className="truncate lg:pt-2 xl:pt-0">
                 <h1 className="truncate text-sm md:text-base lg:text-lg">
                   <span className="font-semibold">{items.name}</span>{" "}
                   {items.alt_name && items.alt_name.trim() !== "-" && (
@@ -80,7 +80,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                     </span>
                   )}
                   {items.song_language && (
-                    <span className="flex gap-1 truncate text-xs text-neutral-500 lg:text-sm">
+                    <span className="flex gap-1 text-xs text-neutral-500 lg:text-sm">
                       Language :
                       <span className="flex gap-1">
                         {items.song_language.split(" + ").map((lang, j) => {
