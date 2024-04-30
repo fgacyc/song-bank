@@ -95,6 +95,18 @@ const Search = () => {
     })();
   }, [filteredSongList]);
 
+  // useMemo(() => {
+  //   const test = songList.filter((items) => {
+  //     const matchingLyrics = items.chord_lyrics
+  //       ?.toLowerCase()
+  //       .replace(/\[.*?\]|\n| /g, " ")
+  //       .includes(searchString.toLowerCase().trim());
+  //     return matchingLyrics;
+  //   });
+
+  //   console.log(test);
+  // }, [songList, searchString]);
+
   useMemo(() => {
     const filteredSongListWithoutFilterTags = songList.filter((items) => {
       const songName = items.name?.concat(
@@ -113,23 +125,23 @@ const Search = () => {
         ?.toLowerCase()
         .replace(/ /g, "")
         .includes(searchString.toLowerCase().replace(/ /g, ""));
+      const matchingLyrics =
+        items
+          .chord_lyrics!.toLowerCase()
+          .replace(/\[.*?\]|\n| /g, " ")
+          .includes(searchString.toLowerCase().trim()) &&
+        items
+          .chord_lyrics!.toLowerCase()
+          .replace(/\[.*?\]|\n| /g, " ")
+          .split(" ")
+          .filter(
+            (word) => word && searchString.toLowerCase().trim().includes(word),
+          );
       return (
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        matchingSongName || matchingBand || matchingAlbum
+        matchingSongName || matchingBand || matchingAlbum || matchingLyrics
       );
     });
-
-    // TODO: lyrics
-    // const filteredSongListByLyrics = matchingLyrics.filter((lyrics) => {
-    //   return !filteredSongList.some((songs) => songs.id === lyrics.id);
-    // });
-    // setFilteredSongListByLyrics(filteredSongListByLyrics);
-
-    //   if (filteredSongListByLyrics.length > 0) {
-    //     setShowLyrics(true);
-    //   } else {
-    //     setShowLyrics(false);
-    //   }
 
     let filteredSongList = filteredSongListWithoutFilterTags;
     if (selectedKey && selectedLanguage) {

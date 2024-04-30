@@ -5,9 +5,9 @@ import {
   type SetStateAction,
   type MutableRefObject,
 } from "react";
-import { IoIosClose } from "react-icons/io";
 import { RiSearch2Line } from "react-icons/ri";
 import { Form, Formik, type FormikProps, useFormikContext } from "formik";
+import { AiOutlineClose } from "react-icons/ai";
 
 interface InputProps {
   setSearchString: Dispatch<SetStateAction<string>>;
@@ -80,7 +80,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               }}
               className="flex h-full w-[40px] items-center justify-center rounded-e-md border-s"
             >
-              {!searchString ? <RiSearch2Line /> : <IoIosClose />}
+              {!searchString ? <RiSearch2Line /> : <AiOutlineClose />}
             </button>
           </Form>
         )}

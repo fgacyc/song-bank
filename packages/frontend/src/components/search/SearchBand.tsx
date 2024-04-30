@@ -60,13 +60,14 @@ const SearchBand: React.FC<SearchBandProps> = ({
                   [
                     ...new Set(
                       songList
-                        .filter((items) =>
-                          items
-                            .original_band!.toLowerCase()
-                            .replace(/ /g, "")
-                            .includes(
-                              searchString.toLowerCase().replace(/ /g, ""),
-                            ),
+                        .filter(
+                          (items) =>
+                            items
+                              .original_band!.toLowerCase()
+                              .replace(/ /g, "")
+                              .includes(
+                                searchString.toLowerCase().replace(/ /g, ""),
+                              ) && items.album,
                         )
                         .map((items) => items.album),
                     ),
@@ -74,7 +75,7 @@ const SearchBand: React.FC<SearchBandProps> = ({
                 }{" "}
                 albums
               </p>
-              <p className="text-sm text-slate-500">
+              <p className="text-xs text-slate-500 md:text-sm">
                 {
                   [
                     ...songList.filter((items) =>

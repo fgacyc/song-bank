@@ -35,6 +35,47 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
         const originalYoutubeUrl = items.original_youtube_url ?? "";
         const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
         const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+
+        let showLyrics = false;
+        if (
+          searchString.trim() !== "" &&
+          !items
+            .name!.toLowerCase()
+            .replace(/[', ]/g, "")
+            .includes(searchString.toLowerCase().replace(/[', ]/g, "")) &&
+          items
+            .chord_lyrics!.toLowerCase()
+            .replace(/\[.*?\]|\n| /g, " ")
+            .includes(searchString.toLowerCase().trim()) &&
+          items
+            .chord_lyrics!.toLowerCase()
+            .replace(/\[.*?\]|\n| /g, " ")
+            .split(" ")
+            .filter(
+              (word) =>
+                word && searchString.toLowerCase().trim().includes(word),
+            )
+        ) {
+          showLyrics = true;
+        }
+
+        console.log(
+          items
+            .chord_lyrics!.toLowerCase()
+            .replace(/\[.*?\]|\n| /g, " ")
+            .includes(searchString.toLowerCase().trim()),
+        );
+        console.log(
+          items
+            .chord_lyrics!.toLowerCase()
+            .replace(/\[.*?\]|\n| /g, " ")
+            .split(" ")
+            .filter(
+              (word) =>
+                word && searchString.toLowerCase().trim().includes(word),
+            ),
+        );
+
         return (
           <Link
             key={i}
@@ -118,35 +159,11 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     </span>
                   </p>
                 )}
-
-                {/* TODO: lyrics */}
-                {/* {searchString.trim() !== "" &&
-                  lyrics
-                    ?.split(/[ \n]/g)
-                    .filter(
-                      (words) =>
-                        words.toLowerCase() ===
-                          searchString.trim().toLowerCase() &&
-                        !words.includes("[") &&
-                        !words.includes("]"),
-                    ) && (
-                    <>
-                      ...
-                      {lyrics
-                        .split(/[ \n]/g)
-                        .filter(
-                          (words) =>
-                            words.toLowerCase() ===
-                              searchString.toLowerCase() &&
-                            !words.includes("[") &&
-                            !words.includes("]"),
-                        )
-                        .map((items, i) => {
-                          return <div key={i}>{items}</div>;
-                        })}
-                      ...
-                    </>
-                  )} */}
+                {showLyrics && (
+                  <div className="font-semibold text-green-600">
+                    Lyrics matched
+                  </div>
+                )}
               </div>
             </div>
           </Link>
@@ -156,19 +173,11 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   );
 };
 
-const lyrics = `
-[Verse]
-Yesus Tuhan di tinggikan
-Di muliakan dan naik ke surga
-Dia berikan Roh Kudus-Nya
-Menguatkan dan menolong s'lalu
-Sungguh ku rindu
-Bersekutu dengan-Mu s'lamanya
-[Chorus]
-Allah Roh Kudus jamah hatiku
-Dengan urapan-Mu
-Rindu selalu dekat dengan-Mu
-Tinggal di hadirat-Mu
-`;
+{
+  /* <div key={i}>
+...{words[wordIndex - 1]} {words[wordIndex]}{" "}
+{words[wordIndex + 1]}...
+</div> */
+}
 
 export default SearchSongList;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { type Song } from "@prisma/client";
+import { MdAlbum } from "react-icons/md";
 
 interface SearchAlbumProps {
   showAlbum: boolean | undefined;
@@ -35,13 +36,18 @@ const SearchAlbum: React.FC<SearchAlbumProps> = ({
             }}
           >
             <div className="flex w-full items-center justify-between ">
-              <div>
-                <h1 className="text-lg font-semibold md:text-2xl">
-                  {filteredSongList[0]?.album}
-                </h1>
-                <p className="text-xs text-slate-500 md:text-sm">
-                  {filteredSongList[0]?.original_band}
-                </p>
+              <div className="item-center flex h-full flex-row justify-center">
+                <div className="h-full pe-5">
+                  <MdAlbum className="h-full w-[36px]" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-semibold md:text-2xl">
+                    {filteredSongList[0]?.album}
+                  </h1>
+                  <p className="text-xs text-slate-500 md:text-sm">
+                    {filteredSongList[0]?.original_band}
+                  </p>
+                </div>
               </div>
               <p className="text-xs text-slate-500 md:text-sm">
                 {
