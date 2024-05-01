@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { RiSearch2Line } from "react-icons/ri";
 import { useRouter } from "next/router";
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 const IndexSearchBar = () => {
   const [searchString, setSearchString] = useState("");
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="flex h-[50dvh] w-full flex-col items-center justify-end">
@@ -24,11 +25,18 @@ const IndexSearchBar = () => {
           priority={true}
           className="pb-10"
         />
-        <div className="flex w-[75%] max-w-[390px] items-center justify-center rounded-full border px-3 py-1 duration-500">
+        <div
+          className="flex w-[75%] max-w-[390px] items-center justify-center rounded-full border px-3 py-1 duration-500"
+          onClick={() => {
+            inputRef?.current?.focus();
+          }}
+        >
           <RiSearch2Line />
+
           <input
+            ref={inputRef}
             autoFocus
-            placeholder="Search songs, albums, bands..."
+            placeholder="Search for songs, albums, bands..."
             className="w-full ps-2"
             value={searchString}
             onChange={(e) => {

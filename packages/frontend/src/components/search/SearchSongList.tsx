@@ -24,21 +24,23 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   return (
     <>
       {searchString.trim() !== "" && filteredSongList.length !== 0 && (
-        <h1 className="flex items-center py-3 pl-3 text-lg font-semibold sm:py-0 sm:pl-1">
+        <div className="flex items-center gap-1 truncate py-3 pl-3 text-lg font-semibold sm:py-0 sm:pl-1">
           {(showBand! || showAlbum) && (
-            <span>
-              Songs from{" "}
-              {showAlbum
-                ? filteredSongList[0]?.album
-                : filteredSongList[0]?.original_band}{" "}
-              <span className="text-sm font-normal text-neutral-500">-</span>
-            </span>
+            <>
+              <h1>
+                Songs from{" "}
+                {showAlbum
+                  ? filteredSongList[0]?.album
+                  : filteredSongList[0]?.original_band}{" "}
+              </h1>
+              <p className="h-[60%] text-sm font-normal text-neutral-500">-</p>
+            </>
           )}
-          <span className="pl-1 pt-1 text-sm font-normal text-neutral-500">
+          <p className="h-[60%] text-sm font-normal text-neutral-500">
             {filteredSongList.length}{" "}
             {filteredSongList.length > 1 ? "results" : "result"}
-          </span>
-        </h1>
+          </p>
+        </div>
       )}
       {filteredSongList.map((items, i) => {
         const originalYoutubeUrl = items.original_youtube_url ?? "";
