@@ -46,24 +46,6 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
                   </div>
                 </div>
               );
-            } else {
-              return (
-                <div
-                  key={i}
-                  className="relative flex items-center justify-center overflow-hidden"
-                >
-                  <div className="relative h-[135%] w-full">
-                    <Image
-                      src={"/img/logo.png"}
-                      alt={items.name!}
-                      fill={true}
-                      priority={true}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-              );
             }
           })}
         </div>
