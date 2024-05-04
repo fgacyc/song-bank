@@ -31,6 +31,7 @@ model Song {
 
     file_sequencer Sequencer[]
     tags           Tag[]
+    Favorite       Favorite[]
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -46,8 +47,24 @@ model Tag {
 model Sequencer {
     id     String @id @unique @default(uuid())
     url    String @db.VarChar
+    // TODO: change variable
     songId String @db.VarChar
     Song   Song?  @relation(fields: [songId], references: [id])
 
     @@index([songId])
+}
+
+model SearchHistory {
+    id               Int      @id @default(autoincrement())
+    user_id          String
+    search_content   String
+    search_timestamp DateTime @default(now())
+}
+
+model Favorite {
+    id                 Int      @id @default(autoincrement())
+    song_id            String
+    user_id            String
+    favorite_timestamp DateTime @default(now())
+    song               Song?    @relation(fields: [song_id], references: [id])
 }
