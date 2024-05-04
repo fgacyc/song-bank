@@ -14,7 +14,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
   getYoutubeVideoId,
 }) => {
   const router = useRouter();
-  const [activeAlbum, setActiveAlbum] = useState<number | null>(null);
+  const [activeAlbum, setActiveAlbum] = useState(-1);
   return (
     <div className="w-full pb-5 pt-5 md:pt-0">
       <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-2">
@@ -33,7 +33,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                 setActiveAlbum(i);
               }}
               onMouseLeave={() => {
-                setActiveAlbum(null);
+                setActiveAlbum(-1);
               }}
             >
               <div className="relative w-[100px] min-w-[100px] sm:h-[100px] sm:w-[200px] sm:min-w-[200px] md:h-[105px] md:w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]">
