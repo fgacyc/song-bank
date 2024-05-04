@@ -1,10 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { type Dispatch, type SetStateAction, useRef } from "react";
 import Image from "next/image";
 import { RiSearch2Line } from "react-icons/ri";
 import { useRouter } from "next/router";
 
-const IndexSearchBar = () => {
-  const [searchString, setSearchString] = useState("");
+interface IndexSearchBarProps {
+  searchString: string;
+  setSearchString: Dispatch<SetStateAction<string>>;
+  setShowAutoComplete: Dispatch<SetStateAction<boolean>>;
+}
+
+const IndexSearchBar: React.FC<IndexSearchBarProps> = ({
+  searchString,
+  setSearchString,
+  setShowAutoComplete,
+}) => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,16 +41,16 @@ const IndexSearchBar = () => {
           }}
         >
           <RiSearch2Line />
-
           <input
             ref={inputRef}
             autoFocus
-            placeholder="Search for songs, albums, bands..."
+            placeholder="Search songs..."
             className="w-full ps-2"
             value={searchString}
             onChange={(e) => {
               setSearchString(e.target.value);
               localStorage.setItem("song-search", e.target.value.trim());
+              setShowAutoComplete(true);
             }}
           />
         </div>
