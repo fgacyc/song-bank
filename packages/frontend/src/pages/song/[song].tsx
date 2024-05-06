@@ -8,12 +8,15 @@ import SongKeyTransposition from "@/components/dynamic/song/SongKeyTransposition
 import SongLyrics from "@/components/dynamic/song/SongLyrics";
 import SongLoading from "@/components/dynamic/song/SongLoading";
 import Layout from "@/components/layout/Layout";
+import ChordSheetJS from "chordsheetjs";
 
 const DynamicSong = () => {
   const router = useRouter();
   const [songList, setSongList] = useState<Song[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
-  const lyricsRef = useRef<HTMLParagraphElement | null>(null);
+  const chordLyricsRef = useRef<HTMLParagraphElement | null>(null);
+  const [filteredChordLyrics, setFilteredChordLyrics] = useState("");
+  const [selectedKey, setSelectedKey] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -43,7 +46,38 @@ const DynamicSong = () => {
           router.query.song.toString(),
     );
     setFilteredSongList(filteredSongList);
+    setSelectedKey(filteredSongList[0]?.original_key ?? "");
   }, [songList, router.query.song]);
+
+  useEffect(() => {
+    const parser = new ChordSheetJS.ChordProParser();
+    const parsedChordLyrics = parser.parse(
+      filteredSongList[0]?.chord_lyrics
+        ? filteredSongList[0]?.chord_lyrics
+        : "",
+    );
+    const keys = [
+      "C",
+      "C#",
+      "D",
+      "D#",
+      "E",
+      "F",
+      "F#",
+      "G",
+      "G#",
+      "A",
+      "A#",
+      "B",
+    ];
+    const original_key = filteredSongList[0]?.original_key;
+    const steps = keys.indexOf(selectedKey) - keys.indexOf(original_key ?? "");
+    const transposedChordLyrics = parsedChordLyrics.transpose(steps);
+
+    const formatter = new ChordSheetJS.ChordProFormatter();
+    const formattedChordLyrics = formatter.format(transposedChordLyrics);
+    setFilteredChordLyrics(formattedChordLyrics);
+  }, [filteredSongList, selectedKey]);
 
   const getVideoId = (url: string) => {
     const params = new URLSearchParams(new URL(url).search);
@@ -76,10 +110,14 @@ const DynamicSong = () => {
                   <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
                     {items.name}
                   </h1>
-                  <SongKeyTransposition />
+                  <SongKeyTransposition
+                    originalKey={items.original_key}
+                    selectedKey={selectedKey}
+                    setSelectedKey={setSelectedKey}
+                  />
                   <SongLyrics
-                    lyricsRef={lyricsRef}
-                    chordLyrics={items.chord_lyrics ? items.chord_lyrics : ""}
+                    chordLyricsRef={chordLyricsRef}
+                    chordLyrics={filteredChordLyrics}
                   />
                 </div>
               </div>
