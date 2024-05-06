@@ -3,7 +3,6 @@ import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
-
 import "@/styles/globals.css";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {

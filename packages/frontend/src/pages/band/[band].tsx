@@ -1,5 +1,4 @@
 import React, { useEffect, useState, type ReactElement } from "react";
-import DynamicLayout from "@/components/dynamic/dynamic-layout/DynamicLayout";
 import BandBreadcrumb from "@/components/dynamic/band/BandBreadcrumb";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -8,6 +7,7 @@ import { type Song } from "@prisma/client";
 import BandSongList from "@/components/dynamic/band/BandSongList";
 import BandAlbumList from "@/components/dynamic/band/BandAlbumList";
 import BandLoading from "@/components/dynamic/band/BandLoading";
+import Layout from "@/components/layout/Layout";
 
 const Band = () => {
   const router = useRouter();
@@ -123,24 +123,26 @@ const Band = () => {
               : "Song Bank"}
           </title>
         </Head>
-        <BandBreadcrumb original_band={filteredSongList[0]!.original_band!} />
-        <div className="flex flex-col gap-5 py-5 md:flex-row">
-          <div className="flex w-full flex-col gap-5 md:w-fit">
-            <BandDetails
-              channelProfile={channelProfile}
-              router={router}
-              filteredSongList={filteredSongList}
+        <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
+          <BandBreadcrumb original_band={filteredSongList[0]!.original_band!} />
+          <div className="flex flex-col gap-5 md:flex-row">
+            <div className="flex w-full flex-col gap-5 md:w-fit">
+              <BandDetails
+                channelProfile={channelProfile}
+                router={router}
+                filteredSongList={filteredSongList}
+                uniqueAlbumList={uniqueAlbumList}
+              />
+              <BandSongList
+                filteredSongListWithoutAlbum={filteredSongListWithoutAlbum}
+              />
+            </div>
+            <BandAlbumList
               uniqueAlbumList={uniqueAlbumList}
-            />
-            <BandSongList
-              filteredSongListWithoutAlbum={filteredSongListWithoutAlbum}
+              filteredSongListWithAlbum={filteredSongListWithAlbum}
+              getYoutubeVideoId={getYoutubeVideoId}
             />
           </div>
-          <BandAlbumList
-            uniqueAlbumList={uniqueAlbumList}
-            filteredSongListWithAlbum={filteredSongListWithAlbum}
-            getYoutubeVideoId={getYoutubeVideoId}
-          />
         </div>
       </>
     );
@@ -150,5 +152,5 @@ const Band = () => {
 export default Band;
 
 Band.getLayout = function getLayout(page: ReactElement) {
-  return <DynamicLayout>{page}</DynamicLayout>;
+  return <Layout>{page}</Layout>;
 };

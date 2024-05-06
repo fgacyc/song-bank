@@ -1,5 +1,4 @@
 import React, { useState, type ReactElement, useEffect, useRef } from "react";
-import DynamicLayout from "@/components/dynamic/dynamic-layout/DynamicLayout";
 import { useRouter } from "next/router";
 import SongBreadcrumb from "@/components/dynamic/song/SongBreadcrumb";
 import Head from "next/head";
@@ -8,6 +7,7 @@ import SongDetails from "@/components/dynamic/song/SongDetails";
 import SongKeyTransposition from "@/components/dynamic/song/SongKeyTransposition";
 import SongLyrics from "@/components/dynamic/song/SongLyrics";
 import SongLoading from "@/components/dynamic/song/SongLoading";
+import Layout from "@/components/layout/Layout";
 
 const DynamicSong = () => {
   const router = useRouter();
@@ -64,7 +64,7 @@ const DynamicSong = () => {
           const videoId = getVideoId(items.original_youtube_url ?? "");
           const embedUrl = `https://www.youtube.com/embed/${videoId}`;
           return (
-            <div key={i} className="flex flex-col gap-5">
+            <div key={i} className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
               <SongBreadcrumb
                 name={items.name!}
                 album={items.album}
@@ -94,5 +94,5 @@ const DynamicSong = () => {
 export default DynamicSong;
 
 DynamicSong.getLayout = function getLayout(page: ReactElement) {
-  return <DynamicLayout>{page}</DynamicLayout>;
+  return <Layout>{page}</Layout>;
 };

@@ -1,12 +1,12 @@
 import AlbumBreadcrumb from "@/components/dynamic/album/AlbumBreadcrumb";
 import AlbumDetails from "@/components/dynamic/album/AlbumDetails";
 import AlbumLoading from "@/components/dynamic/album/AlbumLoading";
-import DynamicLayout from "@/components/dynamic/dynamic-layout/DynamicLayout";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, type ReactElement } from "react";
 import { type Song } from "@prisma/client";
 import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
+import Layout from "@/components/layout/Layout";
 
 const Album = () => {
   const router = useRouter();
@@ -68,7 +68,7 @@ const Album = () => {
     <AlbumLoading />;
   } else {
     return (
-      <>
+      <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
         <Head>
           <title>
             {filteredSongList ? filteredSongList[0]?.album : "Song Bank"}
@@ -80,7 +80,7 @@ const Album = () => {
             filteredSongList ? filteredSongList[0]?.original_band : "Band"
           }
         />
-        <div className="block gap-5 pt-5 md:flex">
+        <div className="block gap-5 md:flex">
           <AlbumDetails
             albumCoverImage={albumCoverImage}
             filteredSongList={filteredSongList}
@@ -92,7 +92,7 @@ const Album = () => {
             getYoutubeVideoId={getYoutubeVideoId}
           />
         </div>
-      </>
+      </div>
     );
   }
 };
@@ -100,5 +100,5 @@ const Album = () => {
 export default Album;
 
 Album.getLayout = function getLayout(page: ReactElement) {
-  return <DynamicLayout>{page}</DynamicLayout>;
+  return <Layout>{page}</Layout>;
 };
