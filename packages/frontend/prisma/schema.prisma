@@ -67,4 +67,6 @@ model Favorite {
     user_id            String
     favorite_timestamp DateTime @default(now())
     song               Song?    @relation(fields: [song_id], references: [id])
+
+    @@index([song_id])
 }

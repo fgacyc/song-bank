@@ -2,7 +2,7 @@ import React, { useState, type ReactElement, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import SongBreadcrumb from "@/components/dynamic/song/SongBreadcrumb";
 import Head from "next/head";
-import { type Song } from "@prisma/client";
+import { type Tag, type Song, type Sequencer } from "@prisma/client";
 import SongDetails from "@/components/dynamic/song/SongDetails";
 import SongKeyTransposition from "@/components/dynamic/song/SongKeyTransposition";
 import SongLyrics from "@/components/dynamic/song/SongLyrics";
@@ -10,10 +10,12 @@ import SongLoading from "@/components/dynamic/song/SongLoading";
 import Layout from "@/components/layout/Layout";
 import ChordSheetJS from "chordsheetjs";
 
+type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
+
 const DynamicSong = () => {
   const router = useRouter();
-  const [songList, setSongList] = useState<Song[]>([]);
-  const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
+  const [songList, setSongList] = useState<SongType[]>([]);
+  const [filteredSongList, setFilteredSongList] = useState<SongType[]>([]);
   const chordLyricsRef = useRef<HTMLParagraphElement | null>(null);
   const [filteredChordLyrics, setFilteredChordLyrics] = useState("");
   const [selectedKey, setSelectedKey] = useState("");
@@ -28,7 +30,7 @@ const DynamicSong = () => {
           async (res) =>
             await res
               .json()
-              .then((result: Song[]) => {
+              .then((result: SongType[]) => {
                 setSongList(result);
                 setIsLoading(false);
               })
@@ -37,6 +39,10 @@ const DynamicSong = () => {
         .catch((err) => console.error(err));
     })();
   }, []);
+
+  useEffect(() => {
+    console.log(filteredSongList);
+  }, [filteredSongList]);
 
   useEffect(() => {
     const filteredSongList = songList.filter(

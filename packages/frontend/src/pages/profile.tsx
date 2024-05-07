@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import ProfileUserInfo from "@/components/profile/ProfileUserInfo";
 import ProfileSearchHistory from "@/components/profile/ProfileSearchHistory";
 import ProfileFavouriteSongs from "@/components/profile/ProfileFavouriteSongs";
+import Link from "next/link";
 
 const Profile = () => {
   const { user, isLoading } = useUser();
@@ -25,6 +26,12 @@ const Profile = () => {
       <ProfileUserInfo user={user} />
       <ProfileSearchHistory />
       <ProfileFavouriteSongs />
+      <Link
+        href={"/api/auth/logout"}
+        className="w-fit rounded border px-2 py-1"
+      >
+        Log Out
+      </Link>
     </div>
   );
 };

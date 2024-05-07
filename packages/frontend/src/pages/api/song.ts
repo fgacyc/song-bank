@@ -8,7 +8,9 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      const songList = await db.song.findMany();
+      const songList = await db.song.findMany({
+        include: { tags: true, file_sequencer: true },
+      });
       return res.status(200).json(songList);
     } catch (err) {
       console.error(err);

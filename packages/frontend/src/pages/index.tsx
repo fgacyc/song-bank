@@ -7,7 +7,7 @@ import {
 } from "react";
 import SearchBar from "@/components/home/SearchBar";
 import Layout from "@/components/layout/Layout";
-import { type Song } from "@prisma/client";
+import { type Tag, type Song } from "@prisma/client";
 import SearchFilterTags from "@/components/home/SearchFilterTags";
 import SearchBand from "@/components/home/SearchBand";
 import SearchAlbum from "@/components/home/SearchAlbum";
@@ -16,10 +16,12 @@ import SearchAlbumList from "@/components/home/SearchAlbumList";
 import SearchLoading from "@/components/home/SearchLoading";
 import { MdOutlineSearchOff } from "react-icons/md";
 
+export type SongType = Song & { tags: Tag[] };
+
 const Home = () => {
   const [mounted, setMounted] = useState(false);
-  const [songList, setSongList] = useState<Song[]>([]);
-  const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
+  const [songList, setSongList] = useState<SongType[]>([]);
+  const [filteredSongList, setFilteredSongList] = useState<SongType[]>([]);
   const [showBand, setShowBand] = useState<boolean | undefined>(false);
   const [showAlbum, setShowAlbum] = useState<boolean | undefined>(false);
   const [channelProfile, setChannelProfile] = useState("");
@@ -39,7 +41,7 @@ const Home = () => {
         .then(async (res) => {
           await res
             .json()
-            .then((result: Song[]) => {
+            .then((result: SongType[]) => {
               setSongList(result);
               setIsLoading(false);
             })
@@ -119,9 +121,19 @@ const Home = () => {
         .chord_lyrics!.toLowerCase()
         .replace(/\[.*?\]|\n| /g, " ")
         .includes(searchString.toLowerCase().trim());
+      const matchingTags = items.tags.some((tag) => {
+        return tag.content
+          .toLowerCase()
+          .includes(searchString.toLowerCase().trim());
+      });
+
       return (
+        matchingSongName ||
+        matchingBand ||
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        matchingSongName || matchingBand || matchingAlbum || matchingLyrics
+        matchingAlbum ||
+        matchingLyrics ||
+        matchingTags
       );
     });
 
