@@ -8,7 +8,7 @@ import SongKeyTransposition from "@/components/dynamic/song/SongKeyTransposition
 import SongLyrics from "@/components/dynamic/song/SongLyrics";
 import SongLoading from "@/components/dynamic/song/SongLoading";
 import Layout from "@/components/layout/Layout";
-import ChordSheetJS from "chordsheetjs";
+import { ChordProParser, ChordProFormatter } from "chordsheetjs";
 
 type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
@@ -41,10 +41,6 @@ const DynamicSong = () => {
   }, []);
 
   useEffect(() => {
-    console.log(filteredSongList);
-  }, [filteredSongList]);
-
-  useEffect(() => {
     const filteredSongList = songList.filter(
       (items) =>
         router.query.song &&
@@ -56,12 +52,13 @@ const DynamicSong = () => {
   }, [songList, router.query.song]);
 
   useEffect(() => {
-    const parser = new ChordSheetJS.ChordProParser();
+    const parser = new ChordProParser();
     const parsedChordLyrics = parser.parse(
       filteredSongList[0]?.chord_lyrics
         ? filteredSongList[0]?.chord_lyrics
         : "",
     );
+
     const keys = [
       "C",
       "C#",
@@ -76,12 +73,14 @@ const DynamicSong = () => {
       "A#",
       "B",
     ];
+
     const original_key = filteredSongList[0]?.original_key;
     const steps = keys.indexOf(selectedKey) - keys.indexOf(original_key ?? "");
     const transposedChordLyrics = parsedChordLyrics.transpose(steps);
 
-    const formatter = new ChordSheetJS.ChordProFormatter();
+    const formatter = new ChordProFormatter();
     const formattedChordLyrics = formatter.format(transposedChordLyrics);
+
     setFilteredChordLyrics(formattedChordLyrics);
   }, [filteredSongList, selectedKey]);
 
