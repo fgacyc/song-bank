@@ -82,7 +82,8 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
             <h1 className="gap-1 text-wrap pt-2">
               <span className="font-medium">{album}</span>{" "}
               <span className="text-center text-neutral-500">
-                - {numberOfSongsInAlbum} songs
+                - {numberOfSongsInAlbum}{" "}
+                {numberOfSongsInAlbum > 1 ? "songs" : "song"}
               </span>
             </h1>
           </Link>

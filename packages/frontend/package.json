@@ -1,12 +1,12 @@
 {
-  "name": "Song Bank",
+  "name": "song-bank",
   "author": "Harry",
   "private": true,
   "version": "1.0.0",
   "app_id": "bf6a6cfa827e421785f3",
   "shared": true,
-  "instagram": "https://www.instagram.com/fgacyc/",
-  "github": "https://github.com/fgacyc/",
+  "instagram": "https://www.instagram.com/rikashi_shifu/",
+  "github": "https://github.com/rikashi-shifu/",
   "type": "module",
   "scripts": {
     "build": "next build",
