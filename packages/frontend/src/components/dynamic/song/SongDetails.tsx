@@ -19,6 +19,30 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   const [favourite, setFavourite] = useState(false);
   const [share, setShare] = useState(false);
 
+  const handleFavouriteOnClick = async () => {
+    // TODO: fix post favorite bug
+    if (!isLoading && user) {
+      await fetch("/api/favorite", {
+        method: "POST",
+        body: JSON.stringify({
+          song_id: "song id",
+          user_id: "user id",
+        }),
+      })
+        .then(async (res) => {
+          await res
+            .json()
+            .then(() => {
+              setFavourite(true);
+            })
+            .catch((err) => console.error(err));
+        })
+        .catch((err) => console.error(err));
+    } else {
+      void router.push("/api/auth/login");
+    }
+  };
+
   return (
     <div className="flex h-fit flex-col rounded-lg border-2 p-5">
       <div className="h-[150px] w-full md:w-[200px] lg:h-[150px] lg:w-[300px]">
@@ -91,12 +115,8 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
         <div className="flex items-center justify-between gap-2 truncate pt-3">
           <div className="flex items-center gap-2">
             <button
-              onClick={() => {
-                if (true) {
-                  setFavourite(true);
-                } else {
-                  void router.push("/api/auth/login");
-                }
+              onClick={async () => {
+                await handleFavouriteOnClick();
               }}
               className={`${
                 favourite && "border-yellow-500 text-yellow-500"
