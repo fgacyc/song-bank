@@ -170,7 +170,91 @@ const Home = () => {
           .includes(selectedLanguage.toString().toLowerCase());
       });
     }
-    setFilteredSongList(filteredSongList);
+
+    const sortedFilteredSongList = filteredSongList.sort((a, b) => {
+      const aHasMatchingName = a
+        .name!.toLowerCase()
+        .includes(searchString.toLowerCase());
+      const bHasMatchingName = b
+        .name!.toLowerCase()
+        .includes(searchString.toLowerCase());
+      if (aHasMatchingName && !bHasMatchingName) {
+        return -1;
+      }
+      if (!aHasMatchingName && bHasMatchingName) {
+        return 1;
+      }
+
+      const aHasMatchingAltName = a.alt_name
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      const bHasMathchingAltName = b.alt_name
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      if (aHasMatchingAltName && !bHasMathchingAltName) {
+        return -1;
+      }
+      if (!aHasMatchingAltName && bHasMathchingAltName) {
+        return 1;
+      }
+
+      const aHasMatchingBand = a.original_band
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      const bHasMatchingBand = b.original_band
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      if (aHasMatchingBand && !bHasMatchingBand) {
+        return -1;
+      }
+      if (!aHasMatchingBand && bHasMatchingBand) {
+        return 1;
+      }
+
+      const aHasMatchingAlbum = a.album
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      const bHasMatchingAlbum = b.album
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      if (aHasMatchingAlbum && !bHasMatchingAlbum) {
+        return -1;
+      }
+      if (!aHasMatchingAlbum && bHasMatchingAlbum) {
+        return 1;
+      }
+
+      const aHasMatchingTag = a.tags.some(
+        (tag) =>
+          tag?.content.toLowerCase().includes(searchString.toLowerCase()),
+      );
+      const bHasMatchingTag = b.tags.some(
+        (tag) =>
+          tag?.content.toLowerCase().includes(searchString.toLowerCase()),
+      );
+      if (aHasMatchingTag && !bHasMatchingTag) {
+        return -1;
+      }
+      if (!aHasMatchingTag && bHasMatchingTag) {
+        return 1;
+      }
+
+      const aHasMatchingLyrics = a.chord_lyrics
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      const bHasMatchingLyrics = b.chord_lyrics
+        ?.toLowerCase()
+        .includes(searchString.toLowerCase());
+      if (aHasMatchingLyrics && !bHasMatchingLyrics) {
+        return -1;
+      }
+      if (!aHasMatchingLyrics && bHasMatchingLyrics) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setFilteredSongList(sortedFilteredSongList);
 
     const showBand =
       searchString.trim() !== "" &&
