@@ -55,14 +55,14 @@ model Sequencer {
 }
 
 model SearchHistory {
-    id               Int      @id @default(autoincrement())
+    id               String @id @unique @default(uuid())
     user_id          String
     search_content   String
     search_timestamp DateTime @default(now())
 }
 
 model Favorite {
-    id                 Int      @id @default(autoincrement())
+    id                 String @id @unique @default(uuid())
     song_id            String
     user_id            String
     favorite_timestamp DateTime @default(now())

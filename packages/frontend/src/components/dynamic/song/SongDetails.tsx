@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { type Tag, type Song } from "@prisma/client";
+import React, { useEffect, useMemo, useState } from "react";
+import { type Tag, type Song, type Favorite } from "@prisma/client";
 import Link from "next/link";
 import { PiShareNetworkFill, PiShareNetworkThin } from "react-icons/pi";
 import { CiStar } from "react-icons/ci";
@@ -16,30 +16,64 @@ interface SongDetailsProps {
 const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   const { isLoading, user } = useUser();
   const router = useRouter();
+  const [favouriteData, setFavouriteData] = useState<Favorite>();
   const [favourite, setFavourite] = useState(false);
   const [share, setShare] = useState(false);
 
-  const handleFavouriteOnClick = async () => {
-    // TODO: fix post favorite bug
+  useEffect(() => {
+    if (!isLoading && user) {
+      void (async () => {
+        await fetch(`/api/favorite?song_id=${items.id}&user_id=${user.sub}`, {
+          method: "GET",
+        })
+          .then(async (res) => {
+            await res
+              .json()
+              .then((result: Favorite) => {
+                setFavouriteData(result);
+              })
+              .catch((err) => console.error(err));
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      })();
+    }
+  }, [isLoading, user, items.id, favourite]);
+
+  useMemo(() => {
+    if (favouriteData) {
+      setFavourite(true);
+    }
+  }, [favouriteData]);
+
+  const handleCreateFavourite = async () => {
     if (!isLoading && user) {
       await fetch("/api/favorite", {
         method: "POST",
         body: JSON.stringify({
-          song_id: "song id",
-          user_id: "user id",
+          song_id: items.id,
+          user_id: user.sub,
         }),
       })
-        .then(async (res) => {
-          await res
-            .json()
-            .then(() => {
-              setFavourite(true);
-            })
-            .catch((err) => console.error(err));
+        .then(async () => {
+          setFavourite(true);
         })
         .catch((err) => console.error(err));
     } else {
       void router.push("/api/auth/login");
+    }
+  };
+
+  const handleDeleteFavourite = async () => {
+    if (!isLoading && user) {
+      await fetch(`/api/favorite?id=${favouriteData?.id}`, {
+        method: "DELETE",
+      })
+        .then(async () => {
+          setFavourite(false);
+        })
+        .catch((err) => console.error(err));
     }
   };
 
@@ -116,7 +150,11 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
           <div className="flex items-center gap-2">
             <button
               onClick={async () => {
-                await handleFavouriteOnClick();
+                if (favourite) {
+                  await handleDeleteFavourite();
+                } else {
+                  await handleCreateFavourite();
+                }
               }}
               className={`${
                 favourite && "border-yellow-500 text-yellow-500"
