@@ -3,6 +3,7 @@ import FavouritesSongList from "@/components/favourites/FavouritesSongList";
 import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import type { Song, Tag, Favorite } from "@prisma/client";
+import Image from "next/image";
 
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState, type ReactElement } from "react";
@@ -85,8 +86,14 @@ const Favourites = () => {
           filteredSongList={filteredSongList}
         />
       ) : (
-        <div className="flex h-screen items-center justify-center border">
-          No favourite songs...
+        <div className="flex h-[90dvh] flex-col items-center justify-center gap-5">
+          <Image
+            src={"/img/no-favourite-song.svg"}
+            alt="no favourite song"
+            width={200}
+            height={200}
+          />
+          <p className="text-sm text-neutral-500">No favourite songs.</p>
         </div>
       )}
     </>

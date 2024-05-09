@@ -15,6 +15,7 @@ import SearchSongList from "@/components/index/SearchSongList";
 import SearchAlbumList from "@/components/index/SearchAlbumList";
 import SearchLoading from "@/components/index/SearchLoading";
 import { MdOutlineSearchOff } from "react-icons/md";
+import Image from "next/image";
 
 export type SongType = Song & { tags: Tag[] };
 
@@ -326,9 +327,14 @@ const Home = () => {
               searchString={searchString}
             />
             {filteredSongList.length == 0 && (
-              <div className="flex h-[75dvh] items-center justify-center gap-2 p-5 text-neutral-500">
-                <MdOutlineSearchOff className="h-[30px] w-[30px]" />
-                <div className="text-lg">No result found</div>
+              <div className="flex h-[75dvh] flex-col items-center justify-center gap-5">
+                <Image
+                  src={"/img/no-search-result.svg"}
+                  alt="no search result"
+                  width={200}
+                  height={200}
+                />
+                <p className="text-sm text-neutral-500">No result found.</p>
               </div>
             )}
           </div>
