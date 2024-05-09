@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { type Song } from "@prisma/client";
 import { MdAlbum } from "react-icons/md";
 
@@ -16,7 +16,6 @@ const SearchAlbum: React.FC<SearchAlbumProps> = ({
   songList,
   filteredSongList,
 }) => {
-  const [activeList, setActiveList] = useState(false);
   return (
     <>
       {showAlbum && (
@@ -25,15 +24,7 @@ const SearchAlbum: React.FC<SearchAlbumProps> = ({
             href={`/album/${filteredSongList[0]!.album
               ?.toLowerCase()
               .replace(/ /g, "-")}`}
-            className={`${
-              activeList ? "bg-[#f5f5f6] shadow-md" : ""
-            } sm:white flex gap-5 rounded-lg border-b px-7 py-5 sm:border-2`}
-            onMouseEnter={() => {
-              setActiveList(true);
-            }}
-            onMouseLeave={() => {
-              setActiveList(false);
-            }}
+            className="sm:white flex gap-5 rounded-lg border-b px-7 py-5 hover:bg-[#f5f5f6] hover:shadow-md sm:border-2"
           >
             <div className="flex w-full items-center justify-between ">
               <div className="item-center flex h-full flex-row justify-center">

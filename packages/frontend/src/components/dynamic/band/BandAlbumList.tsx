@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { type Song } from "@prisma/client";
 import Image from "next/image";
 
@@ -16,7 +16,6 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
   filteredSongListWithAlbum,
   getYoutubeVideoId,
 }) => {
-  const [activeBand, setActiveBand] = useState<number | null>(null);
   return (
     <div className="grid h-fit w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {uniqueAlbumList.map((album, i) => {
@@ -41,15 +40,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
           <Link
             key={i}
             href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
-            className={`${
-              activeBand === i ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex flex-col items-center overflow-hidden rounded-lg border-2 p-5`}
-            onMouseEnter={() => {
-              setActiveBand(i);
-            }}
-            onMouseLeave={() => {
-              setActiveBand(null);
-            }}
+            className="flex flex-col items-center overflow-hidden rounded-lg border-2 p-5 hover:bg-[#f5f5f6] hover:shadow-md"
           >
             <div
               className={`grid ${gridCol} min-h-[250px] w-full gap-[1px] overflow-hidden rounded`}

@@ -5,15 +5,15 @@ import {
   useState,
   type ReactElement,
 } from "react";
-import SearchBar from "@/components/home/SearchBar";
+import SearchBar from "@/components/index/SearchBar";
 import Layout from "@/components/layout/Layout";
 import { type Tag, type Song } from "@prisma/client";
-import SearchFilterTags from "@/components/home/SearchFilterTags";
-import SearchBand from "@/components/home/SearchBand";
-import SearchAlbum from "@/components/home/SearchAlbum";
-import SearchSongList from "@/components/home/SearchSongList";
-import SearchAlbumList from "@/components/home/SearchAlbumList";
-import SearchLoading from "@/components/home/SearchLoading";
+import SearchFilterTags from "@/components/index/SearchFilterTags";
+import SearchBand from "@/components/index/SearchBand";
+import SearchAlbum from "@/components/index/SearchAlbum";
+import SearchSongList from "@/components/index/SearchSongList";
+import SearchAlbumList from "@/components/index/SearchAlbumList";
+import SearchLoading from "@/components/index/SearchLoading";
 import { MdOutlineSearchOff } from "react-icons/md";
 
 export type SongType = Song & { tags: Tag[] };

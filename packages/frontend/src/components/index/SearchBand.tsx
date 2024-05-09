@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { type Song } from "@prisma/client";
 
 interface SearchBandProps {
@@ -18,7 +18,6 @@ const SearchBand: React.FC<SearchBandProps> = ({
   filteredSongList,
   channelProfile,
 }) => {
-  const [activeList, setActiveList] = useState(-1);
   return (
     <>
       {showBand && (
@@ -27,15 +26,7 @@ const SearchBand: React.FC<SearchBandProps> = ({
             href={`/band/${filteredSongList[0]!
               .original_band!.toLowerCase()
               .replace(/ /g, "-")}`}
-            className={`${
-              activeList === -2 ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex gap-5 border-b p-5 pl-7 sm:rounded-lg sm:border-2`}
-            onMouseEnter={() => {
-              setActiveList(-2);
-            }}
-            onMouseLeave={() => {
-              setActiveList(-1);
-            }}
+            className="flex gap-5 border-b p-5 pl-7 hover:bg-[#f5f5f6] hover:shadow-md sm:rounded-lg sm:border-2"
           >
             <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full md:h-[100px] md:w-[100px]">
               <Image

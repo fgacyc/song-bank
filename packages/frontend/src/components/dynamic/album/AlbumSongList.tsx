@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { type Song } from "@prisma/client";
 import { useRouter } from "next/router";
 
@@ -14,7 +14,6 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
   getYoutubeVideoId,
 }) => {
   const router = useRouter();
-  const [activeAlbum, setActiveAlbum] = useState(-1);
   return (
     <div className="w-full pb-5 pt-5 md:pt-0">
       <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-2">
@@ -26,15 +25,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
             <Link
               href={`/song/${items.name!.toLowerCase().replace(/ /g, "-")}`}
               key={i}
-              className={`${
-                activeAlbum === i ? "bg-[#f5f5f6] shadow-md" : ""
-              } flex gap-5 truncate rounded-lg border-2 p-5 lg:block xl:flex`}
-              onMouseEnter={() => {
-                setActiveAlbum(i);
-              }}
-              onMouseLeave={() => {
-                setActiveAlbum(-1);
-              }}
+              className="flex gap-5 truncate rounded-lg border-2 p-5 hover:bg-[#f5f5f6] hover:shadow-md lg:block xl:flex"
             >
               <div className="relative w-[100px] min-w-[100px] sm:h-[100px] sm:w-[200px] sm:min-w-[200px] md:h-[105px] md:w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]">
                 <Image
