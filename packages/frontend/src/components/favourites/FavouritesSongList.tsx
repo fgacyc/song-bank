@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
@@ -17,11 +17,15 @@ type SongType = Song & { tags: Tag[] };
 interface FavouritesSongListProps {
   favouriteSongList: Favorite[];
   filteredSongList: SongType[];
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
   favouriteSongList,
   filteredSongList,
+  count,
+  setCount,
 }) => {
   const { isLoading, user } = useUser();
 
@@ -29,7 +33,11 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
     if (!isLoading && user) {
       await fetch(`/api/favorite?id=${id}`, {
         method: "DELETE",
-      }).catch((err) => console.error(err));
+      })
+        .then(() => {
+          setCount(() => count--);
+        })
+        .catch((err) => console.error(err));
     }
   };
 
@@ -43,6 +51,7 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
               return favourite.song_id === songId;
             });
             void handleDeleteFavourite(favouriteSong[0]?.id);
+            setCount(count--);
           }}
         >
           <div className="relative ml-2 rounded-lg border-2 border-red-500">
@@ -53,7 +62,7 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
     );
   };
   return (
-    <SwipeableList className="flex flex-col gap-2 px-3 pb-[62px] pt-[62px]">
+    <SwipeableList className="flex flex-col gap-2 px-3 py-[62px]">
       {filteredSongList.map((items, i) => {
         const getYoutubeVideoId = (youtubeUrl: string) => {
           const regex =

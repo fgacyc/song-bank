@@ -44,7 +44,7 @@ export default async function handler(
           user_id,
         },
       });
-      res.status(200).json(favorite);
+      res.status(200).json(favorite.id);
     } catch (err) {
       res.status(500).json({ error: err });
     }

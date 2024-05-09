@@ -17,8 +17,10 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   const { isLoading, user } = useUser();
   const router = useRouter();
   const [favouriteData, setFavouriteData] = useState<Favorite>();
+  const [favouriteId, setFavouriteId] = useState<string>();
   const [favourite, setFavourite] = useState(false);
   const [share, setShare] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
 
   useEffect(() => {
     if (!isLoading && user) {
@@ -49,6 +51,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
 
   const handleCreateFavourite = async () => {
     if (!isLoading && user) {
+      setDisableButton(true);
       await fetch("/api/favorite", {
         method: "POST",
         body: JSON.stringify({
@@ -56,8 +59,10 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
           user_id: user.sub,
         }),
       })
-        .then(async () => {
+        .then(async (res) => {
+          await res.json().then((result: string) => setFavouriteId(result));
           setFavourite(true);
+          setDisableButton(false);
         })
         .catch((err) => console.error(err));
     } else {
@@ -67,11 +72,13 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
 
   const handleDeleteFavourite = async () => {
     if (!isLoading && user) {
-      await fetch(`/api/favorite?id=${favouriteData?.id}`, {
+      setDisableButton(true);
+      await fetch(`/api/favorite?id=${favouriteId ?? favouriteData?.id}`, {
         method: "DELETE",
       })
         .then(async () => {
           setFavourite(false);
+          setDisableButton(false);
         })
         .catch((err) => console.error(err));
     }
@@ -149,6 +156,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
         <div className="flex items-center justify-between gap-2 truncate pt-3">
           <div className="flex items-center gap-2">
             <button
+              disabled={disableButton}
               onClick={() => {
                 if (favourite) {
                   void handleDeleteFavourite();

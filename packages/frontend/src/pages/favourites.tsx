@@ -4,7 +4,6 @@ import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import type { Song, Tag, Favorite } from "@prisma/client";
 import Image from "next/image";
-
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState, type ReactElement } from "react";
 
@@ -17,6 +16,7 @@ const Favourites = () => {
   const [favouriteSongList, setFavouriteSongList] = useState<Favorite[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<SongType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (isLoading) return;
@@ -51,7 +51,7 @@ const Favourites = () => {
           async (res) =>
             await res
               .json()
-              .then((result: Favorite[]) => {
+              .then(async (result: Favorite[]) => {
                 setFavouriteSongList(result);
               })
               .catch((err) => console.error(err)),
@@ -71,6 +71,7 @@ const Favourites = () => {
       });
     });
     setFilteredSongList(filteredSongList);
+    setCount(filteredSongList.length);
   }, [songList, favouriteSongList]);
 
   return (
@@ -80,10 +81,12 @@ const Favourites = () => {
       </h1>
       {loading ? (
         <FavouritesLoading />
-      ) : filteredSongList.length > 0 ? (
+      ) : count > 0 ? (
         <FavouritesSongList
           favouriteSongList={favouriteSongList}
           filteredSongList={filteredSongList}
+          count={count}
+          setCount={setCount}
         />
       ) : (
         <div className="flex h-[90dvh] flex-col items-center justify-center gap-5">
