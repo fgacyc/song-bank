@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-  type ReactElement,
-} from "react";
+import { useEffect, useMemo, useState, type ReactElement } from "react";
 import SearchBar from "@/components/index/SearchBar";
 import Layout from "@/components/layout/Layout";
 import { type Tag, type Song } from "@prisma/client";
@@ -14,7 +8,6 @@ import SearchAlbum from "@/components/index/SearchAlbum";
 import SearchSongList from "@/components/index/SearchSongList";
 import SearchAlbumList from "@/components/index/SearchAlbumList";
 import SearchLoading from "@/components/index/SearchLoading";
-import { MdOutlineSearchOff } from "react-icons/md";
 import Image from "next/image";
 
 export type SongType = Song & { tags: Tag[] };
@@ -31,7 +24,7 @@ const Home = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useLayoutEffect(() => setMounted(true), []);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!mounted) return;

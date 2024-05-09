@@ -4,7 +4,7 @@ import AlbumLoading from "@/components/dynamic/album/AlbumLoading";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, type ReactElement } from "react";
-import { Sequencer, Tag, type Song } from "@prisma/client";
+import type { Sequencer, Tag, Song } from "@prisma/client";
 import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
 import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -39,37 +39,19 @@ const Album = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && user && router.asPath) {
-      void (async () => {
-        await fetch(
-          `/api/history?user_id=${user.sub}&search_content=${router.asPath}`,
-          {
-            method: "GET",
-          },
-        )
-          .then(async (res) => {
-            await res
-              .json()
-              .then((result: []) => {
-                if (result.length === 0) {
-                  void (async () => {
-                    await fetch("/api/history", {
-                      method: "POST",
-                      body: JSON.stringify({
-                        user_id: user?.sub,
-                        search_content: router.asPath,
-                      }),
-                    });
-                  })();
-                }
-              })
-              .catch((err) => console.error(err));
-          })
-          .catch((err) => console.error(err));
-      })();
+    if (!isLoading && router.asPath) {
+      const runPost = async () => {
+        await fetch("/api/history", {
+          method: "POST",
+          body: JSON.stringify({
+            user_id: user?.sub,
+            search_content: router.asPath,
+          }),
+        });
+      };
+      void runPost();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLoading, router.asPath, user?.sub]);
 
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {

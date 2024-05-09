@@ -39,13 +39,30 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { user_id, search_content } = JSON.parse(req.body as string);
-      await db.searchHistory.create({
-        data: {
-          user_id: user_id,
-          search_content: search_content,
+      const last24Hrs = Date.now() - 24 * 60 * 60 * 1000;
+      const lastDayAsISO = new Date(last24Hrs).toISOString();
+      const searchHistory = await db.searchHistory.findMany({
+        where: {
+          user_id: user_id as string,
+          search_content: search_content as string,
+          search_timestamp: { gte: lastDayAsISO },
         },
       });
-      res.status(200).end();
+
+      if (searchHistory.length !== 0) {
+        console.log(searchHistory);
+        return res.status(302).json({
+          message: `History for ${search_content} exists in the last 24 hours.`,
+        });
+      } else {
+        const result = await db.searchHistory.create({
+          data: {
+            user_id: user_id,
+            search_content: search_content,
+          },
+        });
+        res.status(200).json(result);
+      }
     } catch (err) {
       res.status(500).json({ error: err });
     }
