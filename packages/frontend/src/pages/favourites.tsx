@@ -79,11 +79,15 @@ const Favourites = () => {
       </h1>
       {loading ? (
         <FavouritesLoading />
-      ) : (
+      ) : filteredSongList.length > 0 ? (
         <FavouritesSongList
           favouriteSongList={favouriteSongList}
           filteredSongList={filteredSongList}
         />
+      ) : (
+        <div className="flex h-screen items-center justify-center border">
+          No favourite songs...
+        </div>
       )}
     </>
   );
