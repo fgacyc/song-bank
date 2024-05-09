@@ -9,15 +9,21 @@ interface ProfileUserInfoProps {
 const ProfileUserInfo: React.FC<ProfileUserInfoProps> = ({ user }) => {
   return (
     <div className="flex gap-3">
-      <div className="relative h-[60px] w-[60px] overflow-hidden rounded-full">
-        <Image
-          src={user?.picture ?? ""}
-          alt={user?.name ?? "pfp"}
-          fill={true}
-          priority={true}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover"
-        />
+      <div
+        className={`${
+          !user && "border"
+        } relative h-[60px] w-[60px] overflow-hidden rounded-full`}
+      >
+        {user && (
+          <Image
+            src={user?.picture ?? ""}
+            alt={user?.name ?? "pfp"}
+            fill={true}
+            priority={true}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+          />
+        )}
       </div>
       <div className="flex flex-col justify-center">
         <h1 className="text-lg font-bold">{user?.name}</h1>
