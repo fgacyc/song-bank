@@ -39,7 +39,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
           });
       })();
     }
-  }, [isLoading, user, items.id, favourite]);
+  }, [isLoading, user, items.id]);
 
   useMemo(() => {
     if (favouriteData) {
@@ -149,11 +149,11 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
         <div className="flex items-center justify-between gap-2 truncate pt-3">
           <div className="flex items-center gap-2">
             <button
-              onClick={async () => {
+              onClick={() => {
                 if (favourite) {
-                  await handleDeleteFavourite();
+                  void handleDeleteFavourite();
                 } else {
-                  await handleCreateFavourite();
+                  void handleCreateFavourite();
                 }
               }}
               className={`${
@@ -164,8 +164,8 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               <p className="text-sm">{favourite ? "Saved" : "Favourite"}</p>
             </button>
             <button
-              onClick={async () => {
-                await navigator.clipboard.writeText(window.location.href);
+              onClick={() => {
+                void navigator.clipboard.writeText(window.location.href);
                 setShare(true);
               }}
               className={`${

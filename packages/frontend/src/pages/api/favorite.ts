@@ -8,14 +8,24 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      const { song_id, user_id } = req.query;
-      const favorite = await db.favorite.findFirst({
-        where: {
-          song_id: song_id as string,
-          user_id: user_id as string,
-        },
-      });
-      return res.status(200).json(favorite);
+      if (req.query.song_id) {
+        const { song_id, user_id } = req.query;
+        const favorite = await db.favorite.findFirst({
+          where: {
+            song_id: song_id as string,
+            user_id: user_id as string,
+          },
+        });
+        return res.status(200).json(favorite);
+      } else {
+        const { user_id } = req.query;
+        const favorite = await db.favorite.findMany({
+          where: {
+            user_id: user_id as string,
+          },
+        });
+        return res.status(200).json(favorite);
+      }
     } catch (err) {
       return res.status(500).json({ error: err });
     }
