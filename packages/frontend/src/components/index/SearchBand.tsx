@@ -25,6 +25,7 @@ const SearchBand: React.FC<SearchBandProps> = ({
           <Link
             href={`/band/${filteredSongList[0]!
               .original_band!.toLowerCase()
+              .trim()
               .replace(/ /g, "-")}`}
             className="flex gap-5 border-b p-5 pl-7 hover:bg-[#f5f5f6] hover:shadow-md sm:rounded-lg sm:border-2"
           >

@@ -8,8 +8,10 @@ import BandSongList from "@/components/dynamic/band/BandSongList";
 import BandAlbumList from "@/components/dynamic/band/BandAlbumList";
 import BandLoading from "@/components/dynamic/band/BandLoading";
 import Layout from "@/components/layout/Layout";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const Band = () => {
+  const { isLoading, user } = useUser();
   const router = useRouter();
   const [songList, setSongList] = useState<Song[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
@@ -20,7 +22,7 @@ const Band = () => {
     useState<Song[]>([]);
   const [uniqueAlbumList, setUniqueAlbumList] = useState<string[]>([""]);
   const [channelProfile, setChannelProfile] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     void (async () => {
@@ -37,6 +39,39 @@ const Band = () => {
         })
         .catch((err) => console.error(err));
     })();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && user && router.asPath) {
+      void (async () => {
+        await fetch(
+          `/api/history?user_id=${user.sub}&search_content=${router.asPath}`,
+          {
+            method: "GET",
+          },
+        )
+          .then(async (res) => {
+            await res
+              .json()
+              .then((result: []) => {
+                if (result.length === 0) {
+                  void (async () => {
+                    await fetch("/api/history", {
+                      method: "POST",
+                      body: JSON.stringify({
+                        user_id: user?.sub,
+                        search_content: router.asPath,
+                      }),
+                    });
+                  })();
+                }
+              })
+              .catch((err) => console.error(err));
+          })
+          .catch((err) => console.error(err));
+      })();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -101,7 +136,7 @@ const Band = () => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     result.items[0]?.snippet.thumbnails.high.url;
                   setChannelProfile(channelProfile);
-                  setIsLoading(false);
+                  setLoading(false);
                 });
               });
             })();
@@ -111,7 +146,7 @@ const Band = () => {
     })();
   }, [filteredSongList]);
 
-  if (isLoading) {
+  if (loading) {
     <BandLoading />;
   } else {
     return (

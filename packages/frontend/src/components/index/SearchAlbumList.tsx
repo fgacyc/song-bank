@@ -31,7 +31,7 @@ const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
             ),
           ].map((album, i) => (
             <Link
-              href={`/album/${album?.toLowerCase().replace(/ /g, "-")}`}
+              href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
               key={i}
               className="flex items-center rounded-lg border-2 p-3 px-5 hover:bg-[#f5f5f6] hover:shadow-md"
             >

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { type Tag, type Song } from "@prisma/client";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -50,7 +50,10 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
         return (
           <Link
             key={i}
-            href={`/song/${items.name?.toLowerCase().replace(/ /g, "-")}`}
+            href={`/song/${items.name
+              ?.toLowerCase()
+              .trim()
+              .replace(/ /g, "-")}`}
             className="flex flex-col gap-5 border-b pb-3 hover:bg-[#f5f5f6] hover:shadow-md sm:flex-row sm:rounded-lg sm:border-2 sm:p-3"
           >
             <div className="relative h-[30dvh] w-full overflow-hidden sm:h-[140px] sm:w-[250px] sm:min-w-[250px] sm:rounded md:h-[165px] md:w-[300px] md:min-w-[300px]">

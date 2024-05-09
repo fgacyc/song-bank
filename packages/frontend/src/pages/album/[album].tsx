@@ -4,17 +4,21 @@ import AlbumLoading from "@/components/dynamic/album/AlbumLoading";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, type ReactElement } from "react";
-import { type Song } from "@prisma/client";
+import { Sequencer, Tag, type Song } from "@prisma/client";
 import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
 import Layout from "@/components/layout/Layout";
+import { useUser } from "@auth0/nextjs-auth0/client";
+
+type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
 const Album = () => {
+  const { isLoading, user } = useUser();
   const router = useRouter();
-  const [songList, setSongList] = useState<Song[]>([]);
-  const [filteredSongList, setFilteredSongList] = useState<Song[]>();
+  const [songList, setSongList] = useState<SongType[]>([]);
+  const [filteredSongList, setFilteredSongList] = useState<SongType[]>();
   const [albumCoverImage, setAlbumCoverImage] = useState<Song[]>();
   const [gridCol, setGridCol] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     void (async () => {
@@ -24,14 +28,47 @@ const Album = () => {
         .then(async (res) => {
           await res
             .json()
-            .then((result: Song[]) => {
+            .then((result: SongType[]) => {
               setSongList(result);
-              setIsLoading(false);
+              setLoading(false);
             })
             .catch((err) => console.error(err));
         })
         .catch((err) => console.error(err));
     })();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && user && router.asPath) {
+      void (async () => {
+        await fetch(
+          `/api/history?user_id=${user.sub}&search_content=${router.asPath}`,
+          {
+            method: "GET",
+          },
+        )
+          .then(async (res) => {
+            await res
+              .json()
+              .then((result: []) => {
+                if (result.length === 0) {
+                  void (async () => {
+                    await fetch("/api/history", {
+                      method: "POST",
+                      body: JSON.stringify({
+                        user_id: user?.sub,
+                        search_content: router.asPath,
+                      }),
+                    });
+                  })();
+                }
+              })
+              .catch((err) => console.error(err));
+          })
+          .catch((err) => console.error(err));
+      })();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -64,7 +101,7 @@ const Album = () => {
     return match ? match[1] : null;
   };
 
-  if (isLoading) {
+  if (loading) {
     <AlbumLoading />;
   } else {
     return (

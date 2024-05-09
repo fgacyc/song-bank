@@ -9,17 +9,19 @@ import SongLyrics from "@/components/dynamic/song/SongLyrics";
 import SongLoading from "@/components/dynamic/song/SongLoading";
 import Layout from "@/components/layout/Layout";
 import { ChordProParser, ChordProFormatter } from "chordsheetjs";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
 const DynamicSong = () => {
+  const { isLoading, user } = useUser();
   const router = useRouter();
   const [songList, setSongList] = useState<SongType[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<SongType[]>([]);
   const chordLyricsRef = useRef<HTMLParagraphElement | null>(null);
   const [filteredChordLyrics, setFilteredChordLyrics] = useState("");
   const [selectedKey, setSelectedKey] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     void (async () => {
@@ -32,7 +34,7 @@ const DynamicSong = () => {
               .json()
               .then((result: SongType[]) => {
                 setSongList(result);
-                setIsLoading(false);
+                setLoading(false);
               })
               .catch((err) => console.error(err)),
         )
@@ -41,10 +43,43 @@ const DynamicSong = () => {
   }, []);
 
   useEffect(() => {
+    if (!isLoading && user && router.asPath) {
+      void (async () => {
+        await fetch(
+          `/api/history?user_id=${user.sub}&search_content=${router.asPath}`,
+          {
+            method: "GET",
+          },
+        )
+          .then(async (res) => {
+            await res
+              .json()
+              .then((result: []) => {
+                if (result.length === 0) {
+                  void (async () => {
+                    await fetch("/api/history", {
+                      method: "POST",
+                      body: JSON.stringify({
+                        user_id: user?.sub,
+                        search_content: router.asPath,
+                      }),
+                    });
+                  })();
+                }
+              })
+              .catch((err) => console.error(err));
+          })
+          .catch((err) => console.error(err));
+      })();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const filteredSongList = songList.filter(
       (items) =>
         router.query.song &&
-        `${items.name!.toLowerCase().replace(/ /g, "-")}` ===
+        `${items.name!.toLowerCase().trim().replace(/ /g, "-")}` ===
           router.query.song.toString(),
     );
     setFilteredSongList(filteredSongList);
@@ -89,7 +124,7 @@ const DynamicSong = () => {
     return params.get("v");
   };
 
-  if (isLoading) {
+  if (loading) {
     <SongLoading />;
   } else {
     return (

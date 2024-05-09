@@ -23,6 +23,7 @@ const SearchAlbum: React.FC<SearchAlbumProps> = ({
           <Link
             href={`/album/${filteredSongList[0]!.album
               ?.toLowerCase()
+              .trim()
               .replace(/ /g, "-")}`}
             className="sm:white flex gap-5 rounded-lg border-b px-7 py-5 hover:bg-[#f5f5f6] hover:shadow-md sm:border-2"
           >
