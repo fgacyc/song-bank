@@ -39,7 +39,7 @@ const SearchHistorySongList: React.FC<SearchHistorySongListProps> = ({
                 .name!.toLowerCase()
                 .trim()
                 .replace(/ /g, "-")}`}
-              className="flex gap-3 rounded-md border-2 p-3"
+              className="flex gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
             >
               <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md">
                 <Image

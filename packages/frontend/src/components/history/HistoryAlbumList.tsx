@@ -32,7 +32,7 @@ const SearchHistoryAlbumList: React.FC<SearchHistoryAlbumListProps> = ({
                 ?.toLowerCase()
                 .trim()
                 .replace(/ /g, "-")}`}
-              className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3"
+              className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
             >
               <div className="min-h-[60px] min-w-[60px]">
                 <MdAlbum className="h-full w-full" />

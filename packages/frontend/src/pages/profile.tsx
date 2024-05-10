@@ -2,7 +2,7 @@ import Layout from "@/components/layout/Layout";
 import React, { useEffect, type ReactElement } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import ProfileUserInfo from "@/components/profile/ProfileUserInfo";
-import ProfileSearchHistory from "@/components/profile/ProfileSearchHistory";
+import ProfileRecentSearch from "@/components/profile/ProfileRecentSearch";
 import {
   // MdDarkMode,
   // MdOutlineDarkMode,
@@ -32,9 +32,11 @@ const Profile = () => {
     <>
       <div className="flex flex-col gap-3 p-3">
         <ProfileUserInfo user={user} />
-        <ProfileSearchHistory />
+        <ProfileRecentSearch />
       </div>
       <div className="flex flex-col gap-1">
+        <hr className="mx-3" />
+
         <ProfileNavigationBlock link="/history" name="History">
           <MdOutlineHistory />
         </ProfileNavigationBlock>

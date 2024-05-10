@@ -27,13 +27,13 @@ const SearchHistoryBandList: React.FC<SearchHistoryBandListProps> = ({
 
   useEffect(() => {
     const filteredSearchHistory = searchHistory
-      ?.sort((a, b) => {
+      .filter((item) => {
+        return item.search_category === "band";
+      })
+      .sort((a, b) => {
         return (
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         );
-      })
-      .filter((item) => {
-        return item.search_category === "band";
       });
 
     const filteredYouTubeURL = [];
@@ -113,7 +113,7 @@ const SearchHistoryBandList: React.FC<SearchHistoryBandListProps> = ({
                 ?.toLowerCase()
                 .trim()
                 .replace(/ /g, "-")}`}
-              className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3"
+              className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
             >
               {channelProfiles.length > 0 ? (
                 <div className="flex h-[60px] w-[60px] items-center justify-center">
@@ -129,7 +129,7 @@ const SearchHistoryBandList: React.FC<SearchHistoryBandListProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full border">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full border bg-white">
                   <MdImageNotSupported />
                 </div>
               )}
