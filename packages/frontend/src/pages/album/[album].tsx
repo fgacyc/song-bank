@@ -3,7 +3,7 @@ import AlbumDetails from "@/components/dynamic/album/AlbumDetails";
 import AlbumLoading from "@/components/dynamic/album/AlbumLoading";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useMemo, useState, type ReactElement } from "react";
 import type { Sequencer, Tag, Song } from "@prisma/client";
 import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
 import Layout from "@/components/layout/Layout";
@@ -38,20 +38,25 @@ const Album = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && router.asPath) {
-      const runPost = async () => {
+  useMemo(() => {
+    if (!isLoading && user && router.query.album) {
+      void (async () => {
         await fetch("/api/history", {
           method: "POST",
           body: JSON.stringify({
-            user_id: user?.sub,
-            search_content: router.asPath,
+            user_id: user.sub,
+            search_content: router.query.album,
+            search_category: "album",
           }),
         });
-      };
-      void runPost();
+      })();
     }
-  }, [isLoading, router.asPath, user?.sub]);
+  }, [isLoading, user, router.query.album]);
+
+  // TODO: fix fetching twice bug
+  useEffect(() => {
+    console.log(!isLoading, user, router.query.album);
+  }, [isLoading, user, router.query.album]);
 
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {

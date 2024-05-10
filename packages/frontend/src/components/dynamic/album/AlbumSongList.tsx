@@ -23,7 +23,10 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
           const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
           return (
             <Link
-              href={`/song/${items.name!.toLowerCase().replace(/ /g, "-")}`}
+              href={`/song/${items
+                .name!.toLowerCase()
+                .trim()
+                .replace(/ /g, "-")}`}
               key={i}
               className="flex gap-5 truncate rounded-lg border-2 p-5 hover:bg-[#f5f5f6] hover:shadow-md lg:block xl:flex"
             >

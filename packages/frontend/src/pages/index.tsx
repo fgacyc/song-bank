@@ -28,7 +28,8 @@ const Home = () => {
 
   useEffect(() => {
     if (!mounted) return;
-    const searchSong = async () => {
+
+    void (async () => {
       await fetch("/api/song", {
         method: "GET",
       })
@@ -42,9 +43,8 @@ const Home = () => {
             .catch((err) => console.error(err));
         })
         .catch((err) => console.error(err));
-    };
+    })();
 
-    void searchSong();
     setSearchString(localStorage.getItem("song-search") ?? "");
     localStorage.removeItem("song-search");
   }, [mounted]);
@@ -70,7 +70,7 @@ const Home = () => {
       ).then(async (res) => {
         await res.json().then((result) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-          const channelId = result.items[0]?.snippet.channelId;
+          const channelId = result?.item?.[0]?.snippet.channelId;
           if (channelId) {
             void (async () => {
               await fetch(

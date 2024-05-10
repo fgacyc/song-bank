@@ -1,4 +1,10 @@
-import React, { useState, type ReactElement, useEffect, useRef } from "react";
+import React, {
+  useState,
+  type ReactElement,
+  useEffect,
+  useRef,
+  useMemo,
+} from "react";
 import { useRouter } from "next/router";
 import SongBreadcrumb from "@/components/dynamic/song/SongBreadcrumb";
 import Head from "next/head";
@@ -42,38 +48,25 @@ const DynamicSong = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && user && router.asPath) {
+  useMemo(() => {
+    if (!isLoading && user && router.query.song) {
       void (async () => {
-        await fetch(
-          `/api/history?user_id=${user.sub}&search_content=${router.asPath}`,
-          {
-            method: "GET",
-          },
-        )
-          .then(async (res) => {
-            await res
-              .json()
-              .then((result: []) => {
-                if (result.length === 0) {
-                  void (async () => {
-                    await fetch("/api/history", {
-                      method: "POST",
-                      body: JSON.stringify({
-                        user_id: user?.sub,
-                        search_content: router.asPath,
-                      }),
-                    });
-                  })();
-                }
-              })
-              .catch((err) => console.error(err));
-          })
-          .catch((err) => console.error(err));
+        await fetch("/api/history", {
+          method: "POST",
+          body: JSON.stringify({
+            user_id: user.sub,
+            search_content: router.query.song,
+            search_category: "song",
+          }),
+        });
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLoading, user, router.query.song]);
+
+  // TODO: fix fetching twice bug
+  useEffect(() => {
+    console.log(!isLoading, user, router.query.song);
+  }, [isLoading, user, router.query.song]);
 
   useEffect(() => {
     const filteredSongList = songList.filter(

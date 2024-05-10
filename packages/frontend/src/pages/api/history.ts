@@ -8,29 +8,14 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      if (true) {
-        const { user_id, search_content } = req.query;
-        const today = new Date();
-        const searchHistory = await db.searchHistory.findMany({
-          where: {
-            user_id: user_id as string,
-            search_content: search_content as string,
-            search_timestamp: {
-              gte: new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate(),
-              ),
-              lt: new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate() + 1,
-              ),
-            },
-          },
-        });
-        res.status(200).json(searchHistory);
-      }
+      const { user_id } = req.query;
+
+      const searchHistory = await db.searchHistory.findMany({
+        where: {
+          user_id: user_id as string,
+        },
+      });
+      res.status(200).json(searchHistory);
     } catch (err) {
       res.status(500).json({ error: err });
     }
@@ -38,19 +23,21 @@ export default async function handler(
 
   if (req.method === "POST") {
     try {
-      const { user_id, search_content } = JSON.parse(req.body as string);
+      const { user_id, search_content, search_category } = JSON.parse(
+        req.body as string,
+      );
       const last24Hrs = Date.now() - 24 * 60 * 60 * 1000;
       const lastDayAsISO = new Date(last24Hrs).toISOString();
       const searchHistory = await db.searchHistory.findMany({
         where: {
           user_id: user_id as string,
           search_content: search_content as string,
-          search_timestamp: { gte: lastDayAsISO },
+          search_category: search_category as string,
+          created_at: { gte: lastDayAsISO },
         },
       });
 
       if (searchHistory.length !== 0) {
-        console.log(searchHistory);
         return res.status(302).json({
           message: `History for ${search_content} exists in the last 24 hours.`,
         });
@@ -59,6 +46,7 @@ export default async function handler(
           data: {
             user_id: user_id,
             search_content: search_content,
+            search_category: search_category,
           },
         });
         res.status(200).json(result);

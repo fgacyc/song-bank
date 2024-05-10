@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useMemo, useState, type ReactElement } from "react";
 import BandBreadcrumb from "@/components/dynamic/band/BandBreadcrumb";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -41,38 +41,25 @@ const Band = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && user && router.asPath) {
+  useMemo(() => {
+    if (!isLoading && user && router.query.band) {
       void (async () => {
-        await fetch(
-          `/api/history?user_id=${user.sub}&search_content=${router.asPath}`,
-          {
-            method: "GET",
-          },
-        )
-          .then(async (res) => {
-            await res
-              .json()
-              .then((result: []) => {
-                if (result.length === 0) {
-                  void (async () => {
-                    await fetch("/api/history", {
-                      method: "POST",
-                      body: JSON.stringify({
-                        user_id: user?.sub,
-                        search_content: router.asPath,
-                      }),
-                    });
-                  })();
-                }
-              })
-              .catch((err) => console.error(err));
-          })
-          .catch((err) => console.error(err));
+        await fetch("/api/history", {
+          method: "POST",
+          body: JSON.stringify({
+            user_id: user.sub,
+            search_content: router.query.band,
+            search_category: "band",
+          }),
+        });
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLoading, user, router.query.band]);
+
+  // TODO: fix fetching twice bug
+  useEffect(() => {
+    console.log(!isLoading, user, router.query.band);
+  }, [isLoading, user, router.query.band]);
 
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {
@@ -113,17 +100,16 @@ const Band = () => {
 
     void (async () => {
       const videoId = getYoutubeVideoId(
-        filteredSongList[0]?.original_youtube_url
-          ? filteredSongList[0]?.original_youtube_url
-          : "",
+        filteredSongList[0]?.original_youtube_url ?? "",
       );
       await fetch(
         `https://youtube.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`,
         { method: "GET" },
       ).then(async (res) => {
+        setLoading(false);
         await res.json().then((result) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-          const channelId = result.items[0]?.snippet.channelId;
+          const channelId = result?.items?.[0]?.snippet.channelId;
           if (channelId) {
             void (async () => {
               await fetch(
@@ -136,7 +122,6 @@ const Band = () => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     result.items[0]?.snippet.thumbnails.high.url;
                   setChannelProfile(channelProfile);
-                  setLoading(false);
                 });
               });
             })();
@@ -159,7 +144,9 @@ const Band = () => {
           </title>
         </Head>
         <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
-          <BandBreadcrumb original_band={filteredSongList[0]!.original_band!} />
+          <BandBreadcrumb
+            original_band={filteredSongList[0]?.original_band ?? ""}
+          />
           <div className="flex flex-col gap-5 md:flex-row">
             <div className="flex w-full flex-col gap-5 md:w-fit">
               <BandDetails

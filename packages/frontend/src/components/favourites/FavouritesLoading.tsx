@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const LoadingList = () => {
   return (
-    <div className="flex gap-2 rounded-lg border-2 p-3">
+    <div className="flex gap-3 rounded-lg border-2 p-3">
       <div className="h-[70px] w-[130px] overflow-hidden rounded-md border">
         <Skeleton height={"100%"} />
       </div>

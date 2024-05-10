@@ -80,7 +80,10 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
             trailingActions={trailingActions(items.id)}
           >
             <Link
-              href={`/song/${items.name!.toLowerCase().replace(/ /g, "-")}`}
+              href={`/song/${items
+                .name!.toLowerCase()
+                .trim()
+                .replace(/ /g, "-")}`}
               className="flex w-full gap-3 rounded-lg border-2 p-3 hover:bg-[#f8f8f9]"
             >
               <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md">
