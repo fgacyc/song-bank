@@ -5,6 +5,7 @@ import HistorySongList from "@/components/history/HistorySongList";
 import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import type { SearchHistory, Sequencer, Song, Tag } from "@prisma/client";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -77,6 +78,11 @@ const History = () => {
 
   return (
     <>
+      <Head>
+        <title>Search History</title>
+        <meta name="" content="" />
+        <link rel="icon" href="/img/logo.png" />
+      </Head>
       <div className="fixed z-10 flex w-full items-center gap-2 bg-white p-3">
         <div className="hidden sm:block">
           <Link href={"/"}>

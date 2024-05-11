@@ -13,6 +13,7 @@ import ProfileNavigationBlock from "@/components/profile/ProfileNavigationBlock"
 import { TbLogout2 } from "react-icons/tb";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Profile = () => {
   const { user, isLoading } = useUser();
@@ -37,50 +38,57 @@ const Profile = () => {
 
   // TODO: make profile unaccessible for tablet & computer devices
   return (
-    <div className="block sm:hidden">
-      <div className="flex flex-col gap-3 p-3">
-        <ProfileUserInfo user={user} />
-        <ProfileRecentSearch />
-      </div>
-      <div className="flex flex-col gap-1">
-        <hr className="mx-3" />
-
-        <ProfileNavigationBlock link="/history" name="History">
-          <MdOutlineHistory />
-        </ProfileNavigationBlock>
-
-        <ProfileNavigationBlock link="/favourites" name="Favourites">
-          <HiOutlineStar />
-        </ProfileNavigationBlock>
-
-        <hr className="mx-3" />
-
-        {/* TODO: dark mode */}
-        {/* <button className="flex h-[40px] items-center justify-between px-3">
-        <div className="flex items-center justify-center gap-3">
-          <div className="text-lg">
-            {false ? <MdOutlineDarkMode /> : <MdDarkMode />}
-          </div>
-          <p>Dark Mode</p>
+    <>
+      <Head>
+        <title>{user?.name}</title>
+        <meta name="" content="" />
+        <link rel="icon" href="/img/logo.png" />
+      </Head>
+      <div className="block sm:hidden">
+        <div className="flex flex-col gap-3 p-3">
+          <ProfileUserInfo user={user} />
+          <ProfileRecentSearch />
         </div>
-        <IoIosArrowForward className="text-neutral-400" />
-      </button> */}
+        <div className="flex flex-col gap-1">
+          <hr className="mx-3" />
 
-        <ProfileNavigationBlock link="/about" name="About">
-          <IoMdInformationCircleOutline />
-        </ProfileNavigationBlock>
+          <ProfileNavigationBlock link="/history" name="Search history">
+            <MdOutlineHistory />
+          </ProfileNavigationBlock>
 
-        <hr className="mx-3" />
+          <ProfileNavigationBlock link="/favourites" name="Favourite songs">
+            <HiOutlineStar />
+          </ProfileNavigationBlock>
 
-        <ProfileNavigationBlock
-          link="/api/auth/logout"
-          name="Log Out"
-          logout={true}
-        >
-          <TbLogout2 />
-        </ProfileNavigationBlock>
+          <hr className="mx-3" />
+
+          {/* TODO: dark mode */}
+          {/* <button className="flex h-[40px] items-center justify-between px-3">
+            <div className="flex items-center justify-center gap-3">
+              <div className="text-lg">
+                {false ? <MdOutlineDarkMode /> : <MdDarkMode />}
+              </div>
+              <p>Dark Mode</p>
+            </div>
+            <IoIosArrowForward className="text-neutral-400" />
+          </button> */}
+
+          <ProfileNavigationBlock link="/about" name="About">
+            <IoMdInformationCircleOutline />
+          </ProfileNavigationBlock>
+
+          <hr className="mx-3" />
+
+          <ProfileNavigationBlock
+            link="/api/auth/logout"
+            name="Log Out"
+            logout={true}
+          >
+            <TbLogout2 />
+          </ProfileNavigationBlock>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

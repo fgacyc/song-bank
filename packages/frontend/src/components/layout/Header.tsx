@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({
           alt="pfp"
           width={30}
           height={30}
-          className={`${!user && "border-2"} rounded-full`}
+          className="rounded-full"
         />
       </button>
     </nav>
