@@ -41,7 +41,7 @@ const SearchHistorySongList: React.FC<SearchHistorySongListProps> = ({
                 .replace(/ /g, "-")}`}
               className="flex gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
             >
-              <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md">
+              <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md sm:min-h-[90px] sm:min-w-[170px] md:min-h-[110px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]">
                 <Image
                   src={thumbnailUrl}
                   alt={song.name!}
@@ -52,8 +52,12 @@ const SearchHistorySongList: React.FC<SearchHistorySongListProps> = ({
                 />
               </div>
               <div className="flex flex-col">
-                <p className="text-sm font-semibold">{song.name}</p>
-                <p className="text-xs text-neutral-500">{song.original_band}</p>
+                <p className="text-sm font-semibold sm:text-base md:text-lg lg:text-2xl">
+                  {song.name}
+                </p>
+                <p className="text-xs text-neutral-500 sm:text-sm md:text-base">
+                  {song.original_band}
+                </p>
               </div>
             </Link>
           );

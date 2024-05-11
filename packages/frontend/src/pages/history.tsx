@@ -6,8 +6,10 @@ import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import type { SearchHistory, Sequencer, Song, Tag } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, type ReactElement } from "react";
+import { IoIosArrowBack } from "react-icons/io";
 
 type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
@@ -75,16 +77,26 @@ const History = () => {
 
   return (
     <>
-      <h1 className="fixed z-10 w-full bg-white p-3 text-3xl font-black">
-        History
-      </h1>
+      <div className="fixed z-10 flex w-full items-center gap-2 bg-white p-3">
+        <div className="hidden sm:block">
+          <Link href={"/"}>
+            <IoIosArrowBack className="h-[25px] w-[25px]" />
+          </Link>
+        </div>
+        <div className="sm:hidden">
+          <Link href={"/profile"}>
+            <IoIosArrowBack className="h-[25px] w-[25px]" />
+          </Link>
+        </div>
+        <h1 className="text-3xl font-black">Search history</h1>
+      </div>
       {loading ? (
         <HistoryLoading />
       ) : (
         <>
           {/* TODO: logic for date title */}
           {searchHistory && searchHistory.length > 0 ? (
-            <div className="flex flex-col gap-3 px-3 py-[62px]">
+            <div className="flex flex-col gap-3 px-3 pb-[62px] pt-[62px] sm:pb-3">
               {searchHistory
                 ?.sort((a, b) => {
                   return (

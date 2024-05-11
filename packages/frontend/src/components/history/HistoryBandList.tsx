@@ -113,11 +113,11 @@ const SearchHistoryBandList: React.FC<SearchHistoryBandListProps> = ({
                 ?.toLowerCase()
                 .trim()
                 .replace(/ /g, "-")}`}
-              className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
+              className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9] sm:min-h-[102px] md:min-h-[122px] lg:min-h-[142px]"
             >
               {channelProfiles.length > 0 ? (
-                <div className="flex h-[60px] w-[60px] items-center justify-center">
-                  <div className="relative min-h-[50px] min-w-[50px] overflow-hidden rounded-full">
+                <div className="flex h-[60px] w-[60px] items-center justify-center sm:min-h-[80px] sm:min-w-[80px] md:min-h-[100px] md:min-w-[100px] lg:min-h-[120px] lg:min-w-[120px]">
+                  <div className="relative min-h-[50px] min-w-[50px] overflow-hidden rounded-full sm:min-h-[70px] sm:min-w-[70px] md:min-h-[90px] md:min-w-[90px] lg:min-h-[110px] lg:min-w-[110px]">
                     <Image
                       src={channelProfiles[count] ?? ""}
                       alt={song.original_band!}
@@ -134,7 +134,9 @@ const SearchHistoryBandList: React.FC<SearchHistoryBandListProps> = ({
                 </div>
               )}
               <div>
-                <p className="text-sm font-semibold">{song.original_band}</p>
+                <p className="text-sm font-semibold sm:text-base md:text-lg lg:text-2xl">
+                  {song.original_band}
+                </p>
               </div>
             </Link>
           );
