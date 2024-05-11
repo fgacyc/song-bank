@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdDeleteOutline } from "react-icons/md";
 import type { Favorite, Song, Tag } from "@prisma/client";
 import {
   SwipeableList,
@@ -28,6 +28,7 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
   setCount,
 }) => {
   const { isLoading, user } = useUser();
+  const [activeList, setActiveList] = useState(-1);
 
   const handleDeleteFavourite = async (id: string | undefined) => {
     if (!isLoading && user) {
@@ -62,7 +63,7 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
     );
   };
   return (
-    <SwipeableList className="flex flex-col gap-2 px-3 py-[62px]">
+    <SwipeableList className="flex flex-col gap-2 px-3 pb-[62px] pt-[62px] sm:pb-3">
       {filteredSongList.map((items, i) => {
         const getYoutubeVideoId = (youtubeUrl: string) => {
           const regex =
@@ -75,35 +76,88 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
         const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
 
         return (
-          <SwipeableListItem
-            key={i}
-            trailingActions={trailingActions(items.id)}
-          >
+          <>
+            <SwipeableListItem
+              key={i}
+              trailingActions={trailingActions(items.id)}
+              className="sm:hidden"
+            >
+              <Link
+                href={`/song/${items
+                  .name!.toLowerCase()
+                  .trim()
+                  .replace(/ /g, "-")}`}
+                className="flex w-full gap-3 rounded-lg border-2 p-3 hover:bg-[#f8f8f9]"
+              >
+                <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md sm:min-h-[90px] sm:min-w-[170px] md:min-h-[110px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]">
+                  <Image
+                    src={thumbnailUrl}
+                    alt={items.name!}
+                    fill={true}
+                    priority={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-sm font-semibold sm:text-base md:text-lg lg:text-2xl">
+                    {items.name}
+                  </h1>
+                  <p className="text-xs text-neutral-500 sm:text-sm md:text-base">
+                    {items.original_band}
+                  </p>
+                </div>
+              </Link>
+            </SwipeableListItem>
+
             <Link
               href={`/song/${items
                 .name!.toLowerCase()
                 .trim()
                 .replace(/ /g, "-")}`}
-              className="flex w-full gap-3 rounded-lg border-2 p-3 hover:bg-[#f8f8f9]"
+              className="hidden w-full justify-between rounded-lg border-2 p-3 hover:bg-[#f8f8f9] sm:flex"
+              onMouseOver={() => setActiveList(i)}
+              onMouseLeave={() => setActiveList(-1)}
             >
-              <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md">
-                <Image
-                  src={thumbnailUrl}
-                  alt={items.name!}
-                  fill={true}
-                  priority={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover"
-                />
+              <div className="flex gap-3">
+                <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md sm:min-h-[90px] sm:min-w-[170px] md:min-h-[110px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]">
+                  <Image
+                    src={thumbnailUrl}
+                    alt={items.name!}
+                    fill={true}
+                    priority={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-sm font-semibold sm:text-base md:text-lg lg:text-2xl">
+                    {items.name}
+                  </h1>
+                  <p className="text-xs text-neutral-500 sm:text-sm md:text-base">
+                    {items.original_band}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-sm font-semibold">{items.name}</h1>
-                <p className="text-xs text-neutral-500">
-                  {items.original_band}
-                </p>
-              </div>
+              {activeList === i && (
+                <button
+                  className="h-fit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const favouriteSong = favouriteSongList.filter(
+                      (favourite) => {
+                        return favourite.song_id === items.id;
+                      },
+                    );
+                    void handleDeleteFavourite(favouriteSong[0]?.id);
+                    setCount(count--);
+                  }}
+                >
+                  <MdDeleteOutline className="h-[30px] w-[30px] hover:text-red-600" />
+                </button>
+              )}
             </Link>
-          </SwipeableListItem>
+          </>
         );
       })}
     </SwipeableList>
