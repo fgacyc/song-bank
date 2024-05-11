@@ -20,7 +20,14 @@ const Profile = () => {
 
   useEffect(() => {
     if (isLoading) return;
-    void (async () => {
+
+    void (() => {
+      if (window.innerWidth > 640) {
+        void router.push("/404");
+      }
+    })();
+
+    void (() => {
       if (!user) {
         void router.push("/api/auth/login");
         return;
@@ -28,8 +35,9 @@ const Profile = () => {
     })();
   }, [isLoading, user, router]);
 
+  // TODO: make profile unaccessible for tablet & computer devices
   return (
-    <>
+    <div className="block sm:hidden">
       <div className="flex flex-col gap-3 p-3">
         <ProfileUserInfo user={user} />
         <ProfileRecentSearch />
@@ -72,7 +80,7 @@ const Profile = () => {
           <TbLogout2 />
         </ProfileNavigationBlock>
       </div>
-    </>
+    </div>
   );
 };
 

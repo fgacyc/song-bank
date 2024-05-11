@@ -3,14 +3,8 @@ import type { SearchHistory, Sequencer, Song, Tag } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
-
-const SongBox = () => (
-  <div>
-    <div className="rounded-lg border px-16 py-10"></div>
-    <h1 className="text-sm font-semibold">Song name</h1>
-    <p className="text-xs text-neutral-500">Band & album</p>
-  </div>
-);
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
@@ -78,43 +72,69 @@ const ProfileRecentSearch = () => {
     return match ? match[1] : null;
   };
 
+  const LoadingList = () => {
+    return (
+      <div className="flex flex-col gap-2 rounded-md border-2 p-3">
+        <div className="min-h-[70px] min-w-[130px] overflow-hidden rounded-md">
+          <Skeleton height={"100%"} />
+        </div>
+        <div className="h-[13px] w-[100px] overflow-hidden">
+          <Skeleton />
+        </div>
+        <div className="h-[11px] w-[80px] overflow-hidden">
+          <Skeleton />
+        </div>
+      </div>
+    );
+  };
+
   if (searchHistory.length > 0)
     return (
       <div className="flex flex-col gap-1">
         <h1 className="font-semibold">Recent search</h1>
         <div className="flex gap-2 overflow-scroll">
-          {filteredSongList.map((items, i) => {
-            const originalYoutubeUrl = items.original_youtube_url ?? "";
-            const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
-            const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
-            return (
-              <Link
-                key={i}
-                href={`/song/${items.name
-                  ?.toLowerCase()
-                  .trim()
-                  .replace(/ /g, "-")}`}
-                className="flex flex-col gap-1 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
-              >
-                <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md">
-                  <Image
-                    src={thumbnailUrl}
-                    alt={items.name!}
-                    fill={true}
-                    priority={true}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <p className="truncate text-sm font-semibold">{items.name}</p>
-                  <p className="truncate text-xs text-neutral-500">
-                    {items.original_band}
-                  </p>
-                </div>
-              </Link>
-            );
-          })}
+          {loading ? (
+            new Array(7).fill(null).map((_, i) => {
+              return <LoadingList key={i} />;
+            })
+          ) : (
+            <>
+              {filteredSongList.map((items, i) => {
+                const originalYoutubeUrl = items.original_youtube_url ?? "";
+                const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
+                const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+                return (
+                  <Link
+                    key={i}
+                    href={`/song/${items.name
+                      ?.toLowerCase()
+                      .trim()
+                      .replace(/ /g, "-")}`}
+                    className="flex flex-col gap-1 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
+                  >
+                    <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md">
+                      <Image
+                        src={thumbnailUrl}
+                        alt={items.name!}
+                        fill={true}
+                        priority={true}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="truncate text-sm font-semibold">
+                        {items.name}
+                      </p>
+                      <p className="truncate text-xs text-neutral-500">
+                        {items.original_band}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </>
+          )}
         </div>
       </div>
     );

@@ -1,18 +1,58 @@
+import { type UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
-import { IoPerson } from "react-icons/io5";
 
-const Header = () => {
+interface HeaderProps {
+  setUser: React.Dispatch<React.SetStateAction<UserProfile | undefined>>;
+  showProfile: boolean;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  setUser,
+  showProfile,
+  setShowProfile,
+}) => {
+  const { isLoading, user } = useUser();
+  const router = useRouter();
+
   return (
-    <nav className="fixed top-0 z-20 flex h-[50px] w-full items-center justify-between border bg-white p-[10px] px-5 sm:h-[70px]">
+    <nav
+      className="fixed top-0 z-20 flex h-[50px] w-full items-center justify-between border bg-white p-[10px] px-5 sm:h-[70px]"
+      onClick={() => {
+        setShowProfile(false);
+      }}
+    >
       <Link href={"/"} className="flex items-center justify-center">
         <Image src={"/img/logo.png"} alt="logo" width={30} height={30} />
         <h1 className="text truncate ps-5 font-semibold">FGA Worship</h1>
       </Link>
-      <Link href="/profile" className="hidden p-1 sm:block">
-        <IoPerson />
-      </Link>
+      <button
+        className="hidden p-1 sm:block"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (!isLoading && user) {
+            setUser(user);
+            if (showProfile) {
+              setShowProfile(false);
+            } else {
+              setShowProfile(true);
+            }
+          } else {
+            void router.push("/api/auth/login");
+          }
+        }}
+      >
+        <Image
+          src={!isLoading && user ? user.picture! : "/img/male-avatar.svg"}
+          alt="pfp"
+          width={30}
+          height={30}
+          className={`${!user && "border-2"} rounded-full`}
+        />
+      </button>
     </nav>
   );
 };

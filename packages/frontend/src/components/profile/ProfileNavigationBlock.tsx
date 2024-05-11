@@ -18,7 +18,7 @@ const ProfileNavigationBlock: React.FC<ProfileNavigationBlockProps> = ({
   const router = useRouter();
   return (
     <button
-      className="flex h-[40px] items-center justify-between px-3 hover:bg-[#f5f5f6]"
+      className="flex h-[40px] w-full items-center justify-between px-3 hover:bg-[#f8f8f9]"
       onClick={() => {
         void router.push(link);
       }}
