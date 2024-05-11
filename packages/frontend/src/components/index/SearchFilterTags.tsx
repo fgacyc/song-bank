@@ -91,9 +91,9 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
           ...theme,
           colors: {
             ...theme.colors,
-            primary: "gray",
-            primary50: "#d1d1d1",
-            primary25: "#f5f5f5",
+            primary: "#a1a1a2",
+            primary50: "#f1f1f2",
+            primary25: "#f8f8f9",
           },
         })}
         value={objectOfKeys.find((option) => option.value === selectedKey)}
@@ -109,9 +109,9 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
           ...theme,
           colors: {
             ...theme.colors,
-            primary: "gray",
-            primary50: "#d1d1d1",
-            primary25: "#f5f5f5",
+            primary: "#a1a1a2",
+            primary50: "#f1f1f2",
+            primary25: "#f8f8f9",
           },
         })}
         value={objectOfLanguages?.find(

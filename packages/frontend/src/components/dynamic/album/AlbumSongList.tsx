@@ -28,7 +28,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
                 .trim()
                 .replace(/ /g, "-")}`}
               key={i}
-              className="flex gap-5 truncate rounded-lg border-2 p-5 hover:bg-[#f5f5f6] hover:shadow-md lg:block xl:flex"
+              className="flex gap-5 truncate rounded-lg border-2 p-5 hover:bg-[#f8f8f9] hover:shadow-md lg:block xl:flex"
             >
               <div className="relative w-[100px] min-w-[100px] sm:h-[100px] sm:w-[200px] sm:min-w-[200px] md:h-[105px] md:w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]">
                 <Image

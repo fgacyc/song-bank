@@ -33,7 +33,7 @@ const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
             <Link
               href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
               key={i}
-              className="flex items-center rounded-lg border-2 p-3 px-5 hover:bg-[#f5f5f6] hover:shadow-md"
+              className="flex items-center rounded-lg border-2 p-3 px-5 hover:bg-[#f8f8f9] hover:shadow-md"
             >
               <div className="h-full pe-4">
                 <MdAlbum className="h-full w-[36px]" />

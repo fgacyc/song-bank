@@ -40,7 +40,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
           <Link
             key={i}
             href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
-            className="flex flex-col items-center overflow-hidden rounded-lg border-2 p-5 hover:bg-[#f5f5f6] hover:shadow-md"
+            className="flex flex-col items-center overflow-hidden rounded-lg border-2 p-5 hover:bg-[#f8f8f9] hover:shadow-md"
           >
             <div
               className={`grid ${gridCol} min-h-[250px] w-full gap-[1px] overflow-hidden rounded`}

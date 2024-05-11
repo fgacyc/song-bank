@@ -25,7 +25,7 @@ const SearchAlbum: React.FC<SearchAlbumProps> = ({
               ?.toLowerCase()
               .trim()
               .replace(/ /g, "-")}`}
-            className="sm:white flex gap-5 rounded-lg border-b px-7 py-5 hover:bg-[#f5f5f6] hover:shadow-md sm:border-2"
+            className="sm:white flex gap-5 rounded-lg border-b px-7 py-5 hover:bg-[#f8f8f9] hover:shadow-md sm:border-2"
           >
             <div className="flex w-full items-center justify-between ">
               <div className="item-center flex h-full flex-row justify-center">

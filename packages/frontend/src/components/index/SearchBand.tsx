@@ -28,7 +28,7 @@ const SearchBand: React.FC<SearchBandProps> = ({
               .original_band!.toLowerCase()
               .trim()
               .replace(/ /g, "-")}`}
-            className="flex gap-5 border-b p-5 pl-7 hover:bg-[#f5f5f6] hover:shadow-md sm:rounded-lg sm:border-2"
+            className="flex gap-5 border-b p-5 pl-7 hover:bg-[#f8f8f9] hover:shadow-md sm:rounded-lg sm:border-2"
           >
             {channelProfile ? (
               <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full md:h-[100px] md:w-[100px]">
