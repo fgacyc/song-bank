@@ -95,7 +95,7 @@ const Favourites = () => {
             <IoIosArrowBack className="h-[25px] w-[25px]" />
           </Link>
         </div>
-        <h1 className="text-3xl font-black">Favourite songs</h1>
+        <h1 className="truncate pb-1 text-3xl font-black">Favourite songs</h1>
       </div>
       {loading ? (
         <FavouritesLoading />

@@ -63,7 +63,7 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
     );
   };
   return (
-    <SwipeableList className="flex flex-col gap-2 px-3 pb-[62px] pt-[62px] sm:pb-3">
+    <SwipeableList className="flex flex-col gap-2 px-3 pb-[62px] pt-[65px] sm:pb-3">
       {filteredSongList.map((items, i) => {
         const getYoutubeVideoId = (youtubeUrl: string) => {
           const regex =
@@ -76,46 +76,16 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
         const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
 
         return (
-          <>
-            <SwipeableListItem
-              key={i}
-              trailingActions={trailingActions(items.id)}
-              className="sm:hidden"
-            >
-              <Link
-                href={`/song/${items
-                  .name!.toLowerCase()
-                  .trim()
-                  .replace(/ /g, "-")}`}
-                className="flex w-full gap-3 rounded-lg border-2 p-3 hover:bg-[#f8f8f9]"
-              >
-                <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md sm:min-h-[90px] sm:min-w-[170px] md:min-h-[110px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]">
-                  <Image
-                    src={thumbnailUrl}
-                    alt={items.name!}
-                    fill={true}
-                    priority={true}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h1 className="text-sm font-semibold sm:text-base md:text-lg lg:text-2xl">
-                    {items.name}
-                  </h1>
-                  <p className="text-xs text-neutral-500 sm:text-sm md:text-base">
-                    {items.original_band}
-                  </p>
-                </div>
-              </Link>
-            </SwipeableListItem>
-
+          <SwipeableListItem
+            key={i}
+            trailingActions={trailingActions(items.id)}
+          >
             <Link
               href={`/song/${items
                 .name!.toLowerCase()
                 .trim()
                 .replace(/ /g, "-")}`}
-              className="hidden w-full justify-between rounded-lg border-2 p-3 hover:bg-[#f8f8f9] sm:flex"
+              className="flex w-full justify-between truncate rounded-lg border-2 p-3 hover:bg-[#f8f8f9]"
               onMouseOver={() => setActiveList(i)}
               onMouseLeave={() => setActiveList(-1)}
             >
@@ -150,6 +120,7 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
                       },
                     );
                     void handleDeleteFavourite(favouriteSong[0]?.id);
+                    filteredSongList.splice(i, 1);
                     setCount(count--);
                   }}
                 >
@@ -157,7 +128,7 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
                 </button>
               )}
             </Link>
-          </>
+          </SwipeableListItem>
         );
       })}
     </SwipeableList>
