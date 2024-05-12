@@ -1,5 +1,5 @@
-import FavouritesLoading from "@/components/favourites/FavouritesLoading";
-import FavouritesSongList from "@/components/favourites/FavouritesSongList";
+import FavouriteLoading from "@/components/favourite/FavouriteLoading";
+import FavouriteSongList from "@/components/favourite/FavouriteSongList";
 import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import type { Song, Tag, Favorite } from "@prisma/client";
@@ -12,7 +12,7 @@ import { IoIosArrowBack } from "react-icons/io";
 
 type SongType = Song & { tags: Tag[] };
 
-const Favourites = () => {
+const Favourite = () => {
   const { isLoading, user } = useUser();
   const router = useRouter();
   const [songList, setSongList] = useState<SongType[]>([]);
@@ -98,9 +98,9 @@ const Favourites = () => {
         <h1 className="truncate pb-1 text-3xl font-black">Favourite songs</h1>
       </div>
       {loading ? (
-        <FavouritesLoading />
+        <FavouriteLoading />
       ) : count > 0 ? (
-        <FavouritesSongList
+        <FavouriteSongList
           favouriteSongList={favouriteSongList}
           filteredSongList={filteredSongList}
           count={count}
@@ -121,8 +121,8 @@ const Favourites = () => {
   );
 };
 
-export default Favourites;
+export default Favourite;
 
-Favourites.getLayout = function getLayout(page: ReactElement) {
+Favourite.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };

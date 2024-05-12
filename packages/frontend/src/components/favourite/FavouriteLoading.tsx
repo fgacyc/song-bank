@@ -20,7 +20,7 @@ const LoadingList = () => {
   );
 };
 
-const FavouritesLoading = () => {
+const FavouriteLoading = () => {
   return (
     <div className="flex flex-col gap-2 px-3 pb-[62px] pt-[65px] sm:pb-3">
       {new Array(10).fill(null).map((_, i) => {
@@ -30,4 +30,4 @@ const FavouritesLoading = () => {
   );
 };
 
-export default FavouritesLoading;
+export default FavouriteLoading;

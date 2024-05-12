@@ -14,14 +14,14 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 type SongType = Song & { tags: Tag[] };
 
-interface FavouritesSongListProps {
+interface FavouriteSongListProps {
   favouriteSongList: Favorite[];
   filteredSongList: SongType[];
   count: number;
   setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
+const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
   favouriteSongList,
   filteredSongList,
   count,
@@ -135,4 +135,4 @@ const FavouritesSongList: React.FC<FavouritesSongListProps> = ({
   );
 };
 
-export default FavouritesSongList;
+export default FavouriteSongList;

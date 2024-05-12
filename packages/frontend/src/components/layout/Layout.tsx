@@ -52,7 +52,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <MdOutlineHistory />
             </ProfileNavigationBlock>
 
-            <ProfileNavigationBlock link="/favourites" name="Favourite songs">
+            <ProfileNavigationBlock link="/favourite" name="Favourite songs">
               <HiOutlineStar />
             </ProfileNavigationBlock>
 
