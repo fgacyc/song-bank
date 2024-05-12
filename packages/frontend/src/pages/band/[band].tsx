@@ -41,7 +41,22 @@ const Band = () => {
     })();
   }, []);
 
-  useMemo(() => {
+  useEffect(() => {
+    if (songList.length > 0 && router.query.band) {
+      const bandExist = songList.some((song) => {
+        return (
+          song.original_band?.toLowerCase().trim().replace(/ /g, "-") ===
+          router.query.band
+        );
+      });
+
+      if (!bandExist) {
+        void router.push("/404");
+      }
+    }
+  }, [songList, router]);
+
+  useEffect(() => {
     if (!isLoading && user && router.query.band) {
       void (async () => {
         await fetch("/api/history", {

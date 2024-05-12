@@ -22,21 +22,16 @@ const Profile = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    void (() => {
-      if (window.innerWidth > 640) {
-        void router.push("/404");
-      }
-    })();
+    if (window.innerWidth > 640) {
+      void router.push("/404");
+    }
 
-    void (() => {
-      if (!user) {
-        void router.push("/api/auth/login");
-        return;
-      }
-    })();
+    if (!user) {
+      void router.push("/api/auth/login");
+      return;
+    }
   }, [isLoading, user, router]);
 
-  // TODO: make profile unaccessible for tablet & computer devices
   return (
     <>
       <Head>

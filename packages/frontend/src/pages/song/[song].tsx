@@ -48,7 +48,22 @@ const DynamicSong = () => {
     })();
   }, []);
 
-  useMemo(() => {
+  useEffect(() => {
+    if (songList.length > 0 && router.query.song) {
+      const songExist = songList.some((song) => {
+        return (
+          song.name?.toLowerCase().trim().replace(/ /g, "-") ===
+          router.query.song
+        );
+      });
+
+      if (!songExist) {
+        void router.push("/404");
+      }
+    }
+  }, [songList, router]);
+
+  useEffect(() => {
     if (!isLoading && user && router.query.song) {
       void (async () => {
         await fetch("/api/history", {
@@ -61,12 +76,13 @@ const DynamicSong = () => {
         });
       })();
     }
+    // console.log(isLoading, user, router.query.song);
   }, [isLoading, user, router.query.song]);
 
   // TODO: fix fetching twice bug
-  useEffect(() => {
-    console.log(!isLoading, user, router.query.song);
-  }, [isLoading, user, router.query.song]);
+  // useEffect(() => {
+  //   console.log(!isLoading, user, router.query.song);
+  // }, [isLoading, user, router.query.song]);
 
   useEffect(() => {
     const filteredSongList = songList.filter(

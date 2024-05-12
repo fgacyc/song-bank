@@ -38,7 +38,22 @@ const Album = () => {
     })();
   }, []);
 
-  useMemo(() => {
+  useEffect(() => {
+    if (songList.length > 0 && router.query.album) {
+      const albumExist = songList.some((song) => {
+        return (
+          song.album?.toLowerCase().trim().replace(/ /g, "-") ===
+          router.query.album
+        );
+      });
+
+      if (!albumExist) {
+        void router.push("/404");
+      }
+    }
+  }, [songList, router]);
+
+  useEffect(() => {
     if (!isLoading && user && router.query.album) {
       void (async () => {
         await fetch("/api/history", {
