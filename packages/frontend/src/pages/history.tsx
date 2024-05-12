@@ -94,7 +94,7 @@ const History = () => {
             <IoIosArrowBack className="h-[25px] w-[25px]" />
           </Link>
         </div>
-        <h1 className="text-3xl font-black">Search history</h1>
+        <h1 className="truncate pb-1 text-3xl font-black">Search history</h1>
       </div>
       {loading ? (
         <HistoryLoading />
@@ -102,7 +102,7 @@ const History = () => {
         <>
           {/* TODO: logic for date title */}
           {searchHistory && searchHistory.length > 0 ? (
-            <div className="flex flex-col gap-3 px-3 pb-[62px] pt-[62px] sm:pb-3">
+            <div className="flex flex-col gap-3 px-3 pb-[62px] pt-[65px] sm:pb-3">
               {searchHistory
                 ?.sort((a, b) => {
                   return (
@@ -117,7 +117,6 @@ const History = () => {
                         key={i}
                         songList={songList}
                         search_content={history.search_content}
-                        getYoutubeVideoId={getYoutubeVideoId}
                       />
                     );
                   } else if (history.search_category === "album") {
