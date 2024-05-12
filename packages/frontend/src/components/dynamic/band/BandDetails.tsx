@@ -19,10 +19,10 @@ const BandDetails: React.FC<BandDetailsProps> = ({
 }) => {
   return (
     <div className="h-fit w-full rounded-lg border-2 p-5 md:w-[200px] lg:w-[300px]">
-      <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start md:pt-5">
+      <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start">
         {channelProfile ? (
           <div className="flex justify-center md:w-full">
-            <div className="relative min-h-[100px] min-w-[100px] md:h-[100px] md:w-[100px] lg:h-[200px] lg:w-[200px]">
+            <div className="relative min-h-[100px] min-w-[100px] md:min-h-[150px] md:min-w-[150px] lg:min-h-[250px] lg:min-w-[250px]">
               <Image
                 src={channelProfile}
                 alt={router.query.band as string}
@@ -34,7 +34,7 @@ const BandDetails: React.FC<BandDetailsProps> = ({
             </div>
           </div>
         ) : (
-          <div className="flex min-h-[100px] min-w-[100px] items-center justify-center rounded-full border md:h-[100px] md:w-[100px] lg:h-[200px] lg:w-[200px]">
+          <div className="flex min-h-[100px] min-w-[100px] items-center justify-center rounded-full border md:h-[150px] md:w-[150px] lg:h-[250px] lg:w-[250px]">
             <MdImageNotSupported />
           </div>
         )}
