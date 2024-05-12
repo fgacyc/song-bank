@@ -60,38 +60,41 @@ const Home = () => {
       return match ? match[1] : null;
     };
 
-    void (async () => {
-      const videoId = getYoutubeVideoId(
-        filteredSongList[0]?.original_youtube_url,
-      );
-      await fetch(
-        `https://youtube.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`,
-        { method: "GET" },
-      ).then(async (res) => {
-        await res.json().then((result) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-          const channelId = result?.items?.[0].snippet.channelId;
-          if (channelId) {
-            void (async () => {
-              await fetch(
-                `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${apiKey}`,
-                { method: "GET" },
-              ).then(async (res) => {
-                await res.json().then((result) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  const channelProfile: string =
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    result.items[0]?.snippet.thumbnails.high.url;
-                  setChannelProfile(channelProfile);
-                  setIsLoading(false);
+    if (showBand) {
+      void (async () => {
+        const videoId = getYoutubeVideoId(
+          filteredSongList[0]?.original_youtube_url,
+        );
+        await fetch(
+          `https://youtube.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`,
+          { method: "GET" },
+        ).then(async (res) => {
+          await res.json().then((result) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            const channelId = result?.items?.[0]?.snippet?.channelId;
+            if (channelId) {
+              void (async () => {
+                await fetch(
+                  `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${apiKey}`,
+                  { method: "GET" },
+                ).then(async (res) => {
+                  await res.json().then((result) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    const channelProfile: string =
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                      result.items[0]?.snippet.thumbnails.high.url;
+                    setChannelProfile(channelProfile);
+                    setIsLoading(false);
+                    console.log(channelProfile);
+                  });
                 });
-              });
-            })();
-          }
+              })();
+            }
+          });
         });
-      });
-    })();
-  }, [filteredSongList]);
+      })();
+    }
+  }, [filteredSongList, showBand]);
 
   useMemo(() => {
     const filteredSongListWithoutFilterTags = songList.filter((items) => {

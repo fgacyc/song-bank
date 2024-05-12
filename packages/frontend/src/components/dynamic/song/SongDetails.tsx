@@ -184,7 +184,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               <p className="text-sm">{share ? "Link copied" : "Share"}</p>
             </button>
           </div>
-          {/* TODO: report button */}
+          {/* TODO: add report button */}
           {/* <button className="flex h-[30px] items-center justify-center gap-1 rounded border border-[#d50000] px-2">
             <FcCancel />
             <p className="text-sm text-[#d50000]">Report</p>

@@ -57,7 +57,7 @@ const Profile = () => {
 
           <hr className="mx-3" />
 
-          {/* TODO: dark mode */}
+          {/* TODO: add dark mode */}
           {/* <button className="flex h-[40px] items-center justify-between px-3">
             <div className="flex items-center justify-center gap-3">
               <div className="text-lg">
