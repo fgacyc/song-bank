@@ -70,7 +70,7 @@ const Home = () => {
       ).then(async (res) => {
         await res.json().then((result) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-          const channelId = result?.item?.[0]?.snippet.channelId;
+          const channelId = result?.items?.[0].snippet.channelId;
           if (channelId) {
             void (async () => {
               await fetch(

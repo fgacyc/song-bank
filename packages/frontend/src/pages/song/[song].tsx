@@ -76,13 +76,12 @@ const DynamicSong = () => {
         });
       })();
     }
-    // console.log(isLoading, user, router.query.song);
   }, [isLoading, user, router.query.song]);
 
   // TODO: fix fetching twice bug
-  // useEffect(() => {
-  //   console.log(!isLoading, user, router.query.song);
-  // }, [isLoading, user, router.query.song]);
+  useEffect(() => {
+    console.log(!isLoading, user, router.query.song);
+  }, [isLoading, user, router.query.song]);
 
   useEffect(() => {
     const filteredSongList = songList.filter(

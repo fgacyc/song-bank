@@ -42,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       />
       {showProfile && (
         <>
-          <div className="fixed right-3 top-[62px] z-20 hidden w-[250px] flex-col gap-3 rounded-md border-2 bg-white pb-3 sm:flex">
+          <div className="fixed right-3 top-[62px] z-20 hidden flex-col gap-3 rounded-md border-2 bg-white pb-3 sm:flex">
             <div className="p-3 pt-6">
               <ProfileUserInfo user={user} />
             </div>

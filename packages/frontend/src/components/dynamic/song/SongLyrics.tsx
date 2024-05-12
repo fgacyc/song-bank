@@ -27,7 +27,7 @@ const SongLyrics: React.FC<SongLyricsProps> = ({
       <div className="rounded-lg border-2 p-5">
         <p
           ref={chordLyricsRef}
-          className="text-neutral-500"
+          className="text-pretty text-neutral-500"
           dangerouslySetInnerHTML={{
             __html: md.render(chordLyrics),
           }}

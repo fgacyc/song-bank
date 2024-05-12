@@ -33,9 +33,7 @@ const SearchBand: React.FC<SearchBandProps> = ({
             {channelProfile ? (
               <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full md:h-[100px] md:w-[100px]">
                 <Image
-                  src={
-                    channelProfile !== "" ? channelProfile : "/img/no-image.svg"
-                  }
+                  src={channelProfile}
                   alt={
                     filteredSongList[0]?.original_band
                       ? filteredSongList[0].original_band
