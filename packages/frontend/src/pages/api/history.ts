@@ -26,14 +26,14 @@ export default async function handler(
       const { user_id, search_content, search_category } = JSON.parse(
         req.body as string,
       );
-      const last24Hrs = Date.now() - 24 * 60 * 60 * 1000;
-      const lastDayAsISO = new Date(last24Hrs).toISOString();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       const searchHistory = await db.searchHistory.findMany({
         where: {
           user_id: user_id as string,
           search_content: search_content as string,
           search_category: search_category as string,
-          created_at: { gte: lastDayAsISO },
+          created_at: { gte: today },
         },
       });
 
