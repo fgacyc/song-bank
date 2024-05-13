@@ -14,10 +14,12 @@ import { TbLogout2 } from "react-icons/tb";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useRouter } from "next/router";
 import Head from "next/head";
+// import { RiFeedbackLine } from "react-icons/ri";
 
 const Profile = () => {
   const { user, isLoading } = useUser();
   const router = useRouter();
+  // const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     if (isLoading) return;
@@ -58,19 +60,32 @@ const Profile = () => {
           <hr className="mx-3" />
 
           {/* TODO: add dark mode */}
-          {/* <button className="flex h-[40px] items-center justify-between px-3">
+          {/* <button
+            className="flex h-[40px] w-full items-center justify-between px-3 hover:bg-[#f8f8f9]"
+            onClick={() => {
+              if (darkMode) {
+                setDarkMode(false);
+              } else {
+                setDarkMode(true);
+              }
+            }}
+          >
             <div className="flex items-center justify-center gap-3">
               <div className="text-lg">
-                {false ? <MdOutlineDarkMode /> : <MdDarkMode />}
+                {darkMode ? <MdOutlineDarkMode /> : <MdDarkMode />}
               </div>
               <p>Dark Mode</p>
             </div>
-            <IoIosArrowForward className="text-neutral-400" />
           </button> */}
 
           <ProfileNavigationBlock link="/about" name="About">
             <IoMdInformationCircleOutline />
           </ProfileNavigationBlock>
+
+          {/* TODO: add user feedback */}
+          {/* <ProfileNavigationBlock link="/feedback" name="Feedback">
+            <RiFeedbackLine />
+          </ProfileNavigationBlock> */}
 
           <hr className="mx-3" />
 

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useEffect, useRef, useState, type ReactNode } from "react";
+import React, { useEffect, useState, type ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { type UserProfile, UserProvider } from "@auth0/nextjs-auth0/client";

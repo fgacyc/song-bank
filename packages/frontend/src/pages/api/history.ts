@@ -39,7 +39,7 @@ export default async function handler(
 
       if (searchHistory.length !== 0) {
         return res.status(302).json({
-          message: `History for ${search_content} exists in the last 24 hours.`,
+          message: `History for ${search_content} exists today.`,
         });
       } else {
         const result = await db.searchHistory.create({

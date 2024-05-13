@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, type ReactElement } from "react";
+import React, { useEffect, useState, type ReactElement } from "react";
 import BandBreadcrumb from "@/components/dynamic/band/BandBreadcrumb";
 import { useRouter } from "next/router";
 import Head from "next/head";

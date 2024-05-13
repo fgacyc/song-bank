@@ -6,7 +6,6 @@ import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/router";
-// import { FcCancel } from "react-icons/fc";
 
 interface SongDetailsProps {
   embedUrl: string;

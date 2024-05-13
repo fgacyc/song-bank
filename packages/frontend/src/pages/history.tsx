@@ -139,7 +139,6 @@ const History = () => {
   };
 
   // TODO: add search by title & filter by date
-
   return (
     <>
       <Head>
