@@ -4,14 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface AlbumDetailsProps {
-  albumCoverImage: Song[] | undefined;
+  albumCoverImages: Song[] | undefined;
   filteredSongList: Song[] | undefined;
   gridCol: string;
   getYoutubeVideoId: (youtubeUrl: string) => string | null | undefined;
 }
 
 const AlbumDetails: React.FC<AlbumDetailsProps> = ({
-  albumCoverImage,
+  albumCoverImages,
   filteredSongList,
   gridCol,
   getYoutubeVideoId,
@@ -22,7 +22,7 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
         <div
           className={`${gridCol} grid h-[300px] w-full gap-[1px] overflow-hidden rounded md:h-[200px] md:w-[200px] lg:h-[270px] lg:w-[300px]`}
         >
-          {albumCoverImage?.map((items, i) => {
+          {albumCoverImages?.map((items, i) => {
             const originalYoutubeUrl = items.original_youtube_url ?? "";
             const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
 

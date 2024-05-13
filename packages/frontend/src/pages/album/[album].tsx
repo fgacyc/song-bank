@@ -3,7 +3,7 @@ import AlbumDetails from "@/components/dynamic/album/AlbumDetails";
 import AlbumLoading from "@/components/dynamic/album/AlbumLoading";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useState, type ReactElement } from "react";
+import React, { useEffect, useState, type ReactElement } from "react";
 import type { Sequencer, Tag, Song } from "@prisma/client";
 import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
 import Layout from "@/components/layout/Layout";
@@ -16,7 +16,7 @@ const Album = () => {
   const router = useRouter();
   const [songList, setSongList] = useState<SongType[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<SongType[]>();
-  const [albumCoverImage, setAlbumCoverImage] = useState<Song[]>();
+  const [albumCoverImages, setAlbumCoverImages] = useState<Song[]>();
   const [gridCol, setGridCol] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -83,13 +83,13 @@ const Album = () => {
     setFilteredSongList(filteredSongList);
 
     if (filteredSongList.length == 1) {
-      setAlbumCoverImage(filteredSongList.slice(0, 1));
+      setAlbumCoverImages(filteredSongList.slice(0, 1));
       setGridCol("grid-cols-1");
     } else if (filteredSongList.length == 2 || filteredSongList.length == 3) {
-      setAlbumCoverImage(filteredSongList.slice(0, 2));
+      setAlbumCoverImages(filteredSongList.slice(0, 2));
       setGridCol("grid-cols-1");
     } else if (filteredSongList.length >= 4) {
-      setAlbumCoverImage(filteredSongList.slice(0, 4));
+      setAlbumCoverImages(filteredSongList.slice(0, 4));
       setGridCol("grid-cols-2");
     } else {
       setGridCol("");
@@ -121,7 +121,7 @@ const Album = () => {
         />
         <div className="block gap-5 md:flex">
           <AlbumDetails
-            albumCoverImage={albumCoverImage}
+            albumCoverImages={albumCoverImages}
             filteredSongList={filteredSongList}
             gridCol={gridCol}
             getYoutubeVideoId={getYoutubeVideoId}
