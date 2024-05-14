@@ -84,6 +84,7 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
   return (
     <div className="flex min-w-fit gap-3 sm:w-[400px]">
       <Select
+        instanceId={"keys"}
         options={objectOfKeys}
         placeholder={<GiGClef />}
         isClearable={true}
@@ -102,6 +103,7 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
         }}
       />
       <Select
+        instanceId={"languages"}
         options={objectOfLanguages}
         placeholder={<GrLanguage />}
         isClearable={true}
