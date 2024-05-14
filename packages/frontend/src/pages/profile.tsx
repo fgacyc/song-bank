@@ -82,7 +82,6 @@ const Profile = () => {
             <IoMdInformationCircleOutline />
           </ProfileNavigationBlock>
 
-          {/* TODO: add user feedback */}
           <ProfileNavigationBlock
             link="https://miniapp-feedback.vercel.app/"
             name="Feedback"

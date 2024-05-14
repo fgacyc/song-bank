@@ -72,9 +72,9 @@ const Band = () => {
   }, [isLoading, user, router.query.band]);
 
   // TODO: fix fetching twice bug
-  useEffect(() => {
-    console.log(!isLoading, user, router.query.band);
-  }, [isLoading, user, router.query.band]);
+  // useEffect(() => {
+  //   console.log(!isLoading, user, router.query.band);
+  // }, [isLoading, user, router.query.band]);
 
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {

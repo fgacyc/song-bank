@@ -85,7 +85,6 @@ const Home = () => {
                       result.items[0]?.snippet.thumbnails.high.url;
                     setChannelProfile(channelProfile);
                     setIsLoading(false);
-                    console.log(channelProfile);
                   });
                 });
               })();

@@ -69,9 +69,9 @@ const Album = () => {
   }, [isLoading, user, router.query.album]);
 
   // TODO: fix fetching twice bug
-  useEffect(() => {
-    console.log(!isLoading, user, router.query.album);
-  }, [isLoading, user, router.query.album]);
+  // useEffect(() => {
+  //   console.log(!isLoading, user, router.query.album);
+  // }, [isLoading, user, router.query.album]);
 
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {
