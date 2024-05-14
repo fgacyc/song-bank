@@ -23,7 +23,7 @@ const LoadingList = () => {
 const FavouriteLoading = () => {
   return (
     <div className="flex flex-col gap-2 px-3 pb-[62px] pt-[65px] sm:pb-3">
-      {new Array(10).fill(null).map((_, i) => {
+      {new Array(4).fill(null).map((_, i) => {
         return <LoadingList key={i} />;
       })}
     </div>

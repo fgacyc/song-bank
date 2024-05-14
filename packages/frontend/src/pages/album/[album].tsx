@@ -104,7 +104,7 @@ const Album = () => {
   };
 
   if (loading) {
-    <AlbumLoading />;
+    return <AlbumLoading />;
   } else {
     return (
       <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">

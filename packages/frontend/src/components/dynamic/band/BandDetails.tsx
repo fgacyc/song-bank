@@ -18,7 +18,7 @@ const BandDetails: React.FC<BandDetailsProps> = ({
   uniqueAlbumList,
 }) => {
   return (
-    <div className="h-fit w-full rounded-lg border-2 p-5 md:w-[200px] lg:w-[300px]">
+    <div className="h-fit w-full rounded-lg border-2 p-5">
       <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start">
         {channelProfile ? (
           <div className="flex justify-center md:w-full">

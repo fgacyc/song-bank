@@ -127,7 +127,7 @@ const DynamicSong = () => {
   };
 
   if (loading) {
-    <SongLoading />;
+    return <SongLoading />;
   } else {
     return (
       <>

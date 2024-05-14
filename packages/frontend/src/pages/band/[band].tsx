@@ -147,7 +147,7 @@ const Band = () => {
   }, [filteredSongList]);
 
   if (loading) {
-    <BandLoading />;
+    return <BandLoading />;
   } else {
     return (
       <>
