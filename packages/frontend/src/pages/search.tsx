@@ -1,110 +1,246 @@
-import { useEffect, useMemo, useState, type ReactElement } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type ReactElement,
+} from "react";
 import SearchBar from "@/components/search/SearchBar";
-import ListView from "@/components/search/ListView";
-import GalleryView from "@/components/search/GalleryView";
-import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import Layout from "@/components/layout/Layout";
-import Loading from "@/components/Loading";
-
-export type Song = {
-  id?: string;
-  name: string;
-  alt_name?: string;
-  song_language: string;
-  original_key: string;
-  original_band: string;
-  album?: string;
-  original_youtube_url?: string;
-  chord_lyrics: string;
-  main_key_link?: string;
-  sub_key_link?: string;
-  eg_link?: string;
-  ag_link?: string;
-  bass_link?: string;
-  drum_link?: string;
-  tags?: string[];
-  sequencer_files?: string[];
-  sub_voice_file?: string;
-};
+import { type Song } from "@prisma/client";
+import SearchFilterTags from "@/components/search/SearchFilterTags";
+import SearchBand from "@/components/search/SearchBand";
+import SearchAlbum from "@/components/search/SearchAlbum";
+import SearchSongList from "@/components/search/SearchSongList";
+import SearchAlbumList from "@/components/search/SearchAlbumList";
+import SearchLoading from "@/components/search/SearchLoading";
+import { MdOutlineSearchOff } from "react-icons/md";
 
 const Search = () => {
-  const [view, setView] = useState("list");
-  const [grid, setGrid] = useState("grid-cols-1");
+  const [mounted, setMounted] = useState(false);
   const [songList, setSongList] = useState<Song[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
+  const [showBand, setShowBand] = useState<boolean | undefined>(false);
+  const [showAlbum, setShowAlbum] = useState<boolean | undefined>(false);
+  const [channelProfile, setChannelProfile] = useState("");
   const [searchString, setSearchString] = useState("");
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useLayoutEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    void (async () => {
+    if (!mounted) return;
+    const searchSong = async () => {
       await fetch("/api/song", {
         method: "GET",
-      }).then(async (res) => {
-        const param = localStorage.getItem("song-search");
-        if (param) {
-          setSearchString(String(param));
-          localStorage.removeItem("song-search");
-        }
-        await res.json().then((result: Song[]) => {
-          setSongList(result);
-          setIsLoading(false);
+      })
+        .then(async (res) => {
+          await res
+            .json()
+            .then((result: Song[]) => {
+              setSongList(result);
+              setIsLoading(false);
+            })
+            .catch((err) => console.error(err));
+        })
+        .catch((err) => console.error(err));
+    };
+
+    void searchSong();
+    setSearchString(localStorage.getItem("song-search") ?? "");
+    localStorage.removeItem("song-search");
+  }, [mounted]);
+
+  useEffect(() => {
+    const apiKey = "AIzaSyACcxuHB_5vduPISTHPH5XjJNlZWjSd8R4";
+
+    const getYoutubeVideoId = (youtubeUrl: string | null | undefined) => {
+      const regex =
+        /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
+      const match = youtubeUrl?.match(regex);
+      return match ? match[1] : null;
+    };
+
+    void (async () => {
+      const videoId = getYoutubeVideoId(
+        filteredSongList[0]?.original_youtube_url,
+      );
+      await fetch(
+        `https://youtube.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`,
+        { method: "GET" },
+      ).then(async (res) => {
+        await res.json().then((result) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          const channelId = result.items[0]?.snippet.channelId;
+          if (channelId) {
+            void (async () => {
+              await fetch(
+                `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${apiKey}`,
+                { method: "GET" },
+              ).then(async (res) => {
+                await res.json().then((result) => {
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  const channelProfile: string =
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    result.items[0]?.snippet.thumbnails.high.url;
+                  setChannelProfile(channelProfile);
+                  setIsLoading(false);
+                });
+              });
+            })();
+          }
         });
       });
     })();
-  }, []);
+  }, [filteredSongList]);
 
-  const filteredSongList = useMemo(() => {
-    if (searchString && searchString.toString() !== "") {
-      return songList.filter((song) => {
-        return song.name
-          .toLowerCase()
-          .includes(searchString.toString().toLowerCase());
+  useMemo(() => {
+    const filteredSongListWithoutFilterTags = songList.filter((items) => {
+      const songName = items.name?.concat(
+        " ",
+        items.alt_name ? items.alt_name : "",
+      );
+      const matchingSongName = songName!
+        .toLowerCase()
+        .replace(/[', ]/g, "")
+        .includes(searchString.toLowerCase().replace(/[', ]/g, ""));
+      const matchingBand = items
+        .original_band!.toLowerCase()
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, ""));
+      const matchingAlbum = items.album
+        ?.toLowerCase()
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, ""));
+      const matchingLyrics = items
+        .chord_lyrics!.toLowerCase()
+        .replace(/\[.*?\]|\n| /g, " ")
+        .includes(searchString.toLowerCase().trim());
+      return (
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        matchingSongName || matchingBand || matchingAlbum || matchingLyrics
+      );
+    });
+
+    let filteredSongList = filteredSongListWithoutFilterTags;
+    if (selectedKey && selectedLanguage) {
+      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
+        return (
+          items.original_key?.toString().toLowerCase().trim() ===
+            selectedKey.toString().toLowerCase() &&
+          items.song_language
+            ?.toString()
+            .toLowerCase()
+            .trim()
+            .includes(selectedLanguage.toString().toLowerCase())
+        );
       });
-    } else return songList;
-  }, [searchString, songList]);
+    } else if (selectedKey && !selectedLanguage) {
+      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
+        return (
+          items.original_key?.toString().toLowerCase().trim() ===
+          selectedKey.toString().toLowerCase()
+        );
+      });
+    } else if (!selectedKey && selectedLanguage) {
+      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
+        return items.song_language
+          ?.toString()
+          .toLowerCase()
+          .trim()
+          .includes(selectedLanguage.toString().toLowerCase());
+      });
+    }
+    setFilteredSongList(filteredSongList);
 
-  if (isLoading) {
-    return <Loading />;
-  } else
-    return (
-      <>
-        <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex md:flex lg:flex">
-          <div className="flex items-center gap-3">
-            <SearchBar
+    const showBand =
+      searchString.trim() !== "" &&
+      filteredSongList[0]?.original_band
+        ?.toLowerCase()
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, "")) &&
+      filteredSongList.every(
+        (items, _, array) => items.original_band === array[0]?.original_band,
+      );
+    setShowBand(showBand);
+    const showAlbum =
+      searchString.trim() !== "" &&
+      filteredSongList[0]?.album
+        ?.toLowerCase()
+        .replace(/ /g, "")
+        .includes(searchString.toLowerCase().replace(/ /g, "")) &&
+      filteredSongList.every(
+        (items, _, array) => items.album === array[0]?.album,
+      );
+    setShowAlbum(showAlbum);
+  }, [songList, searchString, selectedKey, selectedLanguage]);
+
+  const getYoutubeVideoId = (youtubeUrl: string) => {
+    const regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
+    const match = youtubeUrl.match(regex);
+    return match ? match[1] : null;
+  };
+  return (
+    <>
+      <div className="sticky top-[70px] z-10 justify-between border-b bg-white p-3 sm:flex sm:px-5 md:flex lg:flex">
+        <div className="z-20 flex items-center justify-between gap-4">
+          <SearchBar
+            searchString={searchString}
+            setSearchString={setSearchString}
+          />
+          <SearchFilterTags
+            selectedKey={selectedKey}
+            setSelectedKey={setSelectedKey}
+            selectedLanguage={selectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
+          />
+        </div>
+      </div>
+      {isLoading ? (
+        <SearchLoading />
+      ) : (
+        <div className="flex gap-5 sm:h-fit sm:p-5">
+          <div className="flex w-full flex-col sm:gap-3">
+            <SearchBand
+              showBand={showBand}
               searchString={searchString}
-              setSearchString={setSearchString}
               songList={songList}
+              filteredSongList={filteredSongList}
+              channelProfile={channelProfile}
             />
+            <SearchAlbum
+              showAlbum={showAlbum}
+              searchString={searchString}
+              songList={songList}
+              filteredSongList={filteredSongList}
+            />
+            <SearchSongList
+              showBand={showBand}
+              showAlbum={showAlbum}
+              filteredSongList={filteredSongList}
+              getYoutubeVideoId={getYoutubeVideoId}
+              searchString={searchString}
+            />
+            {filteredSongList.length == 0 && (
+              <div className="flex h-[75dvh] items-center justify-center gap-2 p-5 text-neutral-500">
+                <MdOutlineSearchOff className="h-[30px] w-[30px]" />
+                <div className="text-lg">No result found</div>
+              </div>
+            )}
           </div>
-          <div className="grid w-[70px] grid-cols-2 gap-1">
-            <button
-              className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
-              onClick={() => {
-                setView("list");
-                setGrid("grid-cols-1");
-              }}
-            >
-              <CiGrid2H className="h-[20px] w-[20px]" />
-            </button>
-            <button
-              className="hidden h-[30px] w-[30px] items-center justify-center rounded-md border sm:flex"
-              onClick={() => {
-                setView("gallery");
-                setGrid("grid-cols-5");
-              }}
-            >
-              <CiGrid41 className="h-[20px] w-[20px]" />
-            </button>
-          </div>
+          <SearchAlbumList
+            showBand={showBand}
+            searchString={searchString}
+            songList={songList}
+            filteredSongList={filteredSongList}
+          />
         </div>
-        <div className={`grid gap-3 p-3 ${grid}`}>
-          {view === "list" ? (
-            <ListView songList={filteredSongList} />
-          ) : (
-            <GalleryView songList={filteredSongList} />
-          )}
-        </div>
-      </>
-    );
+      )}
+    </>
+  );
 };
 
 export default Search;

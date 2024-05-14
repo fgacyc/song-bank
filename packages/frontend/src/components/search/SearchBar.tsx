@@ -1,45 +1,33 @@
-import { type Dispatch, type SetStateAction } from "react";
-import { IoIosClose } from "react-icons/io";
+import {
+  useEffect,
+  useRef,
+  type Dispatch,
+  type SetStateAction,
+  type MutableRefObject,
+} from "react";
 import { RiSearch2Line } from "react-icons/ri";
-import { Form, Formik, useFormikContext } from "formik";
+import { Form, Formik, type FormikProps, useFormikContext } from "formik";
+import { AiOutlineClose } from "react-icons/ai";
 
-export type Song = {
-  id?: string;
-  name: string;
-  alt_name?: string;
-  song_language: string;
-  original_key: string;
-  original_band: string;
-  album?: string;
-  original_youtube_url?: string;
-  chord_lyrics: string;
-  main_key_link?: string;
-  sub_key_link?: string;
-  eg_link?: string;
-  ag_link?: string;
-  bass_link?: string;
-  drum_link?: string;
-  tags?: string[];
-  sequencer_files?: string[];
-  sub_voice_file?: string;
-};
+interface InputProps {
+  setSearchString: Dispatch<SetStateAction<string>>;
+  inputRef: MutableRefObject<HTMLInputElement | null>;
+}
 
 interface SearchBarProps {
   searchString: string;
   setSearchString: Dispatch<SetStateAction<string>>;
-  songList?: Song[];
 }
 
-const Input: React.FC<{
-  setSearchString: Dispatch<SetStateAction<string>>;
-}> = ({ setSearchString }) => {
+const Input: React.FC<InputProps> = ({ setSearchString, inputRef }) => {
   const formikRef = useFormikContext<{ searchString: string }>();
+
   return (
     <input
+      ref={inputRef}
+      className="w-full ps-4"
       type="text"
       placeholder="Search"
-      className="ps-2"
-      name="searchString"
       value={formikRef.values.searchString}
       onChange={async (e) => {
         await formikRef.setFieldValue("searchString", e.target.value);
@@ -53,27 +41,46 @@ const SearchBar: React.FC<SearchBarProps> = ({
   searchString,
   setSearchString,
 }) => {
+  type SearchBarForm = { searchString: string };
+  const formikInnerRef = useRef<FormikProps<SearchBarForm>>(null);
+
+  useEffect(() => {
+    const setValue = async () => {
+      if (!formikInnerRef.current) return;
+      await formikInnerRef.current.setFieldValue("searchString", searchString);
+    };
+
+    void setValue();
+  }, [searchString]);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   return (
-    <div className="flex h-[30px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
-      <Formik<{ searchString: string }>
-        initialValues={{ searchString: searchString }}
-        onSubmit={async (_, action) => {
-          await action.setFieldValue("searchString", "");
+    <div className="flex h-[38px] w-full items-center justify-between rounded-md border sm:w-fit sm:justify-evenly md:w-fit md:justify-evenly lg:w-fit lg:justify-evenly">
+      <Formik<SearchBarForm>
+        initialValues={{
+          searchString: searchString ?? "",
+        }}
+        onReset={() => {
           setSearchString("");
         }}
+        innerRef={formikInnerRef}
+        onSubmit={async () => null}
       >
-        {() => (
-          <Form className="flex flex-row items-center">
-            <Input setSearchString={setSearchString} />
+        {({ resetForm }) => (
+          <Form className="flex w-full items-center justify-between">
+            <Input setSearchString={setSearchString} inputRef={inputRef} />
             <button
-              type="submit"
-              className="flex h-full w-[30px] items-center justify-center rounded-e-md border-s"
+              type="button"
+              onClick={() => {
+                resetForm();
+                if (inputRef.current !== null) {
+                  inputRef.current.focus();
+                }
+              }}
+              className="flex h-full w-[40px] items-center justify-center rounded-e-md border-s"
             >
-              {searchString === "" || searchString === undefined ? (
-                <RiSearch2Line />
-              ) : (
-                <IoIosClose />
-              )}
+              {!searchString ? <RiSearch2Line /> : <AiOutlineClose />}
             </button>
           </Form>
         )}

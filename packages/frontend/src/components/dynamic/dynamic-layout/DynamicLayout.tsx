@@ -1,13 +1,12 @@
 import Head from "next/head";
 import React, { type ReactNode } from "react";
-import Header from "./Header";
-// import Navigation from "./Navigation";
+import Header from "./DynamicHeader";
 
-interface LayoutProps {
+interface DynamicLayoutProps {
   children: ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const DynamicLayout: React.FC<DynamicLayoutProps> = ({ children }) => {
   return (
     <>
       <Head>
@@ -16,10 +15,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <link rel="icon" href="/img/logo.png" />
       </Head>
       <Header />
-      {/* <Navigation /> */}
-      <main className="relative top-[70px] z-0 min-h-[91vh]">{children}</main>
+      <main className="relative top-[90px] px-5">{children}</main>
     </>
   );
 };
 
-export default Layout;
+export default DynamicLayout;

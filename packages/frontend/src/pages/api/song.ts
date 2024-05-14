@@ -17,27 +17,6 @@ export default async function handler(
   }
 }
 
-//   if (req.method === "POST") {
-//     const body: { content: string; color: string } = JSON.parse(
-//       String(req.body),
-//     );
-//     try {
-//       const create = await db.tag.create({
-//         select: {
-//           content: true,
-//         },
-//         data: {
-//           content: body.content,
-//           color: body.color,
-//         },
-//       });
-//       return res.status(200).json(create);
-//     } catch (err) {
-//       console.error(err);
-//       return res.status(500).json({ error: err });
-//     }
-//   }
-
 export const config = {
   api: {
     externalResolver: true,

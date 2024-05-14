@@ -21,9 +21,10 @@ select:focus-within {
   position: relative;
   user-select: none;
   height: 3em;
-  font-size: 80%;
-  font-weight: 500;
-  color: black;
+  color: #000;
+  font-size: 90%;
+  font-weight: 700;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 .chord.diagram {
   height: calc(1.5em + (3.5 * var(--chord-diagram-font-size)));
@@ -54,7 +55,7 @@ select:focus-within {
   background: white;
   z-index: 5;
 }
-/* .lyrics-title {
-  border: solid;
-  padding-top: 10px;
-} */
+
+.react-loading-skeleton {
+  line-height: 2 !important;
+}

@@ -19,7 +19,7 @@ const config = {
   },
 
   images: {
-    domains: ["i.ytimg.com"], // Add 'i.ytimg.com' to the list of domains
+    domains: ["i.ytimg.com", "yt3.ggpht.com"], // Add 'i.ytimg.com' to the list of domains
   },
 };
 
