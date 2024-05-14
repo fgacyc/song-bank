@@ -11,6 +11,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
 import { useRouter } from "next/router";
 import { RiFeedbackLine } from "react-icons/ri";
+import { IoDocumentTextOutline } from "react-icons/io5";
 // import ActionSheetButtons from "../miniapp/MiniAppActionSheetButtons";
 // import ActionSheetMenu from "../miniapp/MiniAppActionSheetMenu";
 // import Navigation from "./Navigation";
@@ -68,6 +69,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               name="Feedback"
             >
               <RiFeedbackLine />
+            </ProfileNavigationBlock>
+
+            <ProfileNavigationBlock
+              link="https://docs.google.com/document/d/1E0Pn3ZL6LTlumWKQB7UyeJ88m0jrQjf8a7Z4tqapCi0/edit?usp=sharing"
+              name="Tutorial"
+            >
+              <IoDocumentTextOutline />
             </ProfileNavigationBlock>
 
             <hr className="mx-3" />

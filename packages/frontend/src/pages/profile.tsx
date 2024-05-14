@@ -15,6 +15,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { RiFeedbackLine } from "react-icons/ri";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 const Profile = () => {
   const { user, isLoading } = useUser();
@@ -87,6 +88,13 @@ const Profile = () => {
             name="Feedback"
           >
             <RiFeedbackLine />
+          </ProfileNavigationBlock>
+
+          <ProfileNavigationBlock
+            link="https://docs.google.com/document/d/1E0Pn3ZL6LTlumWKQB7UyeJ88m0jrQjf8a7Z4tqapCi0/edit?usp=sharing"
+            name="Tutorial"
+          >
+            <IoDocumentTextOutline />
           </ProfileNavigationBlock>
 
           <hr className="mx-3" />
