@@ -10,6 +10,7 @@ import ProfileUserInfo from "../profile/ProfileUserInfo";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
 import { useRouter } from "next/router";
+import { RiFeedbackLine } from "react-icons/ri";
 // import ActionSheetButtons from "../miniapp/MiniAppActionSheetButtons";
 // import ActionSheetMenu from "../miniapp/MiniAppActionSheetMenu";
 // import Navigation from "./Navigation";
@@ -60,6 +61,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             <ProfileNavigationBlock link="/about" name="About">
               <IoMdInformationCircleOutline />
+            </ProfileNavigationBlock>
+
+            <ProfileNavigationBlock
+              link="https://miniapp-feedback.vercel.app/"
+              name="Feedback"
+            >
+              <RiFeedbackLine />
             </ProfileNavigationBlock>
 
             <hr className="mx-3" />

@@ -14,7 +14,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useRouter } from "next/router";
 import Head from "next/head";
-// import { RiFeedbackLine } from "react-icons/ri";
+import { RiFeedbackLine } from "react-icons/ri";
 
 const Profile = () => {
   const { user, isLoading } = useUser();
@@ -83,9 +83,12 @@ const Profile = () => {
           </ProfileNavigationBlock>
 
           {/* TODO: add user feedback */}
-          {/* <ProfileNavigationBlock link="/feedback" name="Feedback">
+          <ProfileNavigationBlock
+            link="https://miniapp-feedback.vercel.app/"
+            name="Feedback"
+          >
             <RiFeedbackLine />
-          </ProfileNavigationBlock> */}
+          </ProfileNavigationBlock>
 
           <hr className="mx-3" />
 
