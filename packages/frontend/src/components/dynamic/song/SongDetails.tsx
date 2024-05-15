@@ -35,9 +35,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               })
               .catch((err) => console.error(err));
           })
-          .catch((err) => {
-            console.error(err);
-          });
+          .catch((err) => console.error(err));
       })();
     }
   }, [isLoading, user, items.id]);
@@ -69,10 +67,10 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
     }
   };
 
-  const handleDeleteFavourite = async () => {
+  const handleDeleteFavourite = async (id: string) => {
     if (!isLoading && user) {
       setDisableButton(true);
-      await fetch(`/api/favorite?id=${favouriteId ?? favouriteData?.id}`, {
+      await fetch(`/api/favorite?id=${id}`, {
         method: "DELETE",
       })
         .then(async () => {
@@ -158,7 +156,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               disabled={disableButton}
               onClick={async () => {
                 if (favourite) {
-                  await handleDeleteFavourite();
+                  await handleDeleteFavourite(favouriteId ?? favouriteData?.id);
                 } else {
                   await handleCreateFavourite();
                 }
