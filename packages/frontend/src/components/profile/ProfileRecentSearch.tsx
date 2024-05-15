@@ -88,7 +88,10 @@ const ProfileRecentSearch = () => {
     );
   };
 
-  if (searchHistory.length > 0)
+  if (
+    searchHistory.length > 0 &&
+    searchHistory.some((item) => item.search_category?.includes("song"))
+  )
     return (
       <div className="flex flex-col gap-1">
         <h1 className="font-semibold">Recent search</h1>
