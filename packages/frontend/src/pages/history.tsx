@@ -77,10 +77,6 @@ const History = () => {
   }, [isLoading, user]);
 
   useEffect(() => {
-    console.log(searchHistory);
-  }, [searchHistory]);
-
-  useEffect(() => {
     const sortedSearchHistory = searchHistory?.sort((a, b) => {
       return (
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
