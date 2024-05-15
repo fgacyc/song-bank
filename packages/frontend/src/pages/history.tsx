@@ -7,7 +7,6 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import type { SearchHistory, Sequencer, Song, Tag } from "@prisma/client";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, type ReactElement } from "react";
 import { IoIosArrowBack } from "react-icons/io";
@@ -150,16 +149,9 @@ const History = () => {
         <link rel="icon" href="/img/logo.png" />
       </Head>
       <div className="fixed z-10 flex w-full items-center gap-2 bg-white p-3">
-        <div className="hidden sm:block">
-          <Link href={"/"}>
-            <IoIosArrowBack className="h-[25px] w-[25px]" />
-          </Link>
-        </div>
-        <div className="sm:hidden">
-          <Link href={"/profile"}>
-            <IoIosArrowBack className="h-[25px] w-[25px]" />
-          </Link>
-        </div>
+        <button onClick={() => router.back()}>
+          <IoIosArrowBack className="h-[25px] w-[25px]" />
+        </button>
         <h1 className="truncate pb-1 text-3xl font-black">Search history</h1>
       </div>
       {loading ? (
