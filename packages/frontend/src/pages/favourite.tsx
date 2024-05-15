@@ -47,7 +47,7 @@ const Favourite = () => {
     };
 
     const fetchFavorites = async () => {
-      await fetch(`/api/favorite?${user?.sub}`, {
+      await fetch(`/api/favorite?user_id=${user?.sub}`, {
         method: "GET",
       })
         .then(

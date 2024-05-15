@@ -17,7 +17,7 @@ const ProfileRecentSearch = () => {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      await fetch(`/api/history?user_id${user?.sub}`, {
+      await fetch(`/api/history?user_id=${user?.sub}`, {
         method: "GET",
       }).then(async (res) => {
         await res.json().then((result: SearchHistory[]) => {

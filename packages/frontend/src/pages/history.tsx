@@ -42,7 +42,7 @@ const History = () => {
   useEffect(() => {
     if (!isLoading && user) {
       const fetchHistory = async () => {
-        await fetch(`/api/history?${user.sub}`, {
+        await fetch(`/api/history?user_id=${user.sub}`, {
           method: "GET",
         })
           .then(async (res) => {
@@ -76,6 +76,10 @@ const History = () => {
         .catch((err) => console.error(err));
     }
   }, [isLoading, user]);
+
+  useEffect(() => {
+    console.log(searchHistory);
+  }, [searchHistory]);
 
   useEffect(() => {
     const sortedSearchHistory = searchHistory?.sort((a, b) => {
@@ -138,7 +142,6 @@ const History = () => {
     }
   };
 
-  // TODO: add search by title & filter by date
   return (
     <>
       <Head>
