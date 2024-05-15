@@ -111,7 +111,7 @@ const Band = () => {
   };
 
   useEffect(() => {
-    const apiKey = "AIzaSyACcxuHB_5vduPISTHPH5XjJNlZWjSd8R4";
+    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_DATA_API;
 
     void (async () => {
       const videoId = getYoutubeVideoId(

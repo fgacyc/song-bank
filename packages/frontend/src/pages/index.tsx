@@ -50,8 +50,7 @@ const Home = () => {
   }, [mounted]);
 
   useEffect(() => {
-    // TODO: use church's account for api key
-    const apiKey = "AIzaSyACcxuHB_5vduPISTHPH5XjJNlZWjSd8R4";
+    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_DATA_API;
 
     const getYoutubeVideoId = (youtubeUrl: string | null | undefined) => {
       const regex =

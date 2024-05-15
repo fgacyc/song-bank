@@ -16,7 +16,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   const { isLoading, user } = useUser();
   const router = useRouter();
   const [favouriteData, setFavouriteData] = useState<Favorite>();
-  const [favouriteId, setFavouriteId] = useState<string>();
+  const [favouriteId, setFavouriteId] = useState("");
   const [favourite, setFavourite] = useState(false);
   const [share, setShare] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
