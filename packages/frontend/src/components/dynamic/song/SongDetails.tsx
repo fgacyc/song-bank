@@ -46,14 +46,17 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
     }
   }, [favouriteData]);
 
-  const handleCreateFavourite = async () => {
+  const handleCreateFavourite = async (
+    songId: string,
+    userId: string | null | undefined,
+  ) => {
     if (!isLoading && user) {
       setDisableButton(true);
       await fetch("/api/favorite", {
         method: "POST",
         body: JSON.stringify({
-          song_id: items.id,
-          user_id: user.sub,
+          song_id: songId,
+          user_id: userId,
         }),
       })
         .then(async (res) => {
@@ -158,7 +161,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
                 if (favourite) {
                   await handleDeleteFavourite(favouriteId ?? favouriteData?.id);
                 } else {
-                  await handleCreateFavourite();
+                  await handleCreateFavourite(items.id, user?.sub);
                 }
               }}
               className={`${
