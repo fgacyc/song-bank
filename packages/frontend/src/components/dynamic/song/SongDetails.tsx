@@ -156,11 +156,11 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
           <div className="flex items-center gap-2">
             <button
               disabled={disableButton}
-              onClick={() => {
+              onClick={async () => {
                 if (favourite) {
-                  void handleDeleteFavourite();
+                  await handleDeleteFavourite();
                 } else {
-                  void handleCreateFavourite();
+                  await handleCreateFavourite();
                 }
               }}
               className={`${

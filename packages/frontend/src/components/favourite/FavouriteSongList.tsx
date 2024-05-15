@@ -17,14 +17,12 @@ type SongType = Song & { tags: Tag[] };
 interface FavouriteSongListProps {
   favouriteSongList: Favorite[];
   filteredSongList: SongType[];
-  count: number;
   setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
   favouriteSongList,
   filteredSongList,
-  count,
   setCount,
 }) => {
   const { isLoading, user } = useUser();
@@ -36,7 +34,7 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
         method: "DELETE",
       })
         .then(() => {
-          setCount(() => count--);
+          setCount((prev) => prev - 1);
         })
         .catch((err) => console.error(err));
     }
@@ -47,12 +45,12 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
       <TrailingActions>
         <SwipeAction
           destructive={true}
-          onClick={() => {
+          onClick={async () => {
             const favouriteSong = favouriteSongList.filter((favourite) => {
               return favourite.song_id === songId;
             });
-            void handleDeleteFavourite(favouriteSong[0]?.id);
-            setCount(count--);
+            await handleDeleteFavourite(favouriteSong[0]?.id);
+            setCount((prev) => prev - 1);
           }}
         >
           <div className="relative ml-2 rounded-lg border-2 border-red-500">
@@ -112,16 +110,16 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
               {activeList === i && (
                 <button
                   className="h-fit"
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.preventDefault();
                     const favouriteSong = favouriteSongList.filter(
                       (favourite) => {
                         return favourite.song_id === items.id;
                       },
                     );
-                    void handleDeleteFavourite(favouriteSong[0]?.id);
+                    await handleDeleteFavourite(favouriteSong[0]?.id);
                     filteredSongList.splice(i, 1);
-                    setCount(count--);
+                    setCount((prev) => prev - 1);
                   }}
                 >
                   <MdDeleteOutline className="h-[30px] w-[30px] hover:text-red-600" />

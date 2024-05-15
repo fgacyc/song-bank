@@ -103,7 +103,6 @@ const Favourite = () => {
         <FavouriteSongList
           favouriteSongList={favouriteSongList}
           filteredSongList={filteredSongList}
-          count={count}
           setCount={setCount}
         />
       ) : (
