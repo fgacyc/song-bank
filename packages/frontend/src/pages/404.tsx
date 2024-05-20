@@ -5,7 +5,7 @@ export default function Custom404() {
     <>
       <Head>
         <title>404</title>
-        <meta name="" content="" />
+        <meta name="description" content="Page Not Found" />
         <link rel="icon" href="/logo.png" />
       </Head>
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-5">

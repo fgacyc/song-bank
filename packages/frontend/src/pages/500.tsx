@@ -5,14 +5,14 @@ export default function Custom500() {
     <>
       <Head>
         <title>500</title>
-        <meta name="" content="" />
+        <meta name="description" content="Server Side Error" />
         <link rel="icon" href="/logo.png" />
       </Head>
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={"/server-down.svg"}
-          alt="page not found"
+          alt="server side error"
           width={200}
           height={200}
         />

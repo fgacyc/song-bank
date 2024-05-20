@@ -39,7 +39,7 @@ const Profile = () => {
     <>
       <Head>
         <title>{user?.name}</title>
-        <meta name="" content="" />
+        <meta name="description" content="User Profile" />
         <link rel="icon" href="/logo.png" />
       </Head>
       <div className="block sm:hidden">

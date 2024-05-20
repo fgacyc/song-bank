@@ -133,6 +133,8 @@ const DynamicSong = () => {
       <>
         <Head>
           <title>{filteredSongList[0]?.name}</title>
+          <meta name="keywords" content={`${filteredSongList[0]?.name}`} />
+          <link rel="icon" href="/logo.png" />
         </Head>
         {filteredSongList.map((items, i) => {
           const videoId = getVideoId(items.original_youtube_url ?? "");

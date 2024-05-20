@@ -13,7 +13,7 @@ export default function About() {
     <>
       <Head>
         <title>About</title>
-        <meta name="" content="" />
+        <meta name="description" content="About Us" />
         <link rel="icon" href="/logo.png" />
       </Head>
       <div className={"h-screen"}>

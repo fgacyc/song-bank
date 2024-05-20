@@ -153,6 +153,11 @@ const Band = () => {
       <>
         <Head>
           <title>{filteredSongList[0]?.original_band}</title>
+          <meta
+            name="keywords"
+            content={`${filteredSongList[0]?.original_band}`}
+          />
+          <link rel="icon" href="/logo.png" />
         </Head>
         <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
           <BandBreadcrumb

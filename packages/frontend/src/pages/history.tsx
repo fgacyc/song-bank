@@ -141,7 +141,7 @@ const History = () => {
     <>
       <Head>
         <title>Search History</title>
-        <meta name="" content="" />
+        <meta name="description" content="Search History" />
         <link rel="icon" href="/logo.png" />
       </Head>
       <div className="fixed z-10 flex w-full items-center gap-2 bg-white p-3">

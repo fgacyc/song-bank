@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <UserProvider>
       <Head>
         <title>Song Bank</title>
-        <meta name="" content="" />
+        <meta name="description" content="Song Bank" />
         <link rel="icon" href="/logo.png" />
       </Head>
       {/* <ActionSheetButtons /> */}
