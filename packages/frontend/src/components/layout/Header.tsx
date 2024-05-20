@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({
       }}
     >
       <Link href={"/"} className="flex items-center justify-center">
-        <Image src={"/img/logo.png"} alt="logo" width={30} height={30} />
+        <Image src={"/logo.png"} alt="logo" width={30} height={30} />
         <h1 className="text truncate ps-5 font-semibold">FGA Worship</h1>
       </Link>
       <button
@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({
         }}
       >
         <Image
-          src={!isLoading && user ? user.picture! : "/img/male-avatar.svg"}
+          src={!isLoading && user ? user.picture! : "/male-avatar.svg"}
           alt="pfp"
           width={30}
           height={30}

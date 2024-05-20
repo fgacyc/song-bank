@@ -40,7 +40,7 @@ const Profile = () => {
       <Head>
         <title>{user?.name}</title>
         <meta name="" content="" />
-        <link rel="icon" href="/img/logo.png" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <div className="block sm:hidden">
         <div className="flex flex-col gap-3 p-3">

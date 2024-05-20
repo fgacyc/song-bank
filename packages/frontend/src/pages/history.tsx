@@ -142,7 +142,7 @@ const History = () => {
       <Head>
         <title>Search History</title>
         <meta name="" content="" />
-        <link rel="icon" href="/img/logo.png" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <div className="fixed z-10 flex w-full items-center gap-2 bg-white p-3">
         <button onClick={() => router.back()}>
@@ -274,7 +274,7 @@ const History = () => {
           ) : (
             <div className="flex h-[90dvh] flex-col items-center justify-center gap-5">
               <Image
-                src={"/img/no-search-history.svg"}
+                src={"/no-search-history.svg"}
                 alt="no search history"
                 width={200}
                 height={200}

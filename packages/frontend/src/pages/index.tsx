@@ -338,7 +338,7 @@ const Home = () => {
             {filteredSongList.length == 0 && (
               <div className="flex h-[75dvh] flex-col items-center justify-center gap-5">
                 <Image
-                  src={"/img/no-search-result.svg"}
+                  src={"/no-search-result.svg"}
                   alt="no search result"
                   width={200}
                   height={200}

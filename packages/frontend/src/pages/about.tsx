@@ -14,13 +14,13 @@ export default function About() {
       <Head>
         <title>About</title>
         <meta name="" content="" />
-        <link rel="icon" href="/img/logo.png" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <div className={"h-screen"}>
         <ActionSheetButtons />
         <NavBar>About</NavBar>
         <div className={"mb-2 flex flex-col items-center bg-white p-8"}>
-          <Image src="/img/logo.png" alt="app logo" width={64} height={64} />
+          <Image src="/logo.png" alt="app logo" width={64} height={64} />
           <h1 className={"mt-4 text-center text-xl text-black"}>
             MiniApp Framework
           </h1>
@@ -42,7 +42,7 @@ export default function About() {
               {config.instagram && (
                 <a href={config.instagram} className={"px-2"} target="_blank">
                   <Image
-                    src={"/img/instagram.png"}
+                    src={"/instagram.png"}
                     alt="instagram"
                     width={24}
                     height={24}
@@ -52,7 +52,7 @@ export default function About() {
               {config.github && (
                 <a href={config.github} target="_blank">
                   <Image
-                    src={"/img/github.png"}
+                    src={"/github.png"}
                     alt="github"
                     width={24}
                     height={24}

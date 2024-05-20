@@ -6,12 +6,12 @@ export default function Custom500() {
       <Head>
         <title>500</title>
         <meta name="" content="" />
-        <link rel="icon" href="/img/logo.png" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={"/img/server-down.svg"}
+          src={"/server-down.svg"}
           alt="page not found"
           width={200}
           height={200}

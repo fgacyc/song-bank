@@ -56,9 +56,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
                   >
                     <div className="relative h-[135%] w-full">
                       <Image
-                        src={
-                          youtubeVideoId ? thumbnailUrl : "/img/no-cover.jpg"
-                        }
+                        src={youtubeVideoId ? thumbnailUrl : "/no-cover.jpg"}
                         alt={items.name!}
                         fill={true}
                         priority={true}

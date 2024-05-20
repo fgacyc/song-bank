@@ -34,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Head>
         <title>Song Bank</title>
         <meta name="" content="" />
-        <link rel="icon" href="/img/logo.png" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       {/* <ActionSheetButtons /> */}
       <Header
