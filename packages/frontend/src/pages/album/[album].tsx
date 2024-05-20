@@ -109,9 +109,7 @@ const Album = () => {
     return (
       <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
         <Head>
-          <title>
-            {filteredSongList ? filteredSongList[0]?.album : "Song Bank"}
-          </title>
+          <title>{filteredSongList?.[0]?.album}</title>
         </Head>
         <AlbumBreadcrumb
           album={filteredSongList ? filteredSongList[0]?.album : "Album"}

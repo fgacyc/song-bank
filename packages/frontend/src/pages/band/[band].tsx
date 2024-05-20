@@ -152,11 +152,7 @@ const Band = () => {
     return (
       <>
         <Head>
-          <title>
-            {filteredSongList
-              ? filteredSongList[0]?.original_band
-              : "Song Bank"}
-          </title>
+          <title>{filteredSongList[0]?.original_band}</title>
         </Head>
         <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
           <BandBreadcrumb
