@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { type Tag, type Song, type Favorite } from "@prisma/client";
 import Link from "next/link";
 import { PiShareNetworkFill, PiShareNetworkThin } from "react-icons/pi";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { type UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/router";
 
 interface SongDetailsProps {
@@ -15,36 +15,38 @@ interface SongDetailsProps {
 const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   const { isLoading, user } = useUser();
   const router = useRouter();
-  const [favouriteData, setFavouriteData] = useState<Favorite>();
-  const [favouriteId, setFavouriteId] = useState("");
-  const [favourite, setFavourite] = useState(false);
+  const [favourite, setFavourite] = useState<Favorite>();
   const [share, setShare] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
 
-  useEffect(() => {
+  const getFavourite = async (
+    isLoading: boolean,
+    user: UserProfile | undefined,
+    itemsId: string,
+  ) => {
     if (!isLoading && user) {
-      void (async () => {
-        await fetch(`/api/favorite?song_id=${items.id}&user_id=${user.sub}`, {
-          method: "GET",
+      await fetch(`/api/favorite?song_id=${itemsId}&user_id=${user.sub}`, {
+        method: "GET",
+      })
+        .then(async (res) => {
+          await res
+            .json()
+            .then((result: Favorite) => {
+              setFavourite(result);
+            })
+            .catch((err) => console.error(err));
         })
-          .then(async (res) => {
-            await res
-              .json()
-              .then((result: Favorite) => {
-                setFavouriteData(result);
-              })
-              .catch((err) => console.error(err));
-          })
-          .catch((err) => console.error(err));
-      })();
+        .catch((err) => console.error(err));
     }
+  };
+
+  useEffect(() => {
+    void (async () => await getFavourite(isLoading, user, items.id))();
   }, [isLoading, user, items.id]);
 
-  useMemo(() => {
-    if (favouriteData) {
-      setFavourite(true);
-    }
-  }, [favouriteData]);
+  useEffect(() => {
+    console.log(favourite?.id);
+  }, [favourite?.id]);
 
   const handleCreateFavourite = async (
     songId: string,
@@ -59,9 +61,8 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
           user_id: userId,
         }),
       })
-        .then(async (res) => {
-          await res.json().then((result: string) => setFavouriteId(result));
-          setFavourite(true);
+        .then(async () => {
+          await getFavourite(isLoading, user, items.id);
           setDisableButton(false);
         })
         .catch((err) => console.error(err));
@@ -71,13 +72,14 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   };
 
   const handleDeleteFavourite = async (id: string) => {
+    console.log(favourite?.id);
     if (!isLoading && user) {
       setDisableButton(true);
       await fetch(`/api/favorite?id=${id}`, {
         method: "DELETE",
       })
         .then(async () => {
-          setFavourite(false);
+          await getFavourite(isLoading, user, items.id);
           setDisableButton(false);
         })
         .catch((err) => console.error(err));
@@ -159,7 +161,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               disabled={disableButton}
               onClick={async () => {
                 if (favourite) {
-                  await handleDeleteFavourite(favouriteId ?? favouriteData?.id);
+                  await handleDeleteFavourite(favourite.id);
                 } else {
                   await handleCreateFavourite(items.id, user?.sub);
                 }
