@@ -2,13 +2,12 @@ import HistoryAlbumList from "@/components/history/HistoryAlbumList";
 import HistoryBandList from "@/components/history/HistoryBandList";
 import HistoryLoading from "@/components/history/HistoryLoading";
 import HistorySongList from "@/components/history/HistorySongList";
-import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import type { SearchHistory, Sequencer, Song, Tag } from "@prisma/client";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 
 type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
@@ -289,7 +288,3 @@ const History = () => {
 };
 
 export default History;
-
-History.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

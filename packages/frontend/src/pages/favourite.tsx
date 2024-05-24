@@ -1,12 +1,11 @@
 import FavouriteLoading from "@/components/favourite/FavouriteLoading";
 import FavouriteSongList from "@/components/favourite/FavouriteSongList";
-import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import type { Song, Tag, Favorite } from "@prisma/client";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useState, type ReactElement } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 
 type SongType = Song & { tags: Tag[] };
@@ -113,7 +112,3 @@ const Favourite = () => {
 };
 
 export default Favourite;
-
-Favourite.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

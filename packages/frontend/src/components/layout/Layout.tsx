@@ -2,7 +2,7 @@ import Head from "next/head";
 import React, { useEffect, useState, type ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { type UserProfile, UserProvider } from "@auth0/nextjs-auth0/client";
+import { type UserProfile } from "@auth0/nextjs-auth0/client";
 import ProfileNavigationBlock from "../profile/ProfileNavigationBlock";
 import { MdOutlineHistory } from "react-icons/md";
 import { HiOutlineStar } from "react-icons/hi";
@@ -30,7 +30,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [router.asPath]);
 
   return (
-    <UserProvider>
+    <>
       <Head>
         <title>Song Bank</title>
         <meta name="description" content="Song Bank" />
@@ -100,7 +100,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
       <Footer />
       {/* <ActionSheetMenu /> */}
-    </UserProvider>
+    </>
   );
 };
 

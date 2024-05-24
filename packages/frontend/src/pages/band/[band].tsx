@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useState } from "react";
 import BandBreadcrumb from "@/components/dynamic/band/BandBreadcrumb";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -7,7 +7,6 @@ import { type Song } from "@prisma/client";
 import BandSongList from "@/components/dynamic/band/BandSongList";
 import BandAlbumList from "@/components/dynamic/band/BandAlbumList";
 import BandLoading from "@/components/dynamic/band/BandLoading";
-import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 const Band = () => {
@@ -188,7 +187,3 @@ const Band = () => {
 };
 
 export default Band;
-
-Band.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

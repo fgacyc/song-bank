@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SearchBar from "@/components/index/SearchBar";
-import Layout from "@/components/layout/Layout";
 import { type Tag, type Song } from "@prisma/client";
 import SearchFilterTags from "@/components/index/SearchFilterTags";
 import SearchBand from "@/components/index/SearchBand";
@@ -360,7 +359,3 @@ const Home = () => {
 };
 
 export default Home;
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

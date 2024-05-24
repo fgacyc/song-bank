@@ -3,10 +3,9 @@ import AlbumDetails from "@/components/dynamic/album/AlbumDetails";
 import AlbumLoading from "@/components/dynamic/album/AlbumLoading";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useState } from "react";
 import type { Sequencer, Tag, Song } from "@prisma/client";
 import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
-import Layout from "@/components/layout/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
@@ -137,7 +136,3 @@ const Album = () => {
 };
 
 export default Album;
-
-Album.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

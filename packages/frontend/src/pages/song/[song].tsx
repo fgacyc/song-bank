@@ -1,4 +1,4 @@
-import React, { useState, type ReactElement, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import SongBreadcrumb from "@/components/dynamic/song/SongBreadcrumb";
 import Head from "next/head";
@@ -7,7 +7,6 @@ import SongDetails from "@/components/dynamic/song/SongDetails";
 import SongKeyTransposition from "@/components/dynamic/song/SongKeyTransposition";
 import SongLyrics from "@/components/dynamic/song/SongLyrics";
 import SongLoading from "@/components/dynamic/song/SongLoading";
-import Layout from "@/components/layout/Layout";
 import { ChordProParser, ChordProFormatter } from "chordsheetjs";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
@@ -172,7 +171,3 @@ const DynamicSong = () => {
 };
 
 export default DynamicSong;
-
-DynamicSong.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

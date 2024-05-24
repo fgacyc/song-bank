@@ -1,5 +1,4 @@
-import Layout from "@/components/layout/Layout";
-import React, { useEffect, type ReactElement } from "react";
+import React, { useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import ProfileUserInfo from "@/components/profile/ProfileUserInfo";
 import ProfileRecentSearch from "@/components/profile/ProfileRecentSearch";
@@ -113,7 +112,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-Profile.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

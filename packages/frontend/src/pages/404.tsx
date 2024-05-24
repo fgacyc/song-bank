@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
+import { type NextPageWithLayout } from "./_app";
 
-export default function Custom404() {
+const Custom404: NextPageWithLayout = () => {
   return (
     <>
       <Head>
@@ -27,4 +28,7 @@ export default function Custom404() {
       </div>
     </>
   );
-}
+};
+
+Custom404.getLayout = (page) => page;
+export default Custom404;
