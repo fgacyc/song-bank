@@ -166,8 +166,8 @@ const Home = () => {
     }
 
     let sortedFilteredSongList = filteredSongList.sort((a, b) => {
-      if (a.createdAt && b.createdAt) {
-        if (a.createdAt > b.createdAt) {
+      if (a.created_at && b.created_at) {
+        if (a.created_at > b.created_at) {
           return -1;
         } else {
           return 1;
