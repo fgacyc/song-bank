@@ -84,6 +84,7 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
   return (
     <div className="flex min-w-fit gap-3 sm:w-[400px]">
       <Select
+        instanceId={"keys"}
         options={objectOfKeys}
         placeholder={<GiGClef />}
         isClearable={true}
@@ -91,9 +92,9 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
           ...theme,
           colors: {
             ...theme.colors,
-            primary: "gray",
-            primary50: "#d1d1d1",
-            primary25: "#f5f5f5",
+            primary: "#a1a1a2",
+            primary50: "#f1f1f2",
+            primary25: "#f8f8f9",
           },
         })}
         value={objectOfKeys.find((option) => option.value === selectedKey)}
@@ -102,6 +103,7 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
         }}
       />
       <Select
+        instanceId={"languages"}
         options={objectOfLanguages}
         placeholder={<GrLanguage />}
         isClearable={true}
@@ -109,9 +111,9 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
           ...theme,
           colors: {
             ...theme.colors,
-            primary: "gray",
-            primary50: "#d1d1d1",
-            primary25: "#f5f5f5",
+            primary: "#a1a1a2",
+            primary50: "#f1f1f2",
+            primary25: "#f8f8f9",
           },
         })}
         value={objectOfLanguages?.find(

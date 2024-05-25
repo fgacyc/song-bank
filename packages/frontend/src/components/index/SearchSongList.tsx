@@ -1,6 +1,6 @@
 import Image from "next/image";
-import React, { useState } from "react";
-import { type Song } from "@prisma/client";
+import React from "react";
+import { type Tag, type Song } from "@prisma/client";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ interface SearchSongListProps {
   showBand: boolean | undefined;
   showAlbum: boolean | undefined;
   searchString: string;
-  filteredSongList: Song[];
+  filteredSongList: (Song & { tags: Tag[] })[];
   getYoutubeVideoId: (youtubeUrl: string) => string | null | undefined;
 }
 
@@ -20,7 +20,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   getYoutubeVideoId,
 }) => {
   const router = useRouter();
-  const [activeList, setActiveList] = useState(-1);
+
   return (
     <>
       {searchString.trim() !== "" && filteredSongList.length !== 0 && (
@@ -50,14 +50,13 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
         return (
           <Link
             key={i}
-            href={`/song/${items.name?.toLowerCase().replace(/ /g, "-")}`}
-            className={`${
-              activeList === i ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex flex-col gap-5 border-b pb-3 sm:flex-row sm:rounded-lg sm:border-2 sm:p-3`}
-            onMouseEnter={() => setActiveList(i)}
-            onMouseLeave={() => setActiveList(-1)}
+            href={`/song/${items.name
+              ?.toLowerCase()
+              .trim()
+              .replace(/ /g, "-")}`}
+            className="flex flex-col gap-5 border-b pb-3 hover:bg-[#f8f8f9] hover:shadow-md sm:flex-row sm:rounded-lg sm:border-2 sm:p-3"
           >
-            <div className="relative h-[30dvh] w-full overflow-hidden sm:h-[110px] sm:w-[200px] sm:min-w-[200px] sm:rounded md:h-[140px] md:w-[250px] md:min-w-[250px] lg:h-[165px] lg:w-[300px] lg:min-w-[300px]">
+            <div className="relative h-[30dvh] w-full overflow-hidden sm:h-[140px] sm:w-[250px] sm:min-w-[250px] sm:rounded md:h-[165px] md:w-[300px] md:min-w-[300px]">
               <Image
                 src={thumbnailUrl}
                 alt={items.name!}
@@ -132,6 +131,24 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                       })}
                     </span>
                   </p>
+                )}
+                {items.tags.length > 0 && (
+                  <div className="flex gap-1 pt-1">
+                    {items.tags.map((tag, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className="rounded border px-1 brightness-90"
+                          style={{
+                            borderColor: tag.color,
+                            color: tag.color,
+                          }}
+                        >
+                          {tag.content}
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
                 {searchString.trim() !== "" &&
                   !items

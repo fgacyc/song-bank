@@ -14,18 +14,20 @@ const md = markdownit({
 md.use(chords);
 
 interface SongLyricsProps {
-  lyricsRef: React.MutableRefObject<HTMLParagraphElement | null>;
+  chordLyricsRef: React.MutableRefObject<HTMLParagraphElement | null>;
   chordLyrics: string;
 }
 
-const SongLyrics: React.FC<SongLyricsProps> = ({ lyricsRef, chordLyrics }) => {
+const SongLyrics: React.FC<SongLyricsProps> = ({
+  chordLyricsRef,
+  chordLyrics,
+}) => {
   return (
     <>
-      {/* TODO: chords & lyrics */}
       <div className="rounded-lg border-2 p-5">
         <p
-          ref={lyricsRef}
-          className="text-neutral-500"
+          ref={chordLyricsRef}
+          className="text-pretty text-neutral-500"
           dangerouslySetInnerHTML={{
             __html: md.render(chordLyrics),
           }}

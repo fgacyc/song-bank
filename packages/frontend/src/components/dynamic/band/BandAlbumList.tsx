@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { type Song } from "@prisma/client";
 import Image from "next/image";
 
@@ -16,9 +16,8 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
   filteredSongListWithAlbum,
   getYoutubeVideoId,
 }) => {
-  const [activeBand, setActiveBand] = useState<number | null>(null);
   return (
-    <div className="grid h-fit w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid h-fit w-full gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {uniqueAlbumList.map((album, i) => {
         const songsInAlbum = filteredSongListWithAlbum.filter(
           (items) => items.album === album,
@@ -41,18 +40,10 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
           <Link
             key={i}
             href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
-            className={`${
-              activeBand === i ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex h-full flex-col items-center overflow-hidden rounded-lg border-2 p-5`}
-            onMouseEnter={() => {
-              setActiveBand(i);
-            }}
-            onMouseLeave={() => {
-              setActiveBand(null);
-            }}
+            className="flex flex-col items-center overflow-hidden rounded-lg border-2 p-5 hover:bg-[#f8f8f9] hover:shadow-md"
           >
             <div
-              className={`grid ${gridCol} h-[250px] w-full gap-[1px] overflow-hidden rounded`}
+              className={`grid ${gridCol} min-h-[250px] w-full gap-[1px] overflow-hidden rounded`}
             >
               {songsToShowInAlbum.map((items, j) => {
                 const originalYoutubeUrl = items.original_youtube_url ?? "";
@@ -65,9 +56,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
                   >
                     <div className="relative h-[135%] w-full">
                       <Image
-                        src={
-                          youtubeVideoId ? thumbnailUrl : "/img/no-cover.jpg"
-                        }
+                        src={youtubeVideoId ? thumbnailUrl : "/no-cover.jpg"}
                         alt={items.name!}
                         fill={true}
                         priority={true}
@@ -82,7 +71,8 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
             <h1 className="gap-1 text-wrap pt-2">
               <span className="font-medium">{album}</span>{" "}
               <span className="text-center text-neutral-500">
-                - {numberOfSongsInAlbum} songs
+                - {numberOfSongsInAlbum}{" "}
+                {numberOfSongsInAlbum > 1 ? "songs" : "song"}
               </span>
             </h1>
           </Link>

@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@300&display=swap");
-
 input:focus-within,
 select:focus-within {
   outline: none;
@@ -24,7 +22,6 @@ select:focus-within {
   color: #000;
   font-size: 90%;
   font-weight: 700;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 .chord.diagram {
   height: calc(1.5em + (3.5 * var(--chord-diagram-font-size)));

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { type Song } from "@prisma/client";
+import { MdImageNotSupported } from "react-icons/md";
 
 interface SearchBandProps {
   showBand: boolean | undefined;
@@ -18,7 +19,6 @@ const SearchBand: React.FC<SearchBandProps> = ({
   filteredSongList,
   channelProfile,
 }) => {
-  const [activeList, setActiveList] = useState(-1);
   return (
     <>
       {showBand && (
@@ -26,31 +26,30 @@ const SearchBand: React.FC<SearchBandProps> = ({
           <Link
             href={`/band/${filteredSongList[0]!
               .original_band!.toLowerCase()
+              .trim()
               .replace(/ /g, "-")}`}
-            className={`${
-              activeList === -2 ? "bg-[#f5f5f6] shadow-md" : ""
-            } flex gap-5 border-b p-5 pl-7 sm:rounded-lg sm:border-2`}
-            onMouseEnter={() => {
-              setActiveList(-2);
-            }}
-            onMouseLeave={() => {
-              setActiveList(-1);
-            }}
+            className="flex gap-5 border-b p-5 pl-7 hover:bg-[#f8f8f9] hover:shadow-md sm:rounded-lg sm:border-2"
           >
-            <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full md:h-[100px] md:w-[100px]">
-              <Image
-                src={channelProfile}
-                alt={
-                  filteredSongList[0]?.original_band
-                    ? filteredSongList[0].original_band
-                    : "band"
-                }
-                fill={true}
-                priority={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
-              />
-            </div>
+            {channelProfile ? (
+              <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full md:h-[100px] md:w-[100px]">
+                <Image
+                  src={channelProfile}
+                  alt={
+                    filteredSongList[0]?.original_band
+                      ? filteredSongList[0].original_band
+                      : "band"
+                  }
+                  fill={true}
+                  priority={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <div className="flex h-[70px] w-[70px] items-center justify-center rounded-full border bg-white">
+                <MdImageNotSupported />
+              </div>
+            )}
             <div className="flex flex-col justify-center">
               <h1 className="text-lg font-semibold md:text-2xl">
                 {filteredSongList[0]?.original_band}

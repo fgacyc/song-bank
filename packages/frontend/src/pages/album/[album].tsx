@@ -1,20 +1,23 @@
 import AlbumBreadcrumb from "@/components/dynamic/album/AlbumBreadcrumb";
 import AlbumDetails from "@/components/dynamic/album/AlbumDetails";
 import AlbumLoading from "@/components/dynamic/album/AlbumLoading";
-import DynamicLayout from "@/components/dynamic/dynamic-layout/DynamicLayout";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useState, type ReactElement } from "react";
-import { type Song } from "@prisma/client";
+import React, { useEffect, useState } from "react";
+import type { Sequencer, Tag, Song } from "@prisma/client";
 import AlbumSongList from "@/components/dynamic/album/AlbumSongList";
+import { useUser } from "@auth0/nextjs-auth0/client";
+
+type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
 const Album = () => {
+  const { isLoading, user } = useUser();
   const router = useRouter();
-  const [songList, setSongList] = useState<Song[]>([]);
-  const [filteredSongList, setFilteredSongList] = useState<Song[]>();
-  const [albumCoverImage, setAlbumCoverImage] = useState<Song[]>();
+  const [songList, setSongList] = useState<SongType[]>([]);
+  const [filteredSongList, setFilteredSongList] = useState<SongType[]>();
+  const [albumCoverImages, setAlbumCoverImages] = useState<Song[]>();
   const [gridCol, setGridCol] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     void (async () => {
@@ -24,15 +27,50 @@ const Album = () => {
         .then(async (res) => {
           await res
             .json()
-            .then((result: Song[]) => {
+            .then((result: SongType[]) => {
               setSongList(result);
-              setIsLoading(false);
+              setLoading(false);
             })
             .catch((err) => console.error(err));
         })
         .catch((err) => console.error(err));
     })();
   }, []);
+
+  useEffect(() => {
+    if (songList.length > 0 && router.query.album) {
+      const albumExist = songList.some((song) => {
+        return (
+          song.album?.toLowerCase().trim().replace(/ /g, "-") ===
+          router.query.album
+        );
+      });
+
+      if (!albumExist) {
+        void router.push("/404");
+      }
+    }
+  }, [songList, router]);
+
+  useEffect(() => {
+    if (!isLoading && user && router.query.album) {
+      void (async () => {
+        await fetch("/api/history", {
+          method: "POST",
+          body: JSON.stringify({
+            user_id: user.sub,
+            search_content: router.query.album,
+            search_category: "album",
+          }),
+        });
+      })();
+    }
+  }, [isLoading, user, router.query.album]);
+
+  // TODO: fix fetching twice bug
+  // useEffect(() => {
+  //   console.log(!isLoading, user, router.query.album);
+  // }, [isLoading, user, router.query.album]);
 
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {
@@ -44,13 +82,13 @@ const Album = () => {
     setFilteredSongList(filteredSongList);
 
     if (filteredSongList.length == 1) {
-      setAlbumCoverImage(filteredSongList.slice(0, 1));
+      setAlbumCoverImages(filteredSongList.slice(0, 1));
       setGridCol("grid-cols-1");
     } else if (filteredSongList.length == 2 || filteredSongList.length == 3) {
-      setAlbumCoverImage(filteredSongList.slice(0, 2));
+      setAlbumCoverImages(filteredSongList.slice(0, 2));
       setGridCol("grid-cols-1");
     } else if (filteredSongList.length >= 4) {
-      setAlbumCoverImage(filteredSongList.slice(0, 4));
+      setAlbumCoverImages(filteredSongList.slice(0, 4));
       setGridCol("grid-cols-2");
     } else {
       setGridCol("");
@@ -64,15 +102,15 @@ const Album = () => {
     return match ? match[1] : null;
   };
 
-  if (isLoading) {
-    <AlbumLoading />;
+  if (loading) {
+    return <AlbumLoading />;
   } else {
     return (
-      <>
+      <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
         <Head>
-          <title>
-            {filteredSongList ? filteredSongList[0]?.album : "Song Bank"}
-          </title>
+          <title>{filteredSongList?.[0]?.album}</title>
+          <meta name="keywords" content={`${filteredSongList?.[0]?.album}`} />
+          <link rel="icon" href="/logo.png" />
         </Head>
         <AlbumBreadcrumb
           album={filteredSongList ? filteredSongList[0]?.album : "Album"}
@@ -80,9 +118,9 @@ const Album = () => {
             filteredSongList ? filteredSongList[0]?.original_band : "Band"
           }
         />
-        <div className="block gap-5 pt-5 md:flex">
+        <div className="block gap-5 md:flex">
           <AlbumDetails
-            albumCoverImage={albumCoverImage}
+            albumCoverImages={albumCoverImages}
             filteredSongList={filteredSongList}
             gridCol={gridCol}
             getYoutubeVideoId={getYoutubeVideoId}
@@ -92,13 +130,9 @@ const Album = () => {
             getYoutubeVideoId={getYoutubeVideoId}
           />
         </div>
-      </>
+      </div>
     );
   }
 };
 
 export default Album;
-
-Album.getLayout = function getLayout(page: ReactElement) {
-  return <DynamicLayout>{page}</DynamicLayout>;
-};
