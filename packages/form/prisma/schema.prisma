@@ -10,16 +10,16 @@ datasource db {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model Song {
-    id                   String    @id @unique @default(uuid())
+    id                   String      @id @unique @default(uuid())
     name                 String?
     album                String?
     ag_link              String?
     eg_link              String?
     alt_name             String?
     bass_link            String?
-    createdAt            DateTime?
+    created_at           DateTime?   @default(now())
     drum_link            String?
-    updatedAt            DateTime? @updatedAt
+    updated_at           DateTime?   @updatedAt
     chord_lyrics         String?
     original_key         String?
     sub_key_link         String?
@@ -27,10 +27,10 @@ model Song {
     original_band        String?
     song_language        String?
     file_sec_voice       String?
-    original_youtube_url String?   @db.VarChar
-
-    file_sequencer Sequencer[]
-    tags           Tag[]
+    original_youtube_url String?     @db.VarChar
+    file_sequencer       Sequencer[]
+    tags                 Tag[]
+    favorite             Favorite[]
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -38,16 +38,42 @@ model Tag {
     id      String @id @unique @default(uuid())
     color   String
     content String
-
-    songs Song[]
+    songs   Song[]
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model Sequencer {
-    id     String @id @unique @default(uuid())
-    url    String @db.VarChar
-    songId String @db.VarChar
-    Song   Song?  @relation(fields: [songId], references: [id])
+    id      String @id @unique @default(uuid())
+    url     String @db.VarChar
+    song_id String @db.VarChar
+    Song    Song?  @relation(fields: [song_id], references: [id])
 
-    @@index([songId])
+    @@index([song_id], map: "Sequencer_songId_idx")
+}
+
+model SearchHistory {
+    id              String   @id @unique @default(uuid())
+    user_id         String
+    search_content  String
+    created_at      DateTime @default(now())
+    search_category String?  @db.VarChar(255)
+}
+
+model Favorite {
+    id         String   @id @unique @default(uuid())
+    song_id    String
+    user_id    String
+    created_at DateTime @default(now())
+    song       Song?    @relation(fields: [song_id], references: [id])
+
+    @@index([song_id])
+}
+
+model SongToTag {
+    A String
+    B String
+
+    @@unique([A, B], map: "_SongToTag_AB_unique")
+    @@index([B], map: "_SongToTag_B_index")
+    @@map("_SongToTag")
 }

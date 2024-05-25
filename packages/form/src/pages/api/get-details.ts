@@ -17,7 +17,7 @@ export default async function handler(
           bass_link: true,
           chord_lyrics: true,
           drum_link: true,
-          updatedAt: true,
+          updated_at: true,
           eg_link: true,
           file_sec_voice: true,
           id: true,
