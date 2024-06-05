@@ -15,16 +15,16 @@ const handler: NextApiHandler = async (req, res) => {
         where: {
           OR: [
             {
-              name: { contains: name },
+              name: { contains: name, mode: "insensitive" },
             },
             {
-              alt_name: { contains: name },
+              alt_name: { contains: name, mode: "insensitive" },
             },
             {
-              album: { contains: name },
+              album: { contains: name, mode: "insensitive" },
             },
             {
-              original_band: { contains: name },
+              original_band: { contains: name, mode: "insensitive" },
             },
           ],
         },
