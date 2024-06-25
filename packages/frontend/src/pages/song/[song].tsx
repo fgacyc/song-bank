@@ -2,15 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import SongBreadcrumb from "@/components/dynamic/song/SongBreadcrumb";
 import Head from "next/head";
-import { type Tag, type Song, type Sequencer } from "@prisma/client";
 import SongDetails from "@/components/dynamic/song/SongDetails";
 import SongKeyTransposition from "@/components/dynamic/song/SongKeyTransposition";
 import SongLyrics from "@/components/dynamic/song/SongLyrics";
 import SongLoading from "@/components/dynamic/song/SongLoading";
 import { ChordProParser, ChordProFormatter } from "chordsheetjs";
 import { useUser } from "@auth0/nextjs-auth0/client";
-
-type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
+import { SongAssets } from "@/components/dynamic/song/SongAssets";
+import type { SongType } from "..";
 
 const DynamicSong = () => {
   const { isLoading, user } = useUser();
@@ -146,7 +145,10 @@ const DynamicSong = () => {
                 original_band={items.original_band!}
               />
               <div className="flex flex-col gap-5 pb-5 md:flex-row">
-                <SongDetails embedUrl={embedUrl} items={items} />
+                <div className="flex flex-col gap-5">
+                  <SongDetails embedUrl={embedUrl} items={items} />
+                  <SongAssets song={filteredSongList} />
+                </div>
                 <div className="flex w-full flex-col gap-5">
                   <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
                     {items.name}

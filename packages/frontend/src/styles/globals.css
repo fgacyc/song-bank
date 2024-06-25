@@ -56,3 +56,13 @@ select:focus-within {
 .react-loading-skeleton {
   line-height: 2 !important;
 }
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 6px;
+}
+tr:nth-child(even) {
+  background-color: #f1f1f2;
+}
