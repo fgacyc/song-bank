@@ -22,6 +22,7 @@ import { useTags } from "@/hooks/fetchTags";
 import { uploadFile } from "@/helpers/uploadFile";
 import { useDebounce } from "@uidotdev/usehooks";
 import { getContrastTextColor, stringToColor } from "@/helpers/hexToRGBA";
+import { FaDownload } from "react-icons/fa";
 
 const md = markdownit({
   breaks: true,
@@ -70,6 +71,8 @@ export default function Home() {
   const [searchedSongs, setSearchedSongs] = useState<
     { name: string; id: string }[]
   >([]);
+  const [existingSeqLink, setExistingSeqLink] = useState("");
+  const [existingSecVoiceLink, setExistingSecVoiceLink] = useState("");
   const [editingMode, setEditingMode] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -253,6 +256,8 @@ export default function Home() {
               onClick={() => {
                 if (confirm("⚠ Exit Editing Mode? Form will be resetted!")) {
                   setEditingMode(false);
+                  setExistingSecVoiceLink("");
+                  setExistingSeqLink("");
                   ref.current?.resetForm();
                 }
               }}
@@ -300,11 +305,20 @@ export default function Home() {
                             mainKeyLink: result.main_key_link,
                             subKeyLink: result.sub_key_link,
                             originalYoutubeURL: result.original_youtube_url,
-                            sequencerFiles: result.file_sequencer,
-                            subVoiceFile: result.file_sec_voice,
+
                             // @ts-expect-error cant find appriopriate generated types for now
                             tags: result.tags.map((t) => String(t.id)),
                           });
+                          setExistingSeqLink(
+                            result.file_sequencer
+                              ? String(result.file_sequencer?.[0].url)
+                              : "",
+                          );
+                          setExistingSecVoiceLink(
+                            result.file_sec_voice
+                              ? String(result.file_sec_voice?.[0].url)
+                              : "",
+                          );
 
                           setIsSearching(false);
                         });
@@ -370,7 +384,7 @@ export default function Home() {
               if (editingMode) {
                 if (
                   confirm(
-                    "Currently in editing mode! Proceeding with submission will rewrite the song! Proceed?",
+                    "Currently in editing mode! Proceeding with submission will overwrite the song! Proceed?",
                   )
                 ) {
                   const toastId = toast.loading("Uploading...");
@@ -565,7 +579,6 @@ export default function Home() {
                     formikKey="songName"
                     disabled={isSubmitting || isSearching}
                   />
-
                   <TextField
                     disabled={isSubmitting || isSearching}
                     name="Alternate Name"
@@ -639,57 +652,59 @@ export default function Home() {
                     formikKey="drumLink"
                     name="Drum Video Link"
                   />
-                  <div className="col-span-2 grid w-full grid-cols-1 gap-x-5 gap-y-1 md:grid-cols-2">
+                  <div className="col-span-2 grid w-full grid-cols-1 items-start gap-x-5 gap-y-1 md:grid-cols-2">
                     <div className="flex w-full flex-col items-center justify-center gap-2">
                       <FileInputField
-                        disabled={isSubmitting || isSearching || editingMode}
+                        disabled={isSubmitting || isSearching}
                         name="Sequencer"
-                        accept="audio/wav, audio/mp3, .logicx, .rar, .zip"
+                        accept=".rar, .zip"
                         setFile={setSequencerFile}
                         multiple
-                        hint={
-                          editingMode
-                            ? "During editing, files are disabled."
-                            : ""
-                        }
                       />
-                      {sequencerFile &&
-                        sequencerFile.length > 0 &&
-                        Array.from(sequencerFile).map((a) => {
-                          if (a.type.startsWith("audio/"))
-                            return (
-                              <div
-                                key={a.name}
-                                className="flex w-full flex-col items-center gap-1"
-                              >
-                                <p>{a.name}</p>
-                                <audio
-                                  controls
-                                  controlsList="nodownload"
-                                  className="px-5 py-1"
-                                >
-                                  <source
-                                    src={URL.createObjectURL(a)}
-                                    type={a.type}
-                                  />
-                                </audio>
-                              </div>
-                            );
-                        })}
+                      {editingMode && existingSeqLink && (
+                        <div className="flex flex-col overflow-hidden rounded-lg border border-primary">
+                          <div className="flex w-full flex-row items-center justify-between bg-primary pl-3 pr-1">
+                            <p>Existing Sequencer File</p>
+                            <FaDownload
+                              size={15}
+                              className="cursor-pointer"
+                              onClick={() =>
+                                window.open(existingSeqLink, "_blank")
+                              }
+                            />
+                          </div>
+                          <div className="relative select-none p-1.5 text-xs">
+                            {existingSeqLink}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex w-full flex-col items-center justify-center">
+                    <div className="flex w-full flex-col items-center justify-center gap-2">
                       <FileInputField
-                        disabled={isSubmitting || isSearching || editingMode}
+                        disabled={isSubmitting || isSearching}
                         name="2nd Voice"
                         accept="audio/*, video/*"
                         setFile={setSecVoiceFile}
-                        hint={
-                          editingMode
-                            ? "During editing, files are disabled."
-                            : ""
-                        }
                       />
-                      {secVoiceFile &&
+                      {editingMode && existingSecVoiceLink && (
+                        <div className="flex flex-col overflow-hidden rounded-lg border border-primary">
+                          <div className="flex w-full flex-row items-center justify-between bg-primary pl-3 pr-1">
+                            <p>Existing Sec Voice File</p>
+                            <FaDownload
+                              size={15}
+                              className="cursor-pointer"
+                              onClick={() =>
+                                window.open(existingSecVoiceLink, "_blank")
+                              }
+                            />
+                          </div>
+                          <div className="relative select-none p-1.5 text-xs">
+                            {existingSecVoiceLink}
+                          </div>
+                        </div>
+                      )}
+                      {!editingMode &&
+                        secVoiceFile &&
                         secVoiceFile.length > 0 &&
                         Array.from(secVoiceFile).map((a) => {
                           return (

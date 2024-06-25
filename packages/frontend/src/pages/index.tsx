@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import SearchBar from "@/components/index/SearchBar";
-import { type Tag, type Song } from "@prisma/client";
+import type { Tag, Song, Sequencer } from "@prisma/client";
 import SearchFilterTags from "@/components/index/SearchFilterTags";
 import SearchBand from "@/components/index/SearchBand";
 import SearchAlbum from "@/components/index/SearchAlbum";
@@ -9,7 +9,7 @@ import SearchAlbumList from "@/components/index/SearchAlbumList";
 import SearchLoading from "@/components/index/SearchLoading";
 import Image from "next/image";
 
-export type SongType = Song & { tags: Tag[] };
+export type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
