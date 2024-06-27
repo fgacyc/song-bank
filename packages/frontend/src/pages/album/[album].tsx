@@ -39,12 +39,17 @@ const Album = () => {
 
   useEffect(() => {
     if (songList.length > 0 && router.query.album) {
-      const albumExist = songList.some((song) => {
-        return (
-          song.album?.toLowerCase().trim().replace(/ /g, "-") ===
-          router.query.album
-        );
-      });
+      const albumExist = songList
+        .filter((song) => song.album?.trim() !== "-")
+        .some((song) => {
+          return (
+            song.album
+              ?.toLowerCase()
+              .trim()
+              .replace(/ /g, "-")
+              .replace(/\?/g, "") === router.query.album
+          );
+        });
 
       if (!albumExist) {
         void router.push("/404");
@@ -75,8 +80,11 @@ const Album = () => {
   useEffect(() => {
     const filteredSongList = songList.filter((items) => {
       return (
-        items.album?.toLowerCase().trim().replace(/ /g, "-") ===
-        router.query.album?.toString()
+        items.album
+          ?.toLowerCase()
+          .trim()
+          .replace(/ /g, "-")
+          .replace(/\?/g, "") === router.query.album?.toString()
       );
     });
     setFilteredSongList(filteredSongList);

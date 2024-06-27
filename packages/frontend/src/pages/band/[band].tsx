@@ -85,12 +85,20 @@ const Band = () => {
     setFilteredSongList(filteredSongList);
 
     const filteredSongListWithAlbum = filteredSongList.filter((items) => {
-      return items.album && items.album.toString().trim() !== "";
+      return (
+        items.album &&
+        items.album.toString().trim() !== "" &&
+        items.album.toString().trim() !== "-"
+      );
     });
     setFilteredSongListWithAlbum(filteredSongListWithAlbum);
 
     const filteredSongListWithoutAlbum = filteredSongList.filter((items) => {
-      return items.album === null || items.album?.toString().trim() === "";
+      return (
+        items.album === null ||
+        items.album?.toString().trim() === "" ||
+        items.album?.toString().trim() === "-"
+      );
     });
     setFilteredSongListWithoutAlbum(filteredSongListWithoutAlbum);
 

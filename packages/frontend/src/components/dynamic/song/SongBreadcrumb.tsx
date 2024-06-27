@@ -23,7 +23,7 @@ const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
         {original_band}
       </Link>
 
-      {album && (
+      {album && album.trim() !== "-" && (
         <>
           {slash}
           {album && (

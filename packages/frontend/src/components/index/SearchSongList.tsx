@@ -97,7 +97,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     </>
                   )}
 
-                  {items.album && (
+                  {items.album && items.album.trim() !== "-" && (
                     <span>
                       on album{" "}
                       <button

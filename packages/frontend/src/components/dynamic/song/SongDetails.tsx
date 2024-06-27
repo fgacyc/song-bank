@@ -106,7 +106,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
                 items.alt_name}
             </p>
           </div>
-          {items.album && (
+          {items.album && items.album.trim() !== "-" && (
             <div className="flex flex-col truncate">
               <h1 className="font-semibold">Album</h1>
               <Link
