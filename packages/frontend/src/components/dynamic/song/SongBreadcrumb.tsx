@@ -28,7 +28,7 @@ const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
           {slash}
           {album && (
             <Link
-              href={`/album/${album?.toLowerCase().replace(/ /g, "-")}`}
+              href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
               className="flex h-full items-center text-neutral-500 decoration-1 hover:underline"
             >
               {album}

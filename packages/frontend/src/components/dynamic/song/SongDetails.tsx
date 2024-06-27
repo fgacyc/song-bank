@@ -88,15 +88,19 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
 
   return (
     <div className="flex h-fit flex-col rounded-lg border-2 p-5">
-      <div className="h-[150px] w-full md:w-[200px] lg:w-[300px]">
-        <iframe
-          src={embedUrl}
-          allowFullScreen
-          className="me-5 h-full w-full rounded md:me-0"
-        ></iframe>
+      <div className="w-full md:w-[200px] lg:w-[300px]">
+        {embedUrl !== "" && (
+          <div className="h-[150px] pb-3">
+            <iframe
+              src={embedUrl}
+              allowFullScreen
+              className="me-5 h-full w-full rounded md:me-0"
+            ></iframe>
+          </div>
+        )}
       </div>
       <div>
-        <div className="flex flex-col gap-2 py-3">
+        <div className="flex flex-col gap-2 pb-3">
           <div className="flex flex-col truncate">
             <h1 className="font-semibold">Song Name</h1>
             <p className="text-sm text-neutral-500">
@@ -110,7 +114,10 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
             <div className="flex flex-col truncate">
               <h1 className="font-semibold">Album</h1>
               <Link
-                href={`/album/${items.album.toLowerCase().replace(/ /g, "-")}`}
+                href={`/album/${items.album
+                  .toLowerCase()
+                  .trim()
+                  .replace(/ /g, "-")}`}
                 className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
               >
                 {items.album}
@@ -122,6 +129,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
             <Link
               href={`/band/${items
                 .original_band!.toLowerCase()
+                .trim()
                 .replace(/ /g, "-")}`}
               className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
             >

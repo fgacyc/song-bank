@@ -135,8 +135,15 @@ const DynamicSong = () => {
           <link rel="icon" href="/logo.png" />
         </Head>
         {filteredSongList.map((items, i) => {
-          const videoId = getVideoId(items.original_youtube_url ?? "");
-          const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+          let embedUrl = "";
+          if (
+            items.original_youtube_url &&
+            items.original_youtube_url.toString().trim() !== ""
+          ) {
+            const videoId = getVideoId(items.original_youtube_url);
+            embedUrl = `https://www.youtube.com/embed/${videoId}`;
+          }
+
           return (
             <div key={i} className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
               <SongBreadcrumb

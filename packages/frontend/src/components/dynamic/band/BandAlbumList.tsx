@@ -46,22 +46,36 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
               className={`grid ${gridCol} min-h-[250px] w-full gap-[1px] overflow-hidden rounded`}
             >
               {songsToShowInAlbum.map((items, j) => {
-                const originalYoutubeUrl = items.original_youtube_url ?? "";
-                const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
-                const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+                let thumbnailUrl = "";
+                if (items.original_youtube_url) {
+                  const youtubeVideoId = getYoutubeVideoId(
+                    items.original_youtube_url,
+                  );
+                  thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+                }
                 return (
                   <div
                     key={j}
-                    className="flex items-center justify-center overflow-hidden"
+                    className={`${
+                      thumbnailUrl === "" && "border-2"
+                    } flex items-center justify-center overflow-hidden`}
                   >
                     <div className="relative h-[135%] w-full">
                       <Image
-                        src={youtubeVideoId ? thumbnailUrl : "/no-cover.jpg"}
+                        src={
+                          thumbnailUrl !== ""
+                            ? thumbnailUrl
+                            : "/no-album-cover.svg"
+                        }
                         alt={items.name!}
                         fill={true}
                         priority={true}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
+                        className={
+                          thumbnailUrl !== ""
+                            ? "object-cover"
+                            : "absolute bottom-0 left-0 right-0 top-0 m-auto max-h-[80%] max-w-[80%]"
+                        }
                       />
                     </div>
                   </div>

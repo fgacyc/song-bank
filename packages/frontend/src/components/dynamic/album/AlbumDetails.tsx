@@ -23,32 +23,43 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
           className={`${gridCol} grid h-[300px] w-full gap-[1px] overflow-hidden rounded md:h-[200px] md:w-[200px] lg:h-[270px] lg:w-[300px]`}
         >
           {albumCoverImages?.map((items, i) => {
-            const originalYoutubeUrl = items.original_youtube_url ?? "";
-            const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
-
-            if (youtubeVideoId) {
-              const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
-
-              return (
-                <div
-                  key={i}
-                  className="flex items-center justify-center overflow-hidden"
-                >
-                  <div className="relative h-[135%] w-full">
-                    <Image
-                      src={thumbnailUrl}
-                      alt={items.name!}
-                      fill={true}
-                      priority={true}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
+            let thumbnailUrl = "";
+            if (items.original_youtube_url) {
+              const youtubeVideoId = getYoutubeVideoId(
+                items.original_youtube_url,
               );
+              thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+              console.log("exist");
             }
+
+            return (
+              <div
+                key={i}
+                className={`${
+                  thumbnailUrl === "" && "border-2"
+                } flex items-center justify-center overflow-hidden`}
+              >
+                <div className="relative h-[135%] w-full">
+                  <Image
+                    src={
+                      thumbnailUrl !== "" ? thumbnailUrl : "/no-album-cover.svg"
+                    }
+                    alt={items.name!}
+                    fill={true}
+                    priority={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className={
+                      thumbnailUrl !== ""
+                        ? "object-cover"
+                        : "absolute bottom-0 left-0 right-0 top-0 m-auto max-h-[80%] max-w-[80%]"
+                    }
+                  />
+                </div>
+              </div>
+            );
           })}
         </div>
+
         <div className="py-3">
           <h1 className="font-semibold">Album</h1>
           <p className="text-sm text-neutral-500">

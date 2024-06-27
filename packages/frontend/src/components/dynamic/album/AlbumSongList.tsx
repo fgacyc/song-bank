@@ -18,9 +18,13 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
     <div className="w-full pb-5 pt-5 md:pt-0">
       <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-2">
         {filteredSongList?.map((items, i) => {
-          const originalYoutubeUrl = items.original_youtube_url ?? "";
-          const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
-          const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+          let thumbnailUrl = "";
+          if (items.original_youtube_url) {
+            const youtubeVideoId = getYoutubeVideoId(
+              items.original_youtube_url,
+            );
+            thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+          }
           return (
             <Link
               href={`/song/${items
@@ -30,14 +34,24 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
               key={i}
               className="flex gap-5 truncate rounded-lg border-2 p-5 hover:bg-[#f8f8f9] hover:shadow-md lg:block xl:flex"
             >
-              <div className="relative w-[100px] min-w-[100px] sm:h-[100px] sm:w-[200px] sm:min-w-[200px] md:h-[105px] md:w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]">
+              <div
+                className={`${
+                  thumbnailUrl === "" && "rounded-md border-2"
+                } relative w-[100px] min-w-[100px] sm:h-[100px] sm:w-[200px] sm:min-w-[200px] md:h-[105px] md:w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]`}
+              >
                 <Image
-                  src={youtubeVideoId ? thumbnailUrl : "/no-cover.jpg"}
+                  src={
+                    thumbnailUrl !== "" ? thumbnailUrl : "/no-song-cover.svg"
+                  }
                   alt={items.name!}
                   fill={true}
                   priority={true}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="rounded-md object-cover"
+                  className={`${
+                    thumbnailUrl !== ""
+                      ? "rounded-md object-cover"
+                      : "absolute bottom-0 left-0 right-0 top-0 m-auto max-h-[80%] max-w-[80%]"
+                  }`}
                 />
               </div>
               <div className="truncate lg:pt-2 xl:pt-0">
