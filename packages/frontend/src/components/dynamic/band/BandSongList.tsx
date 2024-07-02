@@ -22,7 +22,7 @@ const BandSongList: React.FC<BandSongListProps> = ({
                   href={`/song/${items
                     .name!.toLowerCase()
                     .trim()
-                    .replace(/ /g, "-")}`}
+                    .replace(/ /g, "-")}-${items.id.slice(0, 5)}`}
                   className="underline md:no-underline md:hover:underline"
                 >
                   {items.name}
