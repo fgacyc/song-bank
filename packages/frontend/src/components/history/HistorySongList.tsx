@@ -26,7 +26,7 @@ const SearchHistorySongList: React.FC<SearchHistorySongListProps> = ({
           href={`/song/${filteredSong
             .name!.toLowerCase()
             .trim()
-            .replace(/ /g, "-")}`}
+            .replace(/ /g, "-")}-${filteredSong.id.slice(0, 5)}`}
           className="flex min-h-[82px] items-center gap-5 rounded-md border-2 p-5 hover:bg-[#f8f8f9]"
         >
           <div className="min-w-[30px] sm:min-w-[40px]">

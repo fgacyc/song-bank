@@ -30,7 +30,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
               href={`/song/${items
                 .name!.toLowerCase()
                 .trim()
-                .replace(/ /g, "-")}`}
+                .replace(/ /g, "-")}-${items.id.slice(0, 5)}`}
               key={i}
               className="flex gap-5 truncate rounded-lg border-2 p-5 hover:bg-[#f8f8f9] hover:shadow-md lg:block xl:flex"
             >
