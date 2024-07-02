@@ -44,8 +44,10 @@ const DynamicSong = () => {
     if (songList.length > 0 && router.query.song) {
       const songExist = songList.some((song) => {
         return (
-          song.name?.toLowerCase().trim().replace(/ /g, "-") ===
-          router.query.song
+          `${song.name
+            ?.toLowerCase()
+            .trim()
+            .replace(/ /g, "-")}-${song.id.slice(0, 5)}` === router.query.song
         );
       });
 
@@ -76,15 +78,19 @@ const DynamicSong = () => {
   // }, [isLoading, user, router.query.song]);
 
   useEffect(() => {
-    const filteredSongList = songList.filter(
-      (items) =>
+    const filteredSongList = songList.filter((items) => {
+      return (
         router.query.song &&
-        `${items.name!.toLowerCase().trim().replace(/ /g, "-")}` ===
-          router.query.song.toString(),
-    );
+        `${items
+          .name!.toLowerCase()
+          .trim()
+          .replace(/ /g, "-")}-${items.id.slice(0, 5)}` ===
+          router.query.song.toString()
+      );
+    });
     setFilteredSongList(filteredSongList);
     setSelectedKey(filteredSongList[0]?.original_key ?? "");
-  }, [songList, router.query.song]);
+  }, [songList, router.query]);
 
   useEffect(() => {
     const parser = new ChordProParser();
