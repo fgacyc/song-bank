@@ -176,7 +176,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               }}
               className={`${
                 favourite && "border-yellow-500 text-yellow-500"
-              } flex h-[30px] items-center justify-center gap-1 rounded border px-2`}
+              } flex h-[30px] items-center justify-center gap-1 rounded border px-2 hover:bg-[#f9f9fa]`}
             >
               {favourite ? <FaStar className="text-yellow-400" /> : <CiStar />}
               <p className="text-sm">{favourite ? "Saved" : "Favourite"}</p>
@@ -188,7 +188,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               }}
               className={`${
                 share && "bg-[#f5f5f6]"
-              } flex h-[30px] items-center justify-center gap-1 rounded border px-2`}
+              } flex h-[30px] items-center justify-center gap-1 rounded border px-2 hover:bg-[#f9f9fa]`}
             >
               {share ? <PiShareNetworkFill /> : <PiShareNetworkThin />}
               <p className="text-sm">{share ? "Link copied" : "Share"}</p>
