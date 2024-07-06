@@ -81,10 +81,7 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
             trailingActions={trailingActions(items.id)}
           >
             <Link
-              href={`/song/${items
-                .name!.toLowerCase()
-                .trim()
-                .replace(/ /g, "-")}-${items.id.slice(0, 5)}`}
+              href={`/song/${items.id}`}
               className="flex w-full justify-between truncate rounded-lg border-2 p-3 hover:bg-[#f8f8f9]"
               onMouseOver={() => setActiveList(i)}
               onMouseLeave={() => setActiveList(-1)}

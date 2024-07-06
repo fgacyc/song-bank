@@ -52,10 +52,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
         return (
           <Link
             key={i}
-            href={`/song/${items.name
-              ?.toLowerCase()
-              .trim()
-              .replace(/ /g, "-")}-${items.id.slice(0, 5)}`}
+            href={`/song/${items.id}`}
             className="flex flex-col gap-5 border-b pb-3 hover:bg-[#f8f8f9] hover:shadow-md sm:flex-row sm:rounded-lg sm:border-2 sm:p-3"
           >
             <div

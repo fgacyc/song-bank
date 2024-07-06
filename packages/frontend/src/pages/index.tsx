@@ -29,7 +29,7 @@ const Home = () => {
     if (!mounted) return;
 
     void (async () => {
-      await fetch("/api/song", {
+      await fetch("/api/songs", {
         method: "GET",
       })
         .then(async (res) => {

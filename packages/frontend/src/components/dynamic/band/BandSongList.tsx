@@ -19,10 +19,7 @@ const BandSongList: React.FC<BandSongListProps> = ({
               <p key={i} className="text-sm text-neutral-500">
                 {i + 1}.{" "}
                 <Link
-                  href={`/song/${items
-                    .name!.toLowerCase()
-                    .trim()
-                    .replace(/ /g, "-")}-${items.id.slice(0, 5)}`}
+                  href={`/song/${items.id}`}
                   className="underline md:no-underline md:hover:underline"
                 >
                   {items.name}
