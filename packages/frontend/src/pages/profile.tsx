@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import ProfileUserInfo from "@/components/profile/ProfileUserInfo";
 import ProfileRecentSearch from "@/components/profile/ProfileRecentSearch";
@@ -15,17 +15,19 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { RiFeedbackLine } from "react-icons/ri";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import Custom404 from "./404";
 
 const Profile = () => {
   const { user, isLoading } = useUser();
   const router = useRouter();
+  const [notFound, setNotFound] = useState(false);
   // const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     if (isLoading) return;
 
     if (window.innerWidth > 640) {
-      void router.push("/404");
+      setNotFound(true);
     }
 
     if (!user) {
@@ -33,6 +35,10 @@ const Profile = () => {
       return;
     }
   }, [isLoading, user, router]);
+
+  if (notFound) {
+    return <Custom404 />;
+  }
 
   return (
     <>

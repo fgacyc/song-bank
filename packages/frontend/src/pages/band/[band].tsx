@@ -8,11 +8,11 @@ import BandSongList from "@/components/dynamic/band/BandSongList";
 import BandAlbumList from "@/components/dynamic/band/BandAlbumList";
 import BandLoading from "@/components/dynamic/band/BandLoading";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import Custom404 from "../404";
 
 const Band = () => {
   const { isLoading, user } = useUser();
   const router = useRouter();
-  const [songList, setSongList] = useState<Song[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<Song[]>([]);
   const [filteredSongListWithAlbum, setFilteredSongListWithAlbum] = useState<
     Song[]
@@ -22,38 +22,33 @@ const Band = () => {
   const [uniqueAlbumList, setUniqueAlbumList] = useState<string[]>([""]);
   const [channelProfile, setChannelProfile] = useState("");
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    void (async () => {
-      await fetch("/api/songs", {
-        method: "GET",
-      })
-        .then(async (res) => {
-          await res
-            .json()
-            .then((result: Song[]) => {
-              setSongList(result);
-            })
-            .catch((err) => console.error(err));
+    if (router.query.band) {
+      void (async () => {
+        await fetch(`/api/band?band=${router.query.band?.toString()}`, {
+          method: "GET",
         })
-        .catch((err) => console.error(err));
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (songList.length > 0 && router.query.band) {
-      const bandExist = songList.some((song) => {
-        return (
-          song.original_band?.toLowerCase().trim().replace(/ /g, "-") ===
-          router.query.band
-        );
-      });
-
-      if (!bandExist) {
-        void router.push("/404");
-      }
+          .then(async (res) => {
+            await res
+              .json()
+              .then((result: Song[]) => {
+                if (result && result.length > 0) {
+                  setFilteredSongList(result);
+                } else {
+                  setNotFound(true);
+                }
+              })
+              .catch((err) => {
+                setNotFound(true);
+                console.error(err);
+              });
+          })
+          .catch((err) => console.error(err));
+      })();
     }
-  }, [songList, router]);
+  }, [router.query.band]);
 
   useEffect(() => {
     if (!isLoading && user && router.query.band) {
@@ -76,14 +71,6 @@ const Band = () => {
   // }, [isLoading, user, router.query.band]);
 
   useEffect(() => {
-    const filteredSongList = songList.filter((items) => {
-      return (
-        items.original_band!.toLowerCase().trim().replace(/ /g, "-") ===
-        router.query.band?.toString()
-      );
-    });
-    setFilteredSongList(filteredSongList);
-
     const filteredSongListWithAlbum = filteredSongList.filter((items) => {
       return (
         items.album &&
@@ -108,7 +95,7 @@ const Band = () => {
     });
     const uniqueAlbumList = [...uniqueAlbumSet];
     setUniqueAlbumList(uniqueAlbumList as string[]);
-  }, [songList, router.query.band]);
+  }, [filteredSongList, router.query.band]);
 
   const getYoutubeVideoId = (youtubeUrl: string | undefined) => {
     const regex =
@@ -153,45 +140,49 @@ const Band = () => {
     })();
   }, [filteredSongList]);
 
+  if (notFound) {
+    return <Custom404 />;
+  }
+
   if (loading) {
     return <BandLoading />;
-  } else {
-    return (
-      <>
-        <Head>
-          <title>{filteredSongList[0]?.original_band}</title>
-          <meta
-            name="keywords"
-            content={`${filteredSongList[0]?.original_band}`}
-          />
-          <link rel="icon" href="/logo.png" />
-        </Head>
-        <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
-          <BandBreadcrumb
-            original_band={filteredSongList[0]?.original_band ?? ""}
-          />
-          <div className="flex flex-col gap-5 md:flex-row">
-            <div className="flex w-full flex-col gap-5 md:w-fit">
-              <BandDetails
-                channelProfile={channelProfile}
-                router={router}
-                filteredSongList={filteredSongList}
-                uniqueAlbumList={uniqueAlbumList}
-              />
-              <BandSongList
-                filteredSongListWithoutAlbum={filteredSongListWithoutAlbum}
-              />
-            </div>
-            <BandAlbumList
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{filteredSongList[0]?.original_band}</title>
+        <meta
+          name="keywords"
+          content={`${filteredSongList[0]?.original_band}`}
+        />
+        <link rel="icon" href="/logo.png" />
+      </Head>
+      <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
+        <BandBreadcrumb
+          original_band={filteredSongList[0]?.original_band ?? ""}
+        />
+        <div className="flex flex-col gap-5 md:flex-row">
+          <div className="flex w-full flex-col gap-5 md:w-fit">
+            <BandDetails
+              channelProfile={channelProfile}
+              router={router}
+              filteredSongList={filteredSongList}
               uniqueAlbumList={uniqueAlbumList}
-              filteredSongListWithAlbum={filteredSongListWithAlbum}
-              getYoutubeVideoId={getYoutubeVideoId}
+            />
+            <BandSongList
+              filteredSongListWithoutAlbum={filteredSongListWithoutAlbum}
             />
           </div>
+          <BandAlbumList
+            uniqueAlbumList={uniqueAlbumList}
+            filteredSongListWithAlbum={filteredSongListWithAlbum}
+            getYoutubeVideoId={getYoutubeVideoId}
+          />
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 };
 
 export default Band;
