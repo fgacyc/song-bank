@@ -431,7 +431,7 @@ export default function Home() {
                       });
                     }
 
-                    await fetch("/api/songs", {
+                    await fetch("/api/song", {
                       method: "POST",
                       body: JSON.stringify({
                         sequencerFiles: seqFiles ?? "",
@@ -522,7 +522,7 @@ export default function Home() {
                     });
                   }
 
-                  await fetch("/api/songs", {
+                  await fetch("/api/song", {
                     method: "POST",
                     body: JSON.stringify({
                       sequencerFiles: seqFiles ?? "",
