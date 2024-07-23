@@ -310,13 +310,13 @@ export default function Home() {
                             tags: result.tags.map((t) => String(t.id)),
                           });
                           setExistingSeqLink(
-                            result.file_sequencer
+                            result.file_sequencer.length > 0
                               ? String(result.file_sequencer?.[0].url)
                               : "",
                           );
                           setExistingSecVoiceLink(
                             result.file_sec_voice
-                              ? String(result.file_sec_voice?.[0].url)
+                              ? String(result.file_sec_voice)
                               : "",
                           );
 
