@@ -23,12 +23,12 @@ const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
         {original_band}
       </Link>
 
-      {album && (
+      {album && album.trim() !== "-" && (
         <>
           {slash}
           {album && (
             <Link
-              href={`/album/${album?.toLowerCase().replace(/ /g, "-")}`}
+              href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
               className="flex h-full items-center text-neutral-500 decoration-1 hover:underline"
             >
               {album}

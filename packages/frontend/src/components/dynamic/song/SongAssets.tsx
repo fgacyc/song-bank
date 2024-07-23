@@ -1,162 +1,62 @@
 import { type SongType } from "@/pages";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { useRouter } from "next/router";
 import { type FunctionComponent } from "react";
-import { FaDownload } from "react-icons/fa";
+import SongDownloadBlock from "./SongDownloadBlock";
 
 interface SongAssetsProps {
-  song: SongType[];
+  song?: SongType;
 }
 
 export const SongAssets: FunctionComponent<SongAssetsProps> = ({ song }) => {
-  const singleSong = song[0];
-  const { user } = useUser();
-  const router = useRouter();
-  return (
+  const empty =
+    song?.ag_link === "" &&
+    song?.bass_link === "" &&
+    song?.drum_link === "" &&
+    song?.eg_link === "" &&
+    !song?.file_sec_voice &&
+    song?.file_sequencer.length === 0 &&
+    song?.main_key_link === "" &&
+    song?.sub_key_link === "";
+
+  console.log(empty);
+
+  return empty ? null : (
     <div className="rounded-lg border-2 p-5">
       <h1 className="pb-4 font-semibold">Files</h1>
-
-      {/* {keys.map((key, i) => {
-          return (
-            <button
-              key={i}
-              className={`${"bg-[#f1f1f2]"} h-[35px] rounded border text-sm`}
-            >
-              {key}
-            </button>
-          );
-        })} */}
-
-      <table className="w-full border-collapse">
-        {singleSong?.ag_link && (
-          <tr>
-            <td>Acoustic Guitar</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.ag_link))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {singleSong?.eg_link && (
-          <tr>
-            <td>Electric Guitar</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.eg_link))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {singleSong?.bass_link && (
-          <tr>
-            <td>Bass Guitar</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.bass_link))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {singleSong?.drum_link && (
-          <tr>
-            <td>Drum</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.drum_link))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {singleSong?.main_key_link && (
-          <tr>
-            <td>Main Keyboard</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.main_key_link))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {singleSong?.sub_key_link && (
-          <tr>
-            <td>2nd Keyboard</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.sub_key_link))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {singleSong?.file_sec_voice && (
-          <tr>
-            <td>2nd Voice</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.file_sec_voice))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {singleSong?.file_sequencer && (
-          <tr>
-            <td>Sequencer</td>
-            <td>
-              <FaDownload
-                className="cursor-pointer"
-                onClick={() =>
-                  user
-                    ? window.open(String(singleSong.file_sequencer[0]?.url))
-                    : void router.push("/api/auth/login")
-                }
-              />
-            </td>
-          </tr>
-        )}
-        {false && (
-          <tr>
-            <td>Dance Steps</td>
-            <td>
-              <FaDownload className="cursor-pointer" />
-            </td>
-          </tr>
-        )}
-      </table>
+      <div className="flex w-full border-collapse flex-col gap-2">
+        <SongDownloadBlock
+          assetData={song?.ag_link}
+          assetName="Acoustic Guitar"
+        />
+        <SongDownloadBlock
+          assetData={song?.eg_link}
+          assetName="Electric Guitar"
+        />
+        <SongDownloadBlock
+          assetData={song?.bass_link}
+          assetName="Bass Guitar"
+        />
+        <SongDownloadBlock assetData={song?.drum_link} assetName="Drum" />
+        <SongDownloadBlock
+          assetData={song?.main_key_link}
+          assetName="Main Keyboard"
+        />
+        <SongDownloadBlock
+          assetData={song?.sub_key_link}
+          assetName="Subordinate Keyboard"
+        />
+        <SongDownloadBlock
+          assetData={song?.file_sec_voice}
+          assetName="Second Voice"
+        />
+        <SongDownloadBlock
+          assetData={song?.file_sequencer[0]?.url}
+          assetName="Sequencer"
+        />
+        {/* <SongDownloadBlock
+          assetData={singleSong?.dance_steps}
+          assetName="Dance Steps"
+        /> */}
+      </div>
     </div>
   );
 };

@@ -43,27 +43,34 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
         </div>
       )}
       {filteredSongList.map((items, i) => {
-        const originalYoutubeUrl = items.original_youtube_url ?? "";
-        const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
-        const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+        let thumbnailUrl = "";
+        if (items.original_youtube_url) {
+          const youtubeVideoId = getYoutubeVideoId(items.original_youtube_url);
+          thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+        }
 
         return (
           <Link
             key={i}
-            href={`/song/${items.name
-              ?.toLowerCase()
-              .trim()
-              .replace(/ /g, "-")}`}
+            href={`/song/${items.id}`}
             className="flex flex-col gap-5 border-b pb-3 hover:bg-[#f8f8f9] hover:shadow-md sm:flex-row sm:rounded-lg sm:border-2 sm:p-3"
           >
-            <div className="relative h-[30dvh] w-full overflow-hidden sm:h-[140px] sm:w-[250px] sm:min-w-[250px] sm:rounded md:h-[165px] md:w-[300px] md:min-w-[300px]">
+            <div
+              className={`${
+                thumbnailUrl === "" && "border-2"
+              } relative h-[30dvh] w-full overflow-hidden sm:h-[140px] sm:w-[250px] sm:min-w-[250px] sm:rounded md:h-[165px] md:w-[300px] md:min-w-[300px]`}
+            >
               <Image
-                src={thumbnailUrl}
+                src={thumbnailUrl !== "" ? thumbnailUrl : "/no-song-cover.svg"}
                 alt={items.name!}
                 fill={true}
                 priority={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
+                className={
+                  thumbnailUrl !== ""
+                    ? "object-cover"
+                    : "absolute bottom-0 left-0 right-0 top-0 m-auto max-h-[80%] max-w-[80%]"
+                }
               />
             </div>
             <div className="flex flex-col gap-2 truncate pb-3 pl-3 sm:pb-0 sm:pl-0">
@@ -87,6 +94,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                             void router.push(
                               `/band/${items
                                 .original_band!.toLowerCase()
+                                .trim()
                                 .replace(/ /g, "-")}`,
                             );
                           }}
@@ -97,7 +105,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     </>
                   )}
 
-                  {items.album && (
+                  {items.album && items.album.trim() !== "-" && (
                     <span>
                       on album{" "}
                       <button
@@ -108,6 +116,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                           void router.push(
                             `/album/${items.album
                               ?.toLowerCase()
+                              .trim()
                               .replace(/ /g, "-")}`,
                           );
                         }}

@@ -1,7 +1,7 @@
 import React from "react";
 
 interface SongKeyTranspositionProps {
-  originalKey: string | null;
+  originalKey?: string | null;
   selectedKey: string | null | undefined;
   setSelectedKey: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -33,7 +33,7 @@ const SongKeyTransposition: React.FC<SongKeyTranspositionProps> = ({
             <button
               key={i}
               className={`${
-                selectedKey === key && "bg-[#f1f1f2]"
+                selectedKey === key ? "bg-[#f1f1f2]" : "hover:bg-[#f9f9fa]"
               } h-[35px] rounded border text-sm`}
               onClick={() => setSelectedKey(key)}
             >

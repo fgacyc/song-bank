@@ -7,18 +7,14 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "GET") {
+    const { band } = req.query;
     try {
-      const { song_id } = req.query;
-      const song = await db.song.findUnique({
+      const songs = await db.song.findMany({
         where: {
-          id: song_id as string,
-        },
-        include: {
-          tags: true,
-          file_sequencer: true,
+          original_band: band as string,
         },
       });
-      return res.status(200).json(song);
+      return res.status(200).json(songs);
     } catch (error) {
       return res.status(500).json({ error: error });
     }

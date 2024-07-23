@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 
 interface SongDetailsProps {
   embedUrl: string;
-  items: Song & { tags: Tag[] };
+  items?: Song & { tags: Tag[] };
 }
 
 const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
@@ -22,7 +22,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   const getFavourite = async (
     isLoading: boolean,
     user: UserProfile | undefined,
-    itemsId: string,
+    itemsId?: string,
   ) => {
     if (!isLoading && user) {
       await fetch(`/api/favorite?song_id=${itemsId}&user_id=${user.sub}`, {
@@ -41,16 +41,16 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   };
 
   useEffect(() => {
-    void (async () => await getFavourite(isLoading, user, items.id))();
-  }, [isLoading, user, items.id]);
+    void (async () => await getFavourite(isLoading, user, items?.id))();
+  }, [isLoading, user, items?.id]);
 
   useEffect(() => {
     console.log(favourite?.id);
   }, [favourite?.id]);
 
   const handleCreateFavourite = async (
-    songId: string,
-    userId: string | null | undefined,
+    songId?: string,
+    userId?: string | null | undefined,
   ) => {
     if (!isLoading && user) {
       setDisableButton(true);
@@ -62,7 +62,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
         }),
       })
         .then(async () => {
-          await getFavourite(isLoading, user, items.id);
+          await getFavourite(isLoading, user, items?.id);
           setDisableButton(false);
         })
         .catch((err) => console.error(err));
@@ -79,7 +79,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
         method: "DELETE",
       })
         .then(async () => {
-          await getFavourite(isLoading, user, items.id);
+          await getFavourite(isLoading, user, items?.id);
           setDisableButton(false);
         })
         .catch((err) => console.error(err));
@@ -88,29 +88,36 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
 
   return (
     <div className="flex h-fit flex-col rounded-lg border-2 p-5">
-      <div className="h-[150px] w-full md:w-[200px] lg:w-[300px]">
-        <iframe
-          src={embedUrl}
-          allowFullScreen
-          className="me-5 h-full w-full rounded md:me-0"
-        ></iframe>
+      <div className="w-full md:w-[200px] lg:w-[300px]">
+        {embedUrl !== "" && (
+          <div className="h-[150px] pb-3">
+            <iframe
+              src={embedUrl}
+              allowFullScreen
+              className="me-5 h-full w-full rounded md:me-0"
+            ></iframe>
+          </div>
+        )}
       </div>
       <div>
-        <div className="flex flex-col gap-2 py-3">
+        <div className="flex flex-col gap-2 pb-3">
           <div className="flex flex-col truncate">
             <h1 className="font-semibold">Song Name</h1>
             <p className="text-sm text-neutral-500">
-              {items.name}{" "}
-              {items.alt_name &&
-                items.alt_name.trim() !== "-" &&
-                items.alt_name}
+              {items?.name}{" "}
+              {items?.alt_name &&
+                items?.alt_name.trim() !== "-" &&
+                items?.alt_name}
             </p>
           </div>
-          {items.album && (
+          {items?.album && items?.album.trim() !== "-" && (
             <div className="flex flex-col truncate">
               <h1 className="font-semibold">Album</h1>
               <Link
-                href={`/album/${items.album.toLowerCase().replace(/ /g, "-")}`}
+                href={`/album/${items?.album
+                  .toLowerCase()
+                  .trim()
+                  .replace(/ /g, "-")}`}
                 className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
               >
                 {items.album}
@@ -121,11 +128,12 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
             <h1 className="font-semibold">Band</h1>
             <Link
               href={`/band/${items
-                .original_band!.toLowerCase()
+                ?.original_band!.toLowerCase()
+                .trim()
                 .replace(/ /g, "-")}`}
               className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
             >
-              {items.original_band}
+              {items?.original_band}
             </Link>
           </div>
         </div>
@@ -133,9 +141,9 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
         <div className="flex flex-col gap-2 py-3">
           <div className="flex flex-col truncate">
             <h1 className="font-semibold">Original Key</h1>
-            <p className="text-sm text-neutral-500">{items.original_key}</p>
+            <p className="text-sm text-neutral-500">{items?.original_key}</p>
           </div>
-          {items.tags.length > 0 && (
+          {items?.tags && items.tags.length > 0 && (
             <div className="flex flex-col gap-2 truncate">
               <h1 className="font-semibold">Others</h1>
               <div className="flex gap-2 text-sm text-neutral-500">
@@ -163,12 +171,12 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
                 if (favourite) {
                   await handleDeleteFavourite(favourite.id);
                 } else {
-                  await handleCreateFavourite(items.id, user?.sub);
+                  await handleCreateFavourite(items?.id, user?.sub);
                 }
               }}
               className={`${
                 favourite && "border-yellow-500 text-yellow-500"
-              } flex h-[30px] items-center justify-center gap-1 rounded border px-2`}
+              } flex h-[30px] items-center justify-center gap-1 rounded border px-2 hover:bg-[#f9f9fa]`}
             >
               {favourite ? <FaStar className="text-yellow-400" /> : <CiStar />}
               <p className="text-sm">{favourite ? "Saved" : "Favourite"}</p>
@@ -180,7 +188,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
               }}
               className={`${
                 share && "bg-[#f5f5f6]"
-              } flex h-[30px] items-center justify-center gap-1 rounded border px-2`}
+              } flex h-[30px] items-center justify-center gap-1 rounded border px-2 hover:bg-[#f9f9fa]`}
             >
               {share ? <PiShareNetworkFill /> : <PiShareNetworkThin />}
               <p className="text-sm">{share ? "Link copied" : "Share"}</p>

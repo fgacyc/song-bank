@@ -10,50 +10,45 @@ import { ChordProParser, ChordProFormatter } from "chordsheetjs";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { SongAssets } from "@/components/dynamic/song/SongAssets";
 import type { SongType } from "..";
+import Custom404 from "../404";
 
 const DynamicSong = () => {
   const { isLoading, user } = useUser();
   const router = useRouter();
-  const [songList, setSongList] = useState<SongType[]>([]);
-  const [filteredSongList, setFilteredSongList] = useState<SongType[]>([]);
+  const [filteredSong, setFilteredSong] = useState<SongType>();
   const chordLyricsRef = useRef<HTMLParagraphElement | null>(null);
   const [filteredChordLyrics, setFilteredChordLyrics] = useState("");
   const [selectedKey, setSelectedKey] = useState("");
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    void (async () => {
-      await fetch("/api/song", {
-        method: "GET",
-      })
-        .then(
-          async (res) =>
-            await res
-              .json()
-              .then((result: SongType[]) => {
-                setSongList(result);
-                setLoading(false);
-              })
-              .catch((err) => console.error(err)),
-        )
-        .catch((err) => console.error(err));
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (songList.length > 0 && router.query.song) {
-      const songExist = songList.some((song) => {
-        return (
-          song.name?.toLowerCase().trim().replace(/ /g, "-") ===
-          router.query.song
-        );
-      });
-
-      if (!songExist) {
-        void router.push("/404");
-      }
+    if (router.query.song) {
+      void (async () => {
+        await fetch(`/api/song?song_id=${String(router.query.song)}`, {
+          method: "GET",
+        })
+          .then(
+            async (res) =>
+              await res
+                .json()
+                .then((result: SongType) => {
+                  if (result) {
+                    setFilteredSong(result);
+                  } else {
+                    setNotFound(true);
+                  }
+                  setLoading(false);
+                })
+                .catch((err) => {
+                  setNotFound(true);
+                  console.error(err);
+                }),
+          )
+          .catch((err) => console.error(err));
+      })();
     }
-  }, [songList, router]);
+  }, [router.query.song]);
 
   useEffect(() => {
     if (!isLoading && user && router.query.song) {
@@ -76,23 +71,8 @@ const DynamicSong = () => {
   // }, [isLoading, user, router.query.song]);
 
   useEffect(() => {
-    const filteredSongList = songList.filter(
-      (items) =>
-        router.query.song &&
-        `${items.name!.toLowerCase().trim().replace(/ /g, "-")}` ===
-          router.query.song.toString(),
-    );
-    setFilteredSongList(filteredSongList);
-    setSelectedKey(filteredSongList[0]?.original_key ?? "");
-  }, [songList, router.query.song]);
-
-  useEffect(() => {
     const parser = new ChordProParser();
-    const parsedChordLyrics = parser.parse(
-      filteredSongList[0]?.chord_lyrics
-        ? filteredSongList[0]?.chord_lyrics
-        : "",
-    );
+    const parsedChordLyrics = parser.parse(filteredSong?.chord_lyrics ?? "");
 
     const keys = [
       "C",
@@ -109,7 +89,7 @@ const DynamicSong = () => {
       "B",
     ];
 
-    const original_key = filteredSongList[0]?.original_key;
+    const original_key = filteredSong?.original_key;
     const steps = keys.indexOf(selectedKey) - keys.indexOf(original_key ?? "");
     const transposedChordLyrics = parsedChordLyrics.transpose(steps);
 
@@ -117,59 +97,68 @@ const DynamicSong = () => {
     const formattedChordLyrics = formatter.format(transposedChordLyrics);
 
     setFilteredChordLyrics(formattedChordLyrics);
-  }, [filteredSongList, selectedKey]);
+  }, [filteredSong, selectedKey]);
 
   const getVideoId = (url: string) => {
     const params = new URLSearchParams(new URL(url).search);
     return params.get("v");
   };
 
+  if (notFound) {
+    return <Custom404 />;
+  }
+
   if (loading) {
     return <SongLoading />;
-  } else {
-    return (
-      <>
-        <Head>
-          <title>{filteredSongList[0]?.name}</title>
-          <meta name="keywords" content={`${filteredSongList[0]?.name}`} />
-          <link rel="icon" href="/logo.png" />
-        </Head>
-        {filteredSongList.map((items, i) => {
-          const videoId = getVideoId(items.original_youtube_url ?? "");
-          const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-          return (
-            <div key={i} className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
-              <SongBreadcrumb
-                name={items.name!}
-                album={items.album}
-                original_band={items.original_band!}
-              />
-              <div className="flex flex-col gap-5 pb-5 md:flex-row">
-                <div className="flex flex-col gap-5">
-                  <SongDetails embedUrl={embedUrl} items={items} />
-                  <SongAssets song={filteredSongList} />
-                </div>
-                <div className="flex w-full flex-col gap-5">
-                  <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
-                    {items.name}
-                  </h1>
-                  <SongKeyTransposition
-                    originalKey={items.original_key}
-                    selectedKey={selectedKey}
-                    setSelectedKey={setSelectedKey}
-                  />
-                  <SongLyrics
-                    chordLyricsRef={chordLyricsRef}
-                    chordLyrics={filteredChordLyrics}
-                  />
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </>
-    );
   }
+
+  let embedUrl = "";
+  if (
+    filteredSong?.original_youtube_url &&
+    filteredSong.original_youtube_url.toString().trim() !== ""
+  ) {
+    const videoId = getVideoId(filteredSong.original_youtube_url);
+    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  }
+
+  return !loading && !filteredSong ? (
+    <Custom404 />
+  ) : (
+    <>
+      <Head>
+        <title>{filteredSong?.name}</title>
+        <meta name="keywords" content={`${filteredSong?.name}`} />
+        <link rel="icon" href="/logo.png" />
+      </Head>
+      <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
+        <SongBreadcrumb
+          name={String(filteredSong?.name)}
+          album={String(filteredSong?.album)}
+          original_band={String(filteredSong?.original_band)}
+        />
+        <div className="flex flex-col gap-5 pb-5 md:flex-row">
+          <div className="flex flex-col gap-5">
+            <SongDetails embedUrl={embedUrl} items={filteredSong} />
+            <SongAssets song={filteredSong} />
+          </div>
+          <div className="flex w-full flex-col gap-5">
+            <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
+              {filteredSong?.name}
+            </h1>
+            <SongKeyTransposition
+              originalKey={filteredSong?.original_key}
+              selectedKey={selectedKey}
+              setSelectedKey={setSelectedKey}
+            />
+            <SongLyrics
+              chordLyricsRef={chordLyricsRef}
+              chordLyrics={filteredChordLyrics}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default DynamicSong;

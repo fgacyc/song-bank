@@ -69,9 +69,11 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
           const match = youtubeUrl.match(regex);
           return match ? match[1] : null;
         };
-        const originalYoutubeUrl = items.original_youtube_url ?? "";
-        const youtubeVideoId = getYoutubeVideoId(originalYoutubeUrl);
-        const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+        let thumbnailUrl = "";
+        if (items.original_youtube_url) {
+          const youtubeVideoId = getYoutubeVideoId(items.original_youtube_url);
+          thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+        }
 
         return (
           <SwipeableListItem
@@ -79,23 +81,30 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
             trailingActions={trailingActions(items.id)}
           >
             <Link
-              href={`/song/${items
-                .name!.toLowerCase()
-                .trim()
-                .replace(/ /g, "-")}`}
+              href={`/song/${items.id}`}
               className="flex w-full justify-between truncate rounded-lg border-2 p-3 hover:bg-[#f8f8f9]"
               onMouseOver={() => setActiveList(i)}
               onMouseLeave={() => setActiveList(-1)}
             >
               <div className="flex gap-3">
-                <div className="relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md sm:min-h-[90px] sm:min-w-[170px] md:min-h-[110px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]">
+                <div
+                  className={`${
+                    thumbnailUrl === "" && "border-2"
+                  } relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md sm:min-h-[90px] sm:min-w-[170px] md:min-h-[110px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]`}
+                >
                   <Image
-                    src={thumbnailUrl}
+                    src={
+                      thumbnailUrl !== "" ? thumbnailUrl : "/no-song-cover.svg"
+                    }
                     alt={items.name!}
                     fill={true}
                     priority={true}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
+                    className={
+                      thumbnailUrl !== ""
+                        ? "object-cover"
+                        : "absolute bottom-0 left-0 right-0 top-0 m-auto max-h-[80%] max-w-[80%]"
+                    }
                   />
                 </div>
                 <div>

@@ -27,7 +27,7 @@ const ProfileRecentSearch = () => {
     };
 
     const fetchSongs = async () => {
-      await fetch("/api/song", {
+      await fetch("/api/songs", {
         method: "GET",
       }).then(async (res) => {
         await res.json().then((result: SongType[]) => {
