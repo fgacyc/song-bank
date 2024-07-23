@@ -41,9 +41,7 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
               >
                 <div className="relative h-[135%] w-full">
                   <Image
-                    src={
-                      thumbnailUrl !== "" ? thumbnailUrl : "/no-album-cover.svg"
-                    }
+                    src={thumbnailUrl || "/no-album-cover.svg"}
                     alt={items.name!}
                     fill={true}
                     priority={true}

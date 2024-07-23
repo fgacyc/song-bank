@@ -1,7 +1,7 @@
 import React from "react";
 
 interface SongKeyTranspositionProps {
-  originalKey: string | null;
+  originalKey?: string | null;
   selectedKey: string | null | undefined;
   setSelectedKey: React.Dispatch<React.SetStateAction<string>>;
 }

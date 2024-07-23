@@ -75,7 +75,7 @@ const Album = () => {
     } else if (filteredSongList?.length == 2 || filteredSongList?.length == 3) {
       setAlbumCoverImages(filteredSongList?.slice(0, 2));
       setGridCol("grid-cols-1");
-    } else if (filteredSongList?.length >= 4) {
+    } else if (filteredSongList && filteredSongList?.length >= 4) {
       setAlbumCoverImages(filteredSongList?.slice(0, 4));
       setGridCol("grid-cols-2");
     } else {

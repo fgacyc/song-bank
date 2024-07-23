@@ -25,7 +25,7 @@ const DynamicSong = () => {
   useEffect(() => {
     if (router.query.song) {
       void (async () => {
-        await fetch(`/api/song?song_id=${router.query.song?.toString()}`, {
+        await fetch(`/api/song?song_id=${String(router.query.song)}`, {
           method: "GET",
         })
           .then(
@@ -72,9 +72,7 @@ const DynamicSong = () => {
 
   useEffect(() => {
     const parser = new ChordProParser();
-    const parsedChordLyrics = parser.parse(
-      filteredSong?.chord_lyrics ? filteredSong?.chord_lyrics : "",
-    );
+    const parsedChordLyrics = parser.parse(filteredSong?.chord_lyrics ?? "");
 
     const keys = [
       "C",
@@ -116,14 +114,16 @@ const DynamicSong = () => {
 
   let embedUrl = "";
   if (
-    filteredSong.original_youtube_url &&
+    filteredSong?.original_youtube_url &&
     filteredSong.original_youtube_url.toString().trim() !== ""
   ) {
     const videoId = getVideoId(filteredSong.original_youtube_url);
     embedUrl = `https://www.youtube.com/embed/${videoId}`;
   }
 
-  return (
+  return !loading && !filteredSong ? (
+    <Custom404 />
+  ) : (
     <>
       <Head>
         <title>{filteredSong?.name}</title>
@@ -132,9 +132,9 @@ const DynamicSong = () => {
       </Head>
       <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
         <SongBreadcrumb
-          name={filteredSong.name!}
-          album={filteredSong.album}
-          original_band={filteredSong.original_band!}
+          name={String(filteredSong?.name)}
+          album={String(filteredSong?.album)}
+          original_band={String(filteredSong?.original_band)}
         />
         <div className="flex flex-col gap-5 pb-5 md:flex-row">
           <div className="flex flex-col gap-5">
@@ -143,10 +143,10 @@ const DynamicSong = () => {
           </div>
           <div className="flex w-full flex-col gap-5">
             <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
-              {filteredSong.name}
+              {filteredSong?.name}
             </h1>
             <SongKeyTransposition
-              originalKey={filteredSong.original_key}
+              originalKey={filteredSong?.original_key}
               selectedKey={selectedKey}
               setSelectedKey={setSelectedKey}
             />
