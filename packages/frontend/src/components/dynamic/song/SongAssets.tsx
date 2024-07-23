@@ -7,7 +7,19 @@ interface SongAssetsProps {
 }
 
 export const SongAssets: FunctionComponent<SongAssetsProps> = ({ song }) => {
-  return (
+  const empty =
+    song?.ag_link === "" &&
+    song?.bass_link === "" &&
+    song?.drum_link === "" &&
+    song?.eg_link === "" &&
+    !song?.file_sec_voice &&
+    song?.file_sequencer.length === 0 &&
+    song?.main_key_link === "" &&
+    song?.sub_key_link === "";
+
+  console.log(empty);
+
+  return empty ? null : (
     <div className="rounded-lg border-2 p-5">
       <h1 className="pb-4 font-semibold">Files</h1>
       <div className="flex w-full border-collapse flex-col gap-2">
