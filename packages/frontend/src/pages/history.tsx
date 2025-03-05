@@ -152,7 +152,7 @@ const History = () => {
       {loading ? (
         <HistoryLoading />
       ) : (
-        <div className="pb-[65px] pt-[50px] sm:pb-0">
+        <div className="pb-[65px] pt-[50px] md:pb-0">
           {searchHistory && searchHistory.length > 0 ? (
             uniqueDatesArray.map((date, i) => {
               const [td, tm, ty] = getDMY();
@@ -217,7 +217,7 @@ const History = () => {
                 displayedDate = `${month} ${d}${ty === y ? "" : `, ${y}`}`;
               }
               return (
-                <div key={i} className="px-3 sm:pb-3">
+                <div key={i} className="px-3 md:pb-3">
                   <h1 className="pb-1 pt-3 text-sm font-semibold text-neutral-500">
                     {displayedDate}
                   </h1>
@@ -271,7 +271,7 @@ const History = () => {
               );
             })
           ) : (
-            <div className="flex h-[90dvh] flex-col items-center justify-center gap-5">
+            <div className="flex h-[90dvh] flex-col items-center justify-center gap-3">
               <Image
                 src={"/no-search-history.svg"}
                 alt="no search history"

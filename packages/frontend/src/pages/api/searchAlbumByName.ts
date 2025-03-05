@@ -7,13 +7,12 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "GET") {
-    const { band } = req.query;
-    const query = String(band).replaceAll("-", " ");
+    const { album } = req.query;
     try {
       const songs = await db.song.findMany({
         where: {
-          original_band: {
-            contains: query,
+          album: {
+            contains: album as string,
             mode: "insensitive",
           },
         },

@@ -20,7 +20,7 @@ export const SongAssets: FunctionComponent<SongAssetsProps> = ({ song }) => {
   console.log(empty);
 
   return empty ? null : (
-    <div className="rounded-lg border-2 p-5">
+    <div className="rounded-lg border-2 p-3">
       <h1 className="pb-4 font-semibold">Files</h1>
       <div className="flex w-full border-collapse flex-col gap-2">
         <SongDownloadBlock

@@ -6,11 +6,11 @@ import SongDetails from "@/components/dynamic/song/SongDetails";
 import SongKeyTransposition from "@/components/dynamic/song/SongKeyTransposition";
 import SongLyrics from "@/components/dynamic/song/SongLyrics";
 import SongLoading from "@/components/dynamic/song/SongLoading";
-import { ChordProParser, ChordProFormatter } from "chordsheetjs";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { SongAssets } from "@/components/dynamic/song/SongAssets";
 import type { SongType } from "..";
 import Custom404 from "../404";
+import ChordSheetJS from "chordsheetjs";
 
 const DynamicSong = () => {
   const { isLoading, user } = useUser();
@@ -21,6 +21,11 @@ const DynamicSong = () => {
   const [selectedKey, setSelectedKey] = useState("");
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    if (!filteredSong) return;
+    setSelectedKey(filteredSong.original_key ?? "");
+  }, [filteredSong]);
 
   useEffect(() => {
     if (router.query.song) {
@@ -70,8 +75,12 @@ const DynamicSong = () => {
   //   console.log(!isLoading, user, router.query.song);
   // }, [isLoading, user, router.query.song]);
 
+  const parser = new ChordSheetJS.ChordProParser();
+  const formatter = new ChordSheetJS.ChordProFormatter({
+    normalizeChords: true,
+  });
+
   useEffect(() => {
-    const parser = new ChordProParser();
     const parsedChordLyrics = parser.parse(filteredSong?.chord_lyrics ?? "");
 
     const keys = [
@@ -91,9 +100,10 @@ const DynamicSong = () => {
 
     const original_key = filteredSong?.original_key;
     const steps = keys.indexOf(selectedKey) - keys.indexOf(original_key ?? "");
-    const transposedChordLyrics = parsedChordLyrics.transpose(steps);
+    const transposedChordLyrics = parsedChordLyrics.transpose(steps, {
+      normalizeChordSuffix: true,
+    });
 
-    const formatter = new ChordProFormatter();
     const formattedChordLyrics = formatter.format(transposedChordLyrics);
 
     setFilteredChordLyrics(formattedChordLyrics);
@@ -130,21 +140,18 @@ const DynamicSong = () => {
         <meta name="keywords" content={`${filteredSong?.name}`} />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
+      <div className="flex w-full flex-col gap-3 p-3">
         <SongBreadcrumb
           name={String(filteredSong?.name)}
           album={String(filteredSong?.album)}
           original_band={String(filteredSong?.original_band)}
         />
-        <div className="flex flex-col gap-5 pb-5 md:flex-row">
-          <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-3 pb-3 md:flex-row">
+          <div className="relative flex flex-col gap-3">
             <SongDetails embedUrl={embedUrl} items={filteredSong} />
             <SongAssets song={filteredSong} />
           </div>
-          <div className="flex w-full flex-col gap-5">
-            <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
-              {filteredSong?.name}
-            </h1>
+          <div className="flex w-full flex-col gap-3">
             <SongKeyTransposition
               originalKey={filteredSong?.original_key}
               selectedKey={selectedKey}

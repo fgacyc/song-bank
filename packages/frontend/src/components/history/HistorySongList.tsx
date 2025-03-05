@@ -27,16 +27,16 @@ const SearchHistorySongList: React.FC<SearchHistorySongListProps> = ({
             .name!.toLowerCase()
             .trim()
             .replace(/ /g, "-")}-${filteredSong.id.slice(0, 5)}`}
-          className="flex min-h-[82px] items-center gap-5 rounded-md border-2 p-5 hover:bg-[#f8f8f9]"
+          className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
         >
-          <div className="min-w-[30px] sm:min-w-[40px]">
+          <div className="min-w-[30px] md:min-w-[40px]">
             <MdHistory className="h-full w-full" />
           </div>
           <div className="flex h-full flex-col">
-            <div className="text-sm font-semibold sm:text-base">
+            <div className="text-sm font-semibold md:text-base">
               {filteredSong.name}
             </div>
-            <div className="text-xs text-neutral-500 sm:text-sm">Song</div>
+            <div className="text-xs text-neutral-500 md:text-sm">Song</div>
           </div>
         </Link>
       )}

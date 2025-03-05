@@ -11,13 +11,32 @@ const Custom404: NextPageWithLayout = () => {
         <meta name="description" content="Page Not Found" />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <div className="fixed top-0 flex h-screen w-screen flex-col items-center justify-center gap-5">
+      <div className="fixed top-0 flex h-screen w-screen flex-col items-center justify-center gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={"/page-not-found.svg"}
           alt="page not found"
           width={200}
           height={200}
+          onClick={async () => {
+            if (process.env.NODE_ENV === "development") {
+              const response = await fetch("/api/getAllSong");
+              if (response.ok) {
+                const blob = await response.blob();
+                // Only use window APIs on the client side
+                if (typeof window !== "undefined") {
+                  const url = window.URL.createObjectURL(blob);
+                  const link = document.createElement("a");
+                  link.href = url;
+                  link.download = "songs_backup.csv";
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  window.URL.revokeObjectURL(url);
+                }
+              }
+            }
+          }}
         />
         <h1 className="text-sm text-neutral-500">Page not found.</h1>
         <button

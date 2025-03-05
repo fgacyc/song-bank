@@ -6,7 +6,7 @@ interface BandBreadcrumb {
 
 const BandBreadcrumb: React.FC<BandBreadcrumb> = ({ original_band }) => {
   return (
-    <div className="flex h-[35px] items-center gap-2 rounded-lg border-2 px-3 py-1 text-xs sm:text-sm">
+    <div className="flex h-[35px] items-center gap-2 rounded-lg border-2 px-3 py-1 text-xs md:text-sm">
       {original_band}
     </div>
   );

@@ -87,10 +87,10 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   };
 
   return (
-    <div className="flex h-fit flex-col rounded-lg border-2 p-5">
+    <div className="relative flex flex-col rounded-lg border-2 p-3 md:sticky md:top-[82px]">
       <div className="w-full md:w-[200px] lg:w-[300px]">
         {embedUrl !== "" && (
-          <div className="h-[150px] pb-3">
+          <div className="h-[185px] pb-2">
             <iframe
               src={embedUrl}
               allowFullScreen
@@ -103,7 +103,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
         <div className="flex flex-col gap-2 pb-3">
           <div className="flex flex-col truncate">
             <h1 className="font-semibold">Song Name</h1>
-            <p className="text-sm text-neutral-500">
+            <p className="truncate text-sm text-neutral-500">
               {items?.name}{" "}
               {items?.alt_name &&
                 items?.alt_name.trim() !== "-" &&
@@ -117,7 +117,10 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
                 href={`/album/${items?.album
                   .toLowerCase()
                   .trim()
-                  .replace(/ /g, "-")}`}
+                  .replace(
+                    / /g,
+                    "-",
+                  )}?band=${items?.original_band?.toLowerCase().trim().replace(/ /g, "-")}`}
                 className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
               >
                 {items.album}
@@ -144,15 +147,17 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
             <p className="text-sm text-neutral-500">{items?.original_key}</p>
           </div>
           {items?.tags && items.tags.length > 0 && (
-            <div className="flex flex-col gap-2 truncate">
+            <div className="flex w-full flex-col gap-2">
               <h1 className="font-semibold">Others</h1>
-              <div className="flex gap-2 text-sm text-neutral-500">
-                {items.tags.map((tag, i) => {
+              <div className="flex w-full flex-row gap-1.5 overflow-x-auto pb-0 text-xs text-neutral-500">
+                {items.tags.map((tag) => {
                   return (
                     <div
-                      key={i}
-                      className="w-fit rounded border px-2 py-1 brightness-90"
-                      style={{ borderColor: tag.color, color: tag.color }}
+                      key={tag.id}
+                      className="whitespace-nowrap rounded px-2 py-1 brightness-90"
+                      style={{
+                        border: `1px solid ${tag.color}`,
+                      }}
                     >
                       {tag.content}
                     </div>

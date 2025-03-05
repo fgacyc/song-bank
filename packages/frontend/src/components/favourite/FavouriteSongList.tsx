@@ -61,7 +61,7 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
     );
   };
   return (
-    <SwipeableList className="flex flex-col gap-2 px-3 pb-[62px] pt-[65px] sm:pb-3">
+    <SwipeableList className="flex flex-col gap-2 px-3 pb-[62px] pt-[65px] md:pb-3">
       {filteredSongList.map((items, i) => {
         const getYoutubeVideoId = (youtubeUrl: string) => {
           const regex =
@@ -90,7 +90,7 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
                 <div
                   className={`${
                     thumbnailUrl === "" && "border-2"
-                  } relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md sm:min-h-[90px] sm:min-w-[170px] md:min-h-[110px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]`}
+                  } relative min-h-[70px] min-w-[130px] overflow-hidden rounded-md md:min-h-[110px] md:min-h-[90px] md:min-w-[170px] md:min-w-[195px] lg:min-h-[130px] lg:min-w-[230px]`}
                 >
                   <Image
                     src={
@@ -108,10 +108,10 @@ const FavouriteSongList: React.FC<FavouriteSongListProps> = ({
                   />
                 </div>
                 <div>
-                  <h1 className="text-sm font-semibold sm:text-base md:text-lg lg:text-2xl">
+                  <h1 className="text-sm font-semibold md:text-base md:text-lg lg:text-2xl">
                     {items.name}
                   </h1>
-                  <p className="text-xs text-neutral-500 sm:text-sm md:text-base">
+                  <p className="text-xs text-neutral-500 md:text-base md:text-sm">
                     {items.original_band}
                   </p>
                 </div>

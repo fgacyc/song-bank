@@ -1,99 +1,87 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { type Song } from "@prisma/client";
-import { MdImageNotSupported } from "react-icons/md";
+import { MdPiano } from "react-icons/md";
+import { SongType } from "@/pages";
 
 interface SearchBandProps {
-  showBand: boolean | undefined;
   searchString: string;
-  songList: Song[];
-  filteredSongList: Song[];
-  channelProfile: string;
+  setResults: Dispatch<
+    SetStateAction<{ song: boolean; band: boolean; album: boolean }>
+  >;
 }
 
 const SearchBand: React.FC<SearchBandProps> = ({
-  showBand,
   searchString,
-  songList,
-  filteredSongList,
-  channelProfile,
+  setResults,
 }) => {
-  return (
-    <>
-      {showBand && (
-        <>
-          <Link
-            href={`/band/${filteredSongList[0]!
-              .original_band!.toLowerCase()
-              .trim()
-              .replace(/ /g, "-")}`}
-            className="flex gap-5 border-b p-5 pl-7 hover:bg-[#f8f8f9] hover:shadow-md sm:rounded-lg sm:border-2"
-          >
-            {channelProfile ? (
-              <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full md:h-[100px] md:w-[100px]">
-                <Image
-                  src={channelProfile}
-                  alt={
-                    filteredSongList[0]?.original_band
-                      ? filteredSongList[0].original_band
-                      : "band"
-                  }
-                  fill={true}
-                  priority={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover"
-                />
-              </div>
-            ) : (
-              <div className="flex h-[70px] w-[70px] items-center justify-center rounded-full border bg-white">
-                <MdImageNotSupported />
-              </div>
-            )}
-            <div className="flex flex-col justify-center">
-              <h1 className="text-lg font-semibold md:text-2xl">
-                {filteredSongList[0]?.original_band}
-              </h1>
-              <p className="text-xs text-slate-500 md:text-sm">
-                {
-                  [
-                    ...new Set(
-                      songList
-                        .filter(
-                          (items) =>
-                            items
-                              .original_band!.toLowerCase()
-                              .replace(/ /g, "")
-                              .includes(
-                                searchString.toLowerCase().replace(/ /g, ""),
-                              ) && items.album,
-                        )
-                        .map((items) => items.album),
+  const [filteredSongList, setFilteredSongList] = useState<SongType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (searchString && searchString.length > 2) {
+      void (async () => {
+        await fetch(`/api/searchBandByName?band=${searchString}`, {
+          method: "GET",
+        })
+          .then(async (res) => {
+            await res
+              .json()
+              .then((result: SongType[]) => {
+                setResults((prev) => ({
+                  ...prev,
+                  band: result.length > 0,
+                }));
+                if (result && result.length > 0) {
+                  setFilteredSongList(
+                    result.filter(
+                      (song) =>
+                        song?.original_band === result[0]?.original_band,
                     ),
-                  ].length
-                }{" "}
-                albums
-              </p>
-              <p className="text-xs text-slate-500 md:text-sm">
-                {
-                  [
-                    ...songList.filter((items) =>
-                      items
-                        .original_band!.toLowerCase()
-                        .replace(/ /g, "")
-                        .includes(searchString.toLowerCase().replace(/ /g, "")),
-                    ),
-                  ].length
-                }{" "}
-                songs
-              </p>
-            </div>
-          </Link>
-          <hr className="hidden sm:block" />
-        </>
-      )}
-    </>
-  );
+                  );
+                }
+                setLoading(false);
+              })
+              .catch((err) => {
+                console.error(err);
+                setLoading(false);
+              });
+          })
+          .catch((err) => console.error(err));
+      })();
+    }
+  }, [searchString, loading]);
+
+  return filteredSongList.length > 0 ? (
+    <div className="flex flex-col gap-1.5">
+      <h1 className="pl-1 text-lg font-semibold">Bands</h1>
+      <Link
+        href={`/band/${filteredSongList[0]!
+          .original_band!.toLowerCase()
+          .trim()
+          .replace(/ /g, "-")}`}
+        className="flex flex-row items-center gap-2 rounded-lg border-2 p-3 hover:bg-[#f8f8f9] hover:shadow-md md:border-2"
+      >
+        <MdPiano size={40} />
+        <div className="flex flex-col justify-center">
+          <h1 className="text-base font-semibold md:text-lg">
+            {filteredSongList[0]?.original_band}
+          </h1>
+          <p className="text-xs italic text-gray-500">
+            {filteredSongList.length} songs,{" "}
+            {new Set(filteredSongList.map((song) => song.album)).size - 1}{" "}
+            albums
+          </p>
+        </div>
+      </Link>
+    </div>
+  ) : null;
 };
 
 export default SearchBand;

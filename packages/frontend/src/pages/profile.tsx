@@ -47,7 +47,7 @@ const Profile = () => {
         <meta name="description" content="User Profile" />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <div className="block sm:hidden">
+      <div className="block md:hidden">
         <div className="flex flex-col gap-3 p-3">
           <ProfileUserInfo user={user} />
           <ProfileRecentSearch />
