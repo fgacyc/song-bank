@@ -24,8 +24,11 @@ const SearchAlbum: React.FC<SearchAlbumProps> = ({
             href={`/album/${filteredSongList[0]!.album
               ?.toLowerCase()
               .trim()
-              .replace(/ /g, "-")}`}
-            className="md:white flex gap-5 rounded-lg border-b px-7 py-5 hover:bg-[#f8f8f9] hover:shadow-md md:border-2"
+              .replace(
+                / /g,
+                "-",
+              )}?band=${filteredSongList[0]!.original_band?.toLowerCase().trim().replace(/ /g, "-")}`}
+            className="md:white flex gap-3 rounded-lg border-b px-7 py-5 hover:bg-[#f8f8f9] hover:shadow-md md:border-2"
           >
             <div className="flex w-full items-center justify-between ">
               <div className="item-center flex h-full flex-row justify-center">

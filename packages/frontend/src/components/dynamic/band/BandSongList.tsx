@@ -12,21 +12,21 @@ const BandSongList: React.FC<BandSongListProps> = ({
   return (
     <>
       {filteredSongListWithoutAlbum.length > 0 && (
-        <div className="flex flex-col gap-3 truncate rounded-lg border-2 p-3">
-          <h1 className="font-semibold">Songs Without Album</h1>
-          {filteredSongListWithoutAlbum.map((items, i) => {
-            return (
-              <p key={i} className="text-sm text-neutral-500">
-                {i + 1}.{" "}
+        <div className="flex flex-col gap-2 truncate rounded-lg border-2 p-3 md:min-w-[220px]">
+          <h1 className="w-full text-sm font-semibold">Songs Without Album</h1>
+          <div className="flex flex-col gap-1.5">
+            {filteredSongListWithoutAlbum.map((items) => {
+              return (
                 <Link
+                  key={items.id}
                   href={`/song/${items.id}`}
-                  className="underline md:no-underline md:hover:underline"
+                  className="text-xs text-neutral-500 hover:underline"
                 >
                   {items.name}
                 </Link>
-              </p>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       )}
     </>

@@ -271,7 +271,7 @@ const History = () => {
               );
             })
           ) : (
-            <div className="flex h-[90dvh] flex-col items-center justify-center gap-5">
+            <div className="flex h-[90dvh] flex-col items-center justify-center gap-3">
               <Image
                 src={"/no-search-history.svg"}
                 alt="no search history"

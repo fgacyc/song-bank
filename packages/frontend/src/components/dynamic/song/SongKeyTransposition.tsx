@@ -25,7 +25,7 @@ const SongKeyTransposition: React.FC<SongKeyTranspositionProps> = ({
     "B",
   ];
   return (
-    <div className="rounded-lg border-2 p-5">
+    <div className="rounded-lg border-2 p-3">
       <h1 className="pb-4 font-semibold">Transpose Key</h1>
       <div className="grid grid-cols-6 gap-2 md:grid-cols-12 md:grid-cols-6 lg:grid-cols-12">
         {keys.map((key, i) => {

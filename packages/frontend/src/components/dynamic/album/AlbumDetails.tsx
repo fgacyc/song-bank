@@ -18,7 +18,7 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
 }) => {
   return (
     <>
-      <div className="h-fit rounded-lg border-2 p-5">
+      <div className="h-fit rounded-lg border-2 p-3">
         <div
           className={`${gridCol} grid h-[300px] w-full gap-[1px] overflow-hidden rounded md:h-[200px] md:w-[200px] lg:h-[270px] lg:w-[300px]`}
         >
@@ -59,13 +59,13 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
         </div>
 
         <div className="py-3">
-          <h1 className="font-semibold">Album</h1>
-          <p className="text-sm text-neutral-500">
+          <h1 className="text-sm font-semibold">Album</h1>
+          <p className="text-xs text-neutral-500">
             {filteredSongList ? filteredSongList[0]?.album : "Album"}
           </p>
         </div>
-        <div className="pb-3">
-          <h1 className="font-semibold">Band</h1>
+        <div className="pb-4">
+          <h1 className="text-sm font-semibold">Band</h1>
           <Link
             href={`/band/${
               filteredSongList
@@ -74,15 +74,15 @@ const AlbumDetails: React.FC<AlbumDetailsProps> = ({
                     .replace(/ /g, "-")
                 : "Band"
             }`}
-            className="text-sm text-neutral-500 underline md:no-underline md:hover:underline"
+            className="text-xs text-neutral-500 underline md:no-underline md:hover:underline"
           >
             {filteredSongList ? filteredSongList[0]?.original_band : "Band"}
           </Link>
         </div>
         <hr />
-        <div className="flex flex-col pt-3">
-          <h1 className="font-semibold">Total Songs</h1>
-          <p className="text-sm text-neutral-500">{filteredSongList?.length}</p>
+        <div className="flex flex-col pt-4">
+          <h1 className="text-sm font-semibold">Total Songs</h1>
+          <p className="text-xs text-neutral-500">{filteredSongList?.length}</p>
         </div>
       </div>
     </>

@@ -11,7 +11,7 @@ const Custom404: NextPageWithLayout = () => {
         <meta name="description" content="Page Not Found" />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <div className="fixed top-0 flex h-screen w-screen flex-col items-center justify-center gap-5">
+      <div className="fixed top-0 flex h-screen w-screen flex-col items-center justify-center gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={"/page-not-found.svg"}

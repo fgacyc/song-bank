@@ -9,11 +9,13 @@ interface BandAlbumListProps {
   getYoutubeVideoId: (
     youtubeUrl: string | undefined,
   ) => string | null | undefined;
+  band: string;
 }
 
 const BandAlbumList: React.FC<BandAlbumListProps> = ({
   uniqueAlbumList,
   filteredSongListWithAlbum,
+  band,
   getYoutubeVideoId,
 }) => {
   return (
@@ -39,7 +41,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
         return (
           <Link
             key={i}
-            href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
+            href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}?band=${band?.toLowerCase().trim().replace(/ /g, "-")}`}
             className="flex flex-col items-center overflow-hidden rounded-lg border-2 p-3 hover:bg-[#f8f8f9] hover:shadow-md"
           >
             <div

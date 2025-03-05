@@ -26,8 +26,11 @@ const SearchHistoryAlbumList: React.FC<SearchHistoryAlbumListProps> = ({
           href={`/album/${filteredAlbum.album
             ?.toLowerCase()
             .trim()
-            .replace(/ /g, "-")}`}
-          className="flex min-h-[82px] items-center gap-5 rounded-md border-2 p-5 hover:bg-[#f8f8f9]"
+            .replace(
+              / /g,
+              "-",
+            )}?band=${filteredAlbum.original_band?.toLowerCase().trim().replace(/ /g, "-")}`}
+          className="flex min-h-[82px] items-center gap-3 rounded-md border-2 p-3 hover:bg-[#f8f8f9]"
         >
           <div className="min-w-[30px] md:min-w-[40px]">
             <MdHistory className="h-full w-full" />

@@ -48,11 +48,11 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
   ];
 
   return (
-    <div className="flex min-w-fit gap-3">
+    <div className="flex min-w-fit gap-2">
       <Select
         instanceId={"keys"}
         options={objectOfKeys}
-        placeholder={<GiGClef />}
+        placeholder={<GiGClef className="text-sm md:text-base lg:text-lg" />}
         isClearable={true}
         aria-label="Select key"
         theme={(theme) => ({
@@ -72,7 +72,7 @@ const SearchFilterTags: React.FC<SearchFilterTagsProps> = ({
       <Select
         instanceId={"languages"}
         options={languages}
-        placeholder={<GrLanguage />}
+        placeholder={<GrLanguage className="text-sm md:text-base lg:text-lg" />}
         isClearable={true}
         aria-label="Select language"
         theme={(theme) => ({

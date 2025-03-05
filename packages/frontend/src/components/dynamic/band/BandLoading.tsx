@@ -4,16 +4,16 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const BandLoading = () => {
   return (
-    <div className="flex flex-col gap-5 p-5 pb-[70px] md:pb-5">
+    <div className="flex flex-col gap-3 p-3 pb-[70px] md:pb-5">
       <div className="flex h-[35px] items-center gap-2 rounded-lg border-2 px-3 text-sm text-neutral-500">
         <div className="h-[40%] w-[40px] overflow-hidden rounded">
           <Skeleton height={"100%"} />
         </div>
       </div>
-      <div className="flex flex-col gap-5 md:flex-row">
-        <div className="flex flex-col gap-5">
-          <div className="flex h-fit flex-col gap-5 rounded-lg border-2 p-5 md:min-w-[204px] md:flex-col lg:min-w-[294px]">
-            <div className="flex gap-5 md:flex-col">
+      <div className="flex flex-col gap-3 md:flex-row">
+        <div className="flex flex-col gap-3">
+          <div className="flex h-fit flex-col gap-3 rounded-lg border-2 p-3 md:min-w-[204px] md:flex-col lg:min-w-[294px]">
+            <div className="flex gap-3 md:flex-col">
               <div className="h-[100px] w-[100px] md:h-[200px] md:w-full lg:h-[250px]">
                 <Skeleton height={"100%"} />
               </div>
@@ -36,7 +36,7 @@ const BandLoading = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-3 rounded-lg border-2 p-5">
+          <div className="flex flex-col gap-3 rounded-lg border-2 p-3">
             <h1 className="font-semibold">Songs Without Albums</h1>
             <div className="h-[10px] w-[100px] overflow-hidden">
               <Skeleton />
@@ -49,14 +49,14 @@ const BandLoading = () => {
             </div>
           </div>
         </div>
-        <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {Array(4)
             .fill(null)
             .map((_, i) => {
               return (
                 <div
                   key={i}
-                  className="flex h-fit flex-col gap-5 truncate rounded-lg border-2 p-5"
+                  className="flex h-fit flex-col gap-3 truncate rounded-lg border-2 p-3"
                 >
                   <div className="h-[230px] w-full">
                     <Skeleton height={"100%"} />

@@ -21,12 +21,14 @@ const Album = () => {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (router.query.album) {
-      console.log(router.query.album);
+    if (router.query.album && router.query.band) {
       void (async () => {
-        await fetch(`/api/album?album=${router.query.album?.toString()}`, {
-          method: "GET",
-        })
+        await fetch(
+          `/api/album?album=${router.query.album?.toString()}&band=${router.query.band?.toString()}`,
+          {
+            method: "GET",
+          },
+        )
           .then(async (res) => {
             await res
               .json()
@@ -46,7 +48,7 @@ const Album = () => {
           .catch((err) => console.error(err));
       })();
     }
-  }, [router.query.album]);
+  }, [router.query.album, router.query.band]);
 
   useEffect(() => {
     if (!isLoading && user && router.query.album) {
@@ -99,7 +101,7 @@ const Album = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 p-5 pb-[50px] md:pb-5">
+    <div className="flex flex-col gap-3 p-3">
       <Head>
         <title>{filteredSongList?.[0]?.album}</title>
         <meta name="keywords" content={`${filteredSongList?.[0]?.album}`} />
@@ -111,7 +113,7 @@ const Album = () => {
           filteredSongList ? filteredSongList[0]?.original_band : "Band"
         }
       />
-      <div className="block gap-5 md:flex">
+      <div className="block gap-3 md:flex">
         <AlbumDetails
           albumCoverImages={albumCoverImages}
           filteredSongList={filteredSongList}

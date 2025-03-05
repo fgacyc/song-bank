@@ -1,26 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "@/components/index/SearchBar";
 import type { Tag, Song, Sequencer } from "@prisma/client";
 import SearchFilterTags from "@/components/index/SearchFilterTags";
 import SearchBand from "@/components/index/SearchBand";
-import SearchAlbum from "@/components/index/SearchAlbum";
 import SearchSongList from "@/components/index/SearchSongList";
 import SearchAlbumList from "@/components/index/SearchAlbumList";
 import SearchLoading from "@/components/index/SearchLoading";
 import Image from "next/image";
 import Footer from "@/components/layout/Footer";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { useDebounce } from "@uidotdev/usehooks";
 
 export type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
-  const [songList, setSongList] = useState<SongType[]>([]);
   const [filteredSongList, setFilteredSongList] = useState<SongType[]>([]);
-  const [showBand, setShowBand] = useState<boolean | undefined>(false);
-  const [showAlbum, setShowAlbum] = useState<boolean | undefined>(false);
-  const [channelProfile, setChannelProfile] = useState("");
   const [searchString, setSearchString] = useState("");
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
@@ -30,6 +26,13 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [cursorStack, setCursorStack] = useState<string[]>([""]); // Stack to store cursors for previous pages
+  const [results, setResults] = useState<{
+    song: boolean;
+    band: boolean;
+    album: boolean;
+  }>({ song: false, band: false, album: false });
+
+  const debouncedSearchString = useDebounce(searchString, 500);
 
   useEffect(() => setMounted(true), []);
 
@@ -52,7 +55,8 @@ const Home = () => {
 
       // Only add params that have values
       if (cursor) queryParams.set("cursor", cursor);
-      if (searchString) queryParams.set("search", searchString);
+      if (debouncedSearchString)
+        queryParams.set("search", debouncedSearchString);
       if (selectedKey) queryParams.set("key", selectedKey);
       if (selectedLanguage) queryParams.set("language", selectedLanguage);
 
@@ -60,13 +64,16 @@ const Home = () => {
       const { items, hasMore }: { items: SongType[]; hasMore: boolean } =
         await res.json();
 
-      setSongList(items);
       setFilteredSongList(items);
       setHasNextPage(hasMore);
-
+      setResults((prev) => ({
+        ...prev,
+        song: items.length > 0,
+      }));
       if (items.length > 0) {
         const lastItem = items[items.length - 1];
         setnextCursor(lastItem?.id ?? "");
+
         if (!cursor) {
           setCursorStack([""]); // Reset stack for new search
         } else {
@@ -79,7 +86,7 @@ const Home = () => {
       }
     } catch (err) {
       console.error(err);
-      setSongList([]);
+
       setFilteredSongList([]);
     } finally {
       setIsLoading(false);
@@ -94,7 +101,7 @@ const Home = () => {
       void fetchSongs(); // Fetch without cursor when filters change
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedKey, selectedLanguage, searchString]);
+  }, [selectedKey, selectedLanguage, debouncedSearchString]);
 
   // Pagination handlers
   const goToNextPage = async () => {
@@ -111,73 +118,6 @@ const Home = () => {
     await fetchSongs(previousCursor);
   };
 
-  useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_DATA_API;
-
-    const getYoutubeVideoId = (youtubeUrl: string | null | undefined) => {
-      const regex =
-        /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
-      const match = youtubeUrl?.match(regex);
-      return match ? match[1] : null;
-    };
-
-    if (showBand) {
-      void (async () => {
-        const videoId = getYoutubeVideoId(
-          filteredSongList[0]?.original_youtube_url,
-        );
-        await fetch(
-          `https://youtube.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`,
-          { method: "GET" },
-        ).then(async (res) => {
-          await res.json().then((result) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-            const channelId = result?.items?.[0]?.snippet?.channelId;
-            if (channelId) {
-              void (async () => {
-                await fetch(
-                  `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${apiKey}`,
-                  { method: "GET" },
-                ).then(async (res) => {
-                  await res.json().then((result) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    const channelProfile: string =
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                      result.items[0]?.snippet.thumbnails.high.url;
-                    setChannelProfile(channelProfile);
-                    setIsLoading(false);
-                  });
-                });
-              })();
-            }
-          });
-        });
-      })();
-    }
-  }, [filteredSongList, showBand]);
-
-  useMemo(() => {
-    const showBand =
-      searchString.trim() !== "" &&
-      songList[0]?.original_band
-        ?.toLowerCase()
-        .replace(/ /g, "")
-        .includes(searchString.toLowerCase().replace(/ /g, "")) &&
-      songList.every(
-        (items, _, array) => items.original_band === array[0]?.original_band,
-      );
-    setShowBand(showBand);
-
-    const showAlbum =
-      searchString.trim() !== "" &&
-      songList[0]?.album
-        ?.toLowerCase()
-        .replace(/ /g, "")
-        .includes(searchString.toLowerCase().replace(/ /g, "")) &&
-      songList.every((items, _, array) => items.album === array[0]?.album);
-    setShowAlbum(showAlbum);
-  }, [songList, searchString]);
-
   const getYoutubeVideoId = (youtubeUrl: string) => {
     const regex =
       /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
@@ -188,7 +128,7 @@ const Home = () => {
   return (
     <section className="relative z-0 flex w-full flex-col pb-[50px]">
       <div className="sticky top-[50px] z-10 flex justify-between border-b bg-white p-3 md:top-[70px] md:px-3">
-        <div className="z-20 flex items-center justify-between gap-4">
+        <div className="z-20 flex items-center justify-between gap-2">
           <SearchBar
             searchString={searchString}
             setSearchString={setSearchString}
@@ -243,29 +183,26 @@ const Home = () => {
       {isLoading ? (
         <SearchLoading />
       ) : (
-        <div className="flex p-3">
+        <div className="flex flex-col gap-3 p-3 md:flex-row">
           <div className="flex w-full flex-col gap-1.5 md:gap-3">
             <SearchBand
-              showBand={showBand}
-              searchString={searchString}
-              songList={songList}
-              filteredSongList={filteredSongList}
-              channelProfile={channelProfile}
+              setResults={setResults}
+              searchString={debouncedSearchString}
             />
-            <SearchAlbum
+            {/* <SearchAlbum
               showAlbum={showAlbum}
-              searchString={searchString}
+              searchString={debouncedSearchString}
               songList={songList}
               filteredSongList={filteredSongList}
-            />
+            /> */}
             <SearchSongList
               filteredSongList={filteredSongList}
               getYoutubeVideoId={getYoutubeVideoId}
-              searchString={searchString}
+              searchString={debouncedSearchString}
             />
 
-            {filteredSongList.length == 0 && (
-              <div className="flex h-[75dvh] flex-col items-center justify-center gap-5">
+            {!results.song && !results.band && !results.album && (
+              <div className="flex h-[75dvh] flex-col items-center justify-center gap-3">
                 <Image
                   src={"/no-search-result.svg"}
                   alt="no search result"
@@ -277,10 +214,8 @@ const Home = () => {
             )}
           </div>
           <SearchAlbumList
-            showBand={showBand}
-            searchString={searchString}
-            songList={songList}
-            filteredSongList={filteredSongList}
+            searchString={debouncedSearchString}
+            setResults={setResults}
           />
         </div>
       )}

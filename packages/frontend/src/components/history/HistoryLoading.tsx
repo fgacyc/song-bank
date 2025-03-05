@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const LoadingList = () => {
   return (
-    <div className="flex min-h-[82px] items-center gap-5 truncate rounded-md border-2 px-5 hover:bg-[#fafafb]">
+    <div className="flex min-h-[82px] items-center gap-3 truncate rounded-md border-2 px-5 hover:bg-[#fafafb]">
       <div className="h-[40px] w-[40px] overflow-hidden rounded-full">
         <Skeleton height={"100%"} />
       </div>

@@ -97,7 +97,7 @@ const Favourite = () => {
           setCount={setCount}
         />
       ) : (
-        <div className="flex h-[90dvh] flex-col items-center justify-center gap-5">
+        <div className="flex h-[90dvh] flex-col items-center justify-center gap-3">
           <Image
             src={"/no-favourite-song.svg"}
             alt="no favourite song"

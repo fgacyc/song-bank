@@ -19,9 +19,9 @@ const BandDetails: React.FC<BandDetailsProps> = ({
 }) => {
   return (
     <div className="rounded-lg border-2 p-3">
-      <div className="flex items-center justify-start gap-5 truncate pb-3 md:flex-col md:items-start">
+      <div className="flex items-center justify-start gap-3 truncate pb-3 md:flex-col md:items-start">
         {channelProfile ? (
-          <div className="flex w-full justify-center p-3">
+          <div className="flex justify-center p-3 md:w-full">
             <div className="relative min-h-[80px] min-w-[80px] md:min-h-[125px] md:min-w-[125px]">
               <Image
                 src={channelProfile}

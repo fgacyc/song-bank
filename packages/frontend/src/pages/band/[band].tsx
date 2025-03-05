@@ -163,7 +163,7 @@ const Band = () => {
           original_band={filteredSongList[0]?.original_band ?? ""}
         />
         <div className="flex flex-col gap-3 md:flex-row">
-          <div className="sticky top-[82px] flex h-fit flex-col gap-3">
+          <div className="flex h-fit flex-col gap-3 md:sticky md:top-[82px]">
             <BandDetails
               channelProfile={channelProfile}
               router={router}
@@ -175,6 +175,7 @@ const Band = () => {
             />
           </div>
           <BandAlbumList
+            band={filteredSongList[0]?.original_band ?? ""}
             uniqueAlbumList={uniqueAlbumList}
             filteredSongListWithAlbum={filteredSongListWithAlbum}
             getYoutubeVideoId={getYoutubeVideoId}

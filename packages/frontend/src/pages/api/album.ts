@@ -7,11 +7,22 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "GET") {
-    const { album } = req.query;
+    const { album, band } = req.query;
+    const albumQuery = String(album).replaceAll("-", " ");
+    const bandQuery = String(band).replaceAll("-", " ");
     try {
       const songs = await db.song.findMany({
         where: {
-          album: album as string,
+          AND: {
+            album: {
+              contains: albumQuery,
+              mode: "insensitive",
+            },
+            original_band: {
+              contains: bandQuery,
+              mode: "insensitive",
+            },
+          },
         },
       });
       return res.status(200).json(songs);

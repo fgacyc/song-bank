@@ -117,7 +117,10 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
                 href={`/album/${items?.album
                   .toLowerCase()
                   .trim()
-                  .replace(/ /g, "-")}`}
+                  .replace(
+                    / /g,
+                    "-",
+                  )}?band=${items?.original_band?.toLowerCase().trim().replace(/ /g, "-")}`}
                 className="w-fit text-sm text-neutral-500 underline md:no-underline md:hover:underline"
               >
                 {items.album}

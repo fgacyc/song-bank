@@ -30,7 +30,7 @@ const SongLyrics: React.FC<SongLyricsProps> = ({
   chordLyrics,
 }) => {
   return (
-    <div className="rounded-lg border-2 p-5">
+    <div className="rounded-lg border-2 p-3">
       <div
         ref={chordLyricsRef}
         className="whitespace-pre-line text-pretty text-neutral-500"

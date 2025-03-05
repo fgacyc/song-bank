@@ -16,14 +16,14 @@ const Header = () => {
 
   return (
     <nav
-      className="sticky top-0 z-20 flex h-[50px] w-full items-center justify-between border bg-white p-[10px] px-5 md:h-[70px]"
+      className="sticky top-0 z-20 flex h-[50px] w-full items-center justify-between border bg-white p-[10px] px-3 md:h-[70px]"
       // onClick={() => {
       //   setShowProfile(false);
       // }}
     >
       <Link href={"/"} className="flex items-center justify-center">
         <Image src={"/logo.png"} alt="logo" width={30} height={30} />
-        <h1 className="text truncate ps-5 font-semibold">FGA Worship</h1>
+        <h1 className="text truncate pl-2 font-semibold">FGA Worship</h1>
       </Link>
       {/* <button
         className="hidden p-1 md:block"
