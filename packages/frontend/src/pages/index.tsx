@@ -187,7 +187,7 @@ const Home = () => {
 
   return (
     <section className="relative z-0 flex w-full flex-col pb-[50px]">
-      <div className="sticky top-[50px] z-10 justify-between border-b bg-white p-3 md:top-[70px] md:flex md:flex md:px-3 lg:flex">
+      <div className="sticky top-[50px] z-10 flex justify-between border-b bg-white p-3 md:top-[70px] md:px-3">
         <div className="z-20 flex items-center justify-between gap-4">
           <SearchBar
             searchString={searchString}
@@ -259,8 +259,6 @@ const Home = () => {
               filteredSongList={filteredSongList}
             />
             <SearchSongList
-              showBand={showBand}
-              showAlbum={showAlbum}
               filteredSongList={filteredSongList}
               getYoutubeVideoId={getYoutubeVideoId}
               searchString={searchString}

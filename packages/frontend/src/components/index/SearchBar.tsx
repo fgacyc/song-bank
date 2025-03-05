@@ -8,7 +8,6 @@ import {
 import { RiSearch2Line } from "react-icons/ri";
 import { Form, Formik, type FormikProps, useFormikContext } from "formik";
 import { AiOutlineClose } from "react-icons/ai";
-
 interface InputProps {
   setSearchString: Dispatch<SetStateAction<string>>;
   inputRef: MutableRefObject<HTMLInputElement | null>;
@@ -56,7 +55,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
-    <div className="flex h-[38px] w-full items-center justify-between rounded-md border md:w-fit md:w-fit md:justify-evenly md:justify-evenly lg:w-fit lg:justify-evenly">
+    <div className="flex h-[38px] w-full items-center justify-between rounded-md border border-[rgb(204,204,204)]">
       <Formik<SearchBarForm>
         initialValues={{
           searchString: searchString ?? "",
@@ -68,7 +67,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onSubmit={async () => null}
       >
         {({ resetForm }) => (
-          <Form className="flex w-full items-center justify-between">
+          <Form className="relative flex w-full items-center justify-between">
             <Input setSearchString={setSearchString} inputRef={inputRef} />
             <button
               type="button"
