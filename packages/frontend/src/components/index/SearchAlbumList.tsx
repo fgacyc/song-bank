@@ -39,7 +39,9 @@ const SearchAlbumList: React.FC<SearchAlbumListProps> = ({
                 }));
                 if (result && result.length > 0) {
                   setFilteredSongList(
-                    result.filter((song) => song.album === result[0].album),
+                    result.filter(
+                      (song) => song?.album && song.album === result[0]?.album,
+                    ),
                   );
                 }
                 setLoading(false);
