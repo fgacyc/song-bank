@@ -18,11 +18,11 @@ const BandDetails: React.FC<BandDetailsProps> = ({
   uniqueAlbumList,
 }) => {
   return (
-    <div className="h-fit w-full rounded-lg border-2 p-5">
-      <div className="flex w-full items-center justify-start gap-5 truncate pb-5 md:flex-col md:items-start">
+    <div className="rounded-lg border-2 p-3">
+      <div className="flex items-center justify-start gap-5 truncate pb-3 md:flex-col md:items-start">
         {channelProfile ? (
-          <div className="flex justify-center md:w-full">
-            <div className="relative min-h-[100px] min-w-[100px] md:min-h-[150px] md:min-w-[150px] lg:min-h-[250px] lg:min-w-[250px]">
+          <div className="flex w-full justify-center p-3">
+            <div className="relative min-h-[80px] min-w-[80px] md:min-h-[125px] md:min-w-[125px]">
               <Image
                 src={channelProfile}
                 alt={router.query.band as string}
@@ -34,13 +34,13 @@ const BandDetails: React.FC<BandDetailsProps> = ({
             </div>
           </div>
         ) : (
-          <div className="flex min-h-[100px] min-w-[100px] items-center justify-center rounded-full border md:h-[150px] md:w-[150px] lg:h-[250px] lg:w-[250px]">
+          <div className="flex min-h-[80px] min-w-[80px] items-center justify-center rounded-full border md:h-[125px] md:w-[125px]">
             <MdImageNotSupported />
           </div>
         )}
         <div className="text-wrap">
-          <h1 className="pl-1 text-sm text-neutral-500">Band</h1>
-          <p className="w-full text-3xl font-semibold">
+          <h1 className="text-sm text-neutral-500">Band</h1>
+          <p className="text-lg font-semibold">
             {filteredSongList[0]?.original_band}
           </p>
         </div>
@@ -48,11 +48,11 @@ const BandDetails: React.FC<BandDetailsProps> = ({
 
       <hr />
       <div className="flex flex-col pb-3 pt-4">
-        <h1 className="font-semibold">Total Songs</h1>
+        <h1 className="text-sm font-semibold">Total Songs</h1>
         <p className="text-sm text-neutral-500">{filteredSongList.length}</p>
       </div>
       <div className="flex flex-col">
-        <h1 className="font-semibold">Total Albums</h1>
+        <h1 className="text-sm font-semibold">Total Albums</h1>
         <p className="text-sm text-neutral-500">{uniqueAlbumList.length}</p>
       </div>
     </div>

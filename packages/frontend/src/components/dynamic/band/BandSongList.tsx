@@ -12,7 +12,7 @@ const BandSongList: React.FC<BandSongListProps> = ({
   return (
     <>
       {filteredSongListWithoutAlbum.length > 0 && (
-        <div className="flex flex-col gap-1 truncate rounded-lg border-2 p-5">
+        <div className="flex flex-col gap-3 truncate rounded-lg border-2 p-3">
           <h1 className="font-semibold">Songs Without Album</h1>
           {filteredSongListWithoutAlbum.map((items, i) => {
             return (

@@ -140,21 +140,18 @@ const DynamicSong = () => {
         <meta name="keywords" content={`${filteredSong?.name}`} />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <div className="flex w-full flex-col gap-2 p-3">
+      <div className="flex w-full flex-col gap-3 p-3">
         <SongBreadcrumb
           name={String(filteredSong?.name)}
           album={String(filteredSong?.album)}
           original_band={String(filteredSong?.original_band)}
         />
-        <div className="flex flex-col gap-5 pb-5 md:flex-row">
-          <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-3 pb-3 md:flex-row">
+          <div className="relative flex flex-col gap-3">
             <SongDetails embedUrl={embedUrl} items={filteredSong} />
             <SongAssets song={filteredSong} />
           </div>
-          <div className="flex w-full flex-col gap-5">
-            <h1 className="hidden rounded-lg border-2 px-5 py-3 text-4xl font-semibold md:block">
-              {filteredSong?.name}
-            </h1>
+          <div className="flex w-full flex-col gap-3">
             <SongKeyTransposition
               originalKey={filteredSong?.original_key}
               selectedKey={selectedKey}

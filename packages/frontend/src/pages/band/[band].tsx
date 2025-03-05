@@ -158,12 +158,12 @@ const Band = () => {
         />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <div className="flex flex-col gap-5 p-5 pb-[70px] md:pb-5">
+      <div className="relative flex flex-col gap-3 p-3">
         <BandBreadcrumb
           original_band={filteredSongList[0]?.original_band ?? ""}
         />
-        <div className="flex flex-col gap-5 md:flex-row">
-          <div className="flex w-full flex-col gap-5 md:w-fit">
+        <div className="flex flex-col gap-3 md:flex-row">
+          <div className="sticky top-[82px] flex h-fit flex-col gap-3">
             <BandDetails
               channelProfile={channelProfile}
               router={router}

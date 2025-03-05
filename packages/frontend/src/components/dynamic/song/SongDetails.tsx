@@ -6,7 +6,6 @@ import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { type UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/router";
-import { getContrastTextColor } from "@/utils/color";
 
 interface SongDetailsProps {
   embedUrl: string;
@@ -88,7 +87,7 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-lg border-2 p-3">
+    <div className="relative flex flex-col rounded-lg border-2 p-3 md:sticky md:top-[82px]">
       <div className="w-full md:w-[200px] lg:w-[300px]">
         {embedUrl !== "" && (
           <div className="h-[185px] pb-2">
@@ -147,15 +146,14 @@ const SongDetails: React.FC<SongDetailsProps> = ({ embedUrl, items }) => {
           {items?.tags && items.tags.length > 0 && (
             <div className="flex w-full flex-col gap-2">
               <h1 className="font-semibold">Others</h1>
-              <div className="flex w-full flex-row gap-1.5 overflow-x-auto pb-0 text-sm text-neutral-500">
+              <div className="flex w-full flex-row gap-1.5 overflow-x-auto pb-0 text-xs text-neutral-500">
                 {items.tags.map((tag) => {
                   return (
                     <div
                       key={tag.id}
                       className="whitespace-nowrap rounded px-2 py-1 brightness-90"
                       style={{
-                        backgroundColor: `${tag.color}`,
-                        color: getContrastTextColor(tag.color),
+                        border: `1px solid ${tag.color}`,
                       }}
                     >
                       {tag.content}

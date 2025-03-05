@@ -8,12 +8,17 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const { band } = req.query;
+    const query = String(band).replaceAll("-", " ");
     try {
       const songs = await db.song.findMany({
         where: {
-          original_band: band as string,
+          original_band: {
+            contains: query,
+            mode: "insensitive",
+          },
         },
       });
+      console.log(songs);
       return res.status(200).json(songs);
     } catch (error) {
       return res.status(500).json({ error: error });

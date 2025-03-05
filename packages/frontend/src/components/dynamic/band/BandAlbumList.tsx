@@ -17,7 +17,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
   getYoutubeVideoId,
 }) => {
   return (
-    <div className="grid h-fit w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid h-fit w-full gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {uniqueAlbumList.map((album, i) => {
         const songsInAlbum = filteredSongListWithAlbum.filter(
           (items) => items.album === album,
@@ -40,7 +40,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
           <Link
             key={i}
             href={`/album/${album?.toLowerCase().trim().replace(/ /g, "-")}`}
-            className="flex flex-col items-center overflow-hidden rounded-lg border-2 p-5 hover:bg-[#f8f8f9] hover:shadow-md"
+            className="flex flex-col items-center overflow-hidden rounded-lg border-2 p-3 hover:bg-[#f8f8f9] hover:shadow-md"
           >
             <div
               className={`grid ${gridCol} min-h-[250px] w-full gap-[1px] overflow-hidden rounded`}
