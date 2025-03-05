@@ -41,7 +41,8 @@ const SearchBand: React.FC<SearchBandProps> = ({
                 if (result && result.length > 0) {
                   setFilteredSongList(
                     result.filter(
-                      (song) => song.original_band === result[0].original_band,
+                      (song) =>
+                        song?.original_band === result[0]?.original_band,
                     ),
                   );
                 }
