@@ -34,7 +34,7 @@ const AlbumSongList: React.FC<AlbumSongListProps> = ({
               <div
                 className={`${
                   thumbnailUrl === "" && "rounded-md border-2"
-                } relative w-[100px] min-w-[100px] sm:h-[100px] sm:w-[200px] sm:min-w-[200px] md:h-[105px] md:w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]`}
+                } relative w-[100px] min-w-[100px] md:h-[100px] md:h-[105px] md:w-[200px] md:w-[200px] md:min-w-[200px] md:min-w-[200px] lg:h-[150px] lg:w-full lg:min-w-full xl:h-[105px] xl:w-[200px] xl:min-w-[200px]`}
               >
                 <Image
                   src={

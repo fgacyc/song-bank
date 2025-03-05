@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const BandLoading = () => {
   return (
-    <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
+    <div className="flex flex-col gap-5 p-5 pb-[70px] md:pb-5">
       <div className="flex h-[35px] items-center gap-2 rounded-lg border-2 px-3 text-sm text-neutral-500">
         <div className="h-[40%] w-[40px] overflow-hidden rounded">
           <Skeleton height={"100%"} />
@@ -49,7 +49,7 @@ const BandLoading = () => {
             </div>
           </div>
         </div>
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {Array(4)
             .fill(null)
             .map((_, i) => {

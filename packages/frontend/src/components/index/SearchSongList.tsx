@@ -24,7 +24,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   return (
     <>
       {searchString.trim() !== "" && filteredSongList.length !== 0 && (
-        <div className="flex items-center gap-1 truncate py-3 pl-3 text-lg font-semibold sm:py-0 sm:pl-1">
+        <div className="flex items-center gap-1 truncate py-3 pl-3 text-lg font-semibold md:py-0 md:pl-1">
           {(showBand! || showAlbum) && (
             <>
               <h1>
@@ -53,86 +53,62 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
           <Link
             key={items.id}
             href={`/song/${items.id}`}
-            className="flex flex-col overflow-hidden rounded-md pb-3 hover:bg-[#f8f8f9] hover:shadow-md sm:flex-row sm:rounded-lg sm:border-2 sm:p-3"
+            className="flex w-full flex-col overflow-hidden rounded-md pb-3 hover:bg-[#f8f8f9] hover:shadow-md md:flex-row md:rounded-lg md:border-2 md:p-3"
           >
             <div
               className={`${
-                thumbnailUrl === "" && "border-2"
-              } relative h-[30dvh] w-full overflow-hidden sm:h-[140px] sm:w-[250px] sm:min-w-[250px] sm:rounded md:h-[165px] md:w-[300px] md:min-w-[300px]`}
+                thumbnailUrl === "" ? "border-2" : ""
+              } aspect-video h-full w-full overflow-hidden bg-black md:max-w-[210px] md:rounded lg:max-w-[300px]`}
             >
-              <Image
+              {/* <Image
                 src={thumbnailUrl !== "" ? thumbnailUrl : "/no-song-cover.svg"}
                 alt={items.name!}
                 fill={true}
                 priority={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className={
-                  thumbnailUrl !== ""
-                    ? "object-cover"
-                    : "absolute bottom-0 left-0 right-0 top-0 m-auto max-h-[80%] max-w-[80%]"
-                }
+                className="h-full w-full"
+              /> */}
+              <img
+                src={thumbnailUrl ?? "/no-song-cover.svg"}
+                alt={items.name!}
+                className="h-full w-full object-cover"
               />
             </div>
-            <div className="flex flex-col rounded-b-md border-x border-b px-3 py-2">
-              <div className="flex flex-row items-center justify-between">
-                <h1 className="truncate text-start text-lg font-semibold md:text-xl">
-                  {items.name}{" "}
-                  {items.alt_name && items.alt_name !== "-" && (
-                    <span className="font-thin">{items.alt_name}</span>
+            <div className="flex w-full flex-col justify-between rounded-b-md border-x border-b py-2 pl-3 pr-3 md:border-none md:pr-0">
+              <div className="flex w-full flex-col gap-0.5">
+                <div className="flex w-full flex-row items-center justify-between">
+                  <h1 className="max-w-[80%] truncate text-start text-lg font-semibold md:text-xl">
+                    {items.name}{" "}
+                    {items.alt_name && items.alt_name !== "-" && (
+                      <span className="font-thin">{items.alt_name}</span>
+                    )}
+                  </h1>
+                  {items.original_key && (
+                    <div className="flex flex-row items-center rounded-md border border-black px-2 py-1 text-[10px]">
+                      <p>{items.original_key}</p>
+                    </div>
                   )}
-                </h1>
-                {items.original_key && (
-                  <div className="flex flex-row items-center rounded-md border border-black px-2 py-1 text-[10px]">
-                    <p>{items.original_key}</p>
-                  </div>
-                )}
-              </div>
-              <div className="flex w-full flex-col text-start text-xs">
+                </div>
                 {items.original_band && (
-                  <button
-                    className="text-left italic text-gray-400 underline lg:font-semibold"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      void router.push(
-                        `/band/${items
-                          .original_band!.toLowerCase()
-                          .trim()
-                          .replace(/ /g, "-")}`,
-                      );
-                    }}
-                  >
+                  <button className="text-left text-xs italic text-gray-400">
                     {items.original_band}
                   </button>
                 )}
 
                 {items.album && items.album.trim() !== "-" && (
-                  <button
-                    className="text-left italic text-gray-400 underline lg:font-semibold"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      void router.push(
-                        `/album/${items.album
-                          ?.toLowerCase()
-                          .trim()
-                          .replace(/ /g, "-")}`,
-                      );
-                    }}
-                  >
+                  <button className="text-left text-xs italic text-gray-400">
                     {items.album}
                   </button>
                 )}
-
-                {/* {items.original_key && <p>Key of {items.original_key}</p>} */}
-
+              </div>
+              <div className="flex w-full flex-col text-start text-xs">
                 {items.tags.length > 0 && (
                   <div className="flex gap-1.5 pt-3">
                     {items.tags.map((tag, i) => {
                       return (
                         <div
                           key={i}
-                          className="rounded border px-1 brightness-90"
+                          className="rounded border px-2 py-0.5 brightness-90"
                           style={{
                             borderColor: tag.color,
                             color: tag.color,

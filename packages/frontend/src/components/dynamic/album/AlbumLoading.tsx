@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const AlbumLoading = () => {
   return (
-    <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
+    <div className="flex flex-col gap-5 p-5 pb-[70px] md:pb-5">
       <div className="flex h-[35px] items-center gap-2 rounded-lg border-2 px-3 text-sm text-neutral-500">
         <div className="h-[40%] w-[40px] overflow-hidden rounded">
           <Skeleton height={"100%"} />
@@ -50,13 +50,13 @@ const AlbumLoading = () => {
                     <Skeleton height={"100%"} />
                   </div>
                   <div className="flex flex-col gap-3">
-                    <div className="h-[20px] w-[120px] sm:w-[200px]">
+                    <div className="h-[20px] w-[120px] md:w-[200px]">
                       <Skeleton height={"100%"} />
                     </div>
-                    <div className="h-[15px] w-[100px] sm:w-[120px]">
+                    <div className="h-[15px] w-[100px] md:w-[120px]">
                       <Skeleton height={"100%"} />
                     </div>
-                    <div className="h-[15px] w-[60px] sm:w-[140px]">
+                    <div className="h-[15px] w-[60px] md:w-[140px]">
                       <Skeleton height={"100%"} />
                     </div>
                     <div className="hidden h-[15px] w-[100px] xl:block">

@@ -9,7 +9,7 @@ const LoadingList = () => {
         <Skeleton height={"100%"} />
       </div>
       <div className="pb-2">
-        <div className="h-[20px] w-[100px] sm:w-[120px]">
+        <div className="h-[20px] w-[100px] md:w-[120px]">
           <Skeleton height={"100%"} />
         </div>
         <div className="h-[10px] w-[80px]">
@@ -22,7 +22,7 @@ const LoadingList = () => {
 
 const HistoryLoading = () => {
   return (
-    <div className="px-3 pb-[62px] pt-[58px] sm:pb-3">
+    <div className="px-3 pb-[62px] pt-[58px] md:pb-3">
       <Skeleton height={12} width={70} />
       <div className="flex flex-col gap-3 pt-1">
         {Array(10)

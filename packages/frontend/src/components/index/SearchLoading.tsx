@@ -4,8 +4,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const LoadingList = () => {
   return (
-    <div className="flex flex-col gap-3 truncate border-b p-3 hover:bg-[#fafafb] sm:flex-row sm:rounded-lg sm:border-2">
-      <div className="relative h-[30dvh] w-full overflow-hidden sm:h-[110px] sm:w-[200px] sm:min-w-[200px] sm:rounded md:h-[140px] md:w-[250px] md:min-w-[250px] lg:h-[165px] lg:w-[300px] lg:min-w-[300px]">
+    <div className="flex flex-col gap-3 truncate border-b p-3 hover:bg-[#fafafb] md:flex-row md:rounded-lg md:border-2">
+      <div className="relative h-[30dvh] w-full overflow-hidden md:h-[110px] md:h-[140px] md:w-[200px] md:w-[250px] md:min-w-[200px] md:min-w-[250px] md:rounded lg:h-[165px] lg:w-[300px] lg:min-w-[300px]">
         <Skeleton height={"100%"} />
       </div>
       <div className="flex flex-col gap-3">

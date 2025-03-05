@@ -16,7 +16,7 @@ const SongLoading = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-3 p-3 pb-[70px] sm:pb-3">
+    <div className="flex flex-col gap-3 p-3 pb-[70px] md:pb-3">
       <div className="flex h-[35px] items-center gap-2 rounded-lg border-2 px-3 text-sm text-neutral-500">
         <div className="h-[40%] w-[40px] overflow-hidden rounded">
           <Skeleton height={"100%"} />
@@ -72,7 +72,7 @@ const SongLoading = () => {
           </div>
           <div className="rounded-lg border-2 p-5">
             <h1 className="pb-4 font-semibold">Transpose Key</h1>
-            <div className="grid grid-cols-6 gap-4 sm:grid-cols-12 md:grid-cols-6 lg:grid-cols-12">
+            <div className="grid grid-cols-6 gap-4 md:grid-cols-12 md:grid-cols-6 lg:grid-cols-12">
               {keys.map((key, i) => {
                 return (
                   <button key={i} className="h-[35px] rounded border text-sm">

@@ -19,7 +19,7 @@ export default function ActionSheetButtons() {
     <div
       className={`absolute right-2 top-2 flex w-[80px] flex-row 
                 justify-around rounded-full border border-gray-200 
-                bg-white p-1 shadow-sm sm:hidden  ${!showMenu && "z-10"}
+                bg-white p-1 shadow-sm md:hidden  ${!showMenu && "z-10"}
                 `}
     >
       <GoKebabHorizontal

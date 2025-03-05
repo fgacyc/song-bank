@@ -99,7 +99,7 @@ const Album = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 p-5 pb-[50px] sm:pb-5">
+    <div className="flex flex-col gap-5 p-5 pb-[50px] md:pb-5">
       <Head>
         <title>{filteredSongList?.[0]?.album}</title>
         <meta name="keywords" content={`${filteredSongList?.[0]?.album}`} />

@@ -16,7 +16,7 @@ const Header = () => {
 
   return (
     <nav
-      className="sticky top-0 z-20 flex h-[50px] w-full items-center justify-between border bg-white p-[10px] px-5 sm:h-[70px]"
+      className="sticky top-0 z-20 flex h-[50px] w-full items-center justify-between border bg-white p-[10px] px-5 md:h-[70px]"
       // onClick={() => {
       //   setShowProfile(false);
       // }}
@@ -26,7 +26,7 @@ const Header = () => {
         <h1 className="text truncate ps-5 font-semibold">FGA Worship</h1>
       </Link>
       {/* <button
-        className="hidden p-1 sm:block"
+        className="hidden p-1 md:block"
         onClick={(e) => {
           e.stopPropagation();
           if (!isLoading && user) {

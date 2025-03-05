@@ -187,7 +187,7 @@ const Home = () => {
 
   return (
     <section className="relative z-0 flex w-full flex-col pb-[50px]">
-      <div className="sticky top-[50px] z-10 justify-between border-b bg-white p-3 sm:top-[70px] sm:flex sm:px-3 md:flex lg:flex">
+      <div className="sticky top-[50px] z-10 justify-between border-b bg-white p-3 md:top-[70px] md:flex md:flex md:px-3 lg:flex">
         <div className="z-20 flex items-center justify-between gap-4">
           <SearchBar
             searchString={searchString}
@@ -201,7 +201,7 @@ const Home = () => {
           />
         </div>
         {filteredSongList.length > 0 && (
-          <div className="hidden items-center gap-2 sm:flex">
+          <div className="hidden items-center gap-2 md:flex">
             <button
               onClick={goToPreviousPage}
               disabled={currentPage <= 1 || isFetching}
@@ -244,7 +244,7 @@ const Home = () => {
         <SearchLoading />
       ) : (
         <div className="flex p-3">
-          <div className="flex w-full flex-col gap-1.5 sm:gap-3">
+          <div className="flex w-full flex-col gap-1.5 md:gap-3">
             <SearchBand
               showBand={showBand}
               searchString={searchString}

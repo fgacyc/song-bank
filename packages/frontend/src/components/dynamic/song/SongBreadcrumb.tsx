@@ -15,7 +15,7 @@ const SongBreadcrumb: React.FC<SongBreadcrumbProps> = ({
   original_band,
 }) => {
   return (
-    <div className="flex h-[35px] items-end gap-2 truncate rounded-lg border-2 px-3 text-xs sm:text-sm">
+    <div className="flex h-[35px] items-end gap-2 truncate rounded-lg border-2 px-3 text-xs md:text-sm">
       <Link
         href={`/band/${original_band.toLowerCase().replace(/ /g, "-")}`}
         className="flex h-full items-center text-neutral-500 decoration-1 hover:underline"

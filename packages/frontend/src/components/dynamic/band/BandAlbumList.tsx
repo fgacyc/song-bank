@@ -17,7 +17,7 @@ const BandAlbumList: React.FC<BandAlbumListProps> = ({
   getYoutubeVideoId,
 }) => {
   return (
-    <div className="grid h-fit w-full gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid h-fit w-full gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {uniqueAlbumList.map((album, i) => {
         const songsInAlbum = filteredSongListWithAlbum.filter(
           (items) => items.album === album,

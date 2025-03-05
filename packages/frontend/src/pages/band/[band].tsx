@@ -158,7 +158,7 @@ const Band = () => {
         />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
+      <div className="flex flex-col gap-5 p-5 pb-[70px] md:pb-5">
         <BandBreadcrumb
           original_band={filteredSongList[0]?.original_band ?? ""}
         />

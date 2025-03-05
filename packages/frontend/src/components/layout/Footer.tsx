@@ -18,9 +18,9 @@ const Footer = ({
   isLoading = false,
 }: FooterProps) => {
   return (
-    <div className="fixed bottom-0 flex h-[50px] w-full flex-row items-center justify-evenly border bg-white">
+    <div className="fixed bottom-0 flex h-[50px] w-full flex-row items-center justify-evenly border bg-white md:hidden">
       {showPagination ? (
-        <div className="flex items-center gap-2 sm:hidden">
+        <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={onPrevPage}
             disabled={currentPage <= 1 || isLoading}
