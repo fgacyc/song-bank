@@ -18,6 +18,25 @@ const Custom404: NextPageWithLayout = () => {
           alt="page not found"
           width={200}
           height={200}
+          onClick={async () => {
+            if (process.env.NODE_ENV === "development") {
+              const response = await fetch("/api/getAllSong");
+              if (response.ok) {
+                const blob = await response.blob();
+                // Only use window APIs on the client side
+                if (typeof window !== "undefined") {
+                  const url = window.URL.createObjectURL(blob);
+                  const link = document.createElement("a");
+                  link.href = url;
+                  link.download = "songs_backup.csv";
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  window.URL.revokeObjectURL(url);
+                }
+              }
+            }
+          }}
         />
         <h1 className="text-sm text-neutral-500">Page not found.</h1>
         <button

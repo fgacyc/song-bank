@@ -11,6 +11,19 @@ select:focus-within {
   width: 0px;
 }
 
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  position: fixed;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
 :root {
   --chord-diagram-font-size: 10px;
 }

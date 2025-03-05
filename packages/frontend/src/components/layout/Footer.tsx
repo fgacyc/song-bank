@@ -1,24 +1,63 @@
-import { useUser } from "@auth0/nextjs-auth0/client";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { IoPerson, IoPersonOutline } from "react-icons/io5";
-import { RiHomeFill, RiHomeLine } from "react-icons/ri";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
-const Footer = () => {
-  const { user, isLoading } = useUser();
-  const router = useRouter();
+interface FooterProps {
+  showPagination?: boolean;
+  currentPage?: number;
+  onNextPage?: () => void;
+  onPrevPage?: () => void;
+  hasNextPage?: boolean;
+  isLoading?: boolean;
+}
 
+const Footer = ({
+  showPagination = false,
+  currentPage = 1,
+  onNextPage,
+  onPrevPage,
+  hasNextPage = false,
+  isLoading = false,
+}: FooterProps) => {
   return (
-    <div className="fixed bottom-0 flex h-[50px] w-full items-center justify-evenly border bg-white sm:hidden">
-      <Link href="/" className="p-1">
-        {router.pathname === "/" ? <RiHomeFill /> : <RiHomeLine />}
-      </Link>
-      <Link
-        href={`${!isLoading && user ? "/profile" : "/api/auth/login"}`}
-        className="p-1"
-      >
-        {router.pathname === "/profile" ? <IoPerson /> : <IoPersonOutline />}
-      </Link>
+    <div className="fixed bottom-0 flex h-[50px] w-full flex-row items-center justify-evenly border bg-white">
+      {showPagination ? (
+        <div className="flex items-center gap-2 sm:hidden">
+          <button
+            onClick={onPrevPage}
+            disabled={currentPage <= 1 || isLoading}
+            className="flex items-center gap-1 p-2 disabled:cursor-not-allowed disabled:text-gray-300"
+          >
+            <IoChevronBack
+              size={20}
+              className={isLoading ? "animate-pulse" : ""}
+            />
+          </button>
+          <div className="flex items-center gap-3">
+            {currentPage > 1 ? (
+              <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-700" />
+            ) : (
+              <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-300" />
+            )}
+            <div className="flex h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-700 p-1 text-xs text-white">
+              {currentPage}
+            </div>
+            {hasNextPage ? (
+              <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-700" />
+            ) : (
+              <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-300" />
+            )}
+          </div>
+          <button
+            onClick={onNextPage}
+            disabled={!hasNextPage || isLoading}
+            className="flex items-center gap-1 p-2 disabled:cursor-not-allowed disabled:text-gray-300"
+          >
+            <IoChevronForward
+              size={20}
+              className={isLoading ? "animate-pulse" : ""}
+            />
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

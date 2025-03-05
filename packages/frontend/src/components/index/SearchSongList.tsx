@@ -42,7 +42,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
           </p>
         </div>
       )}
-      {filteredSongList.map((items, i) => {
+      {filteredSongList.map((items) => {
         let thumbnailUrl = "";
         if (items.original_youtube_url) {
           const youtubeVideoId = getYoutubeVideoId(items.original_youtube_url);
@@ -51,9 +51,9 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
 
         return (
           <Link
-            key={i}
+            key={items.id}
             href={`/song/${items.id}`}
-            className="flex flex-col gap-5 border-b pb-3 hover:bg-[#f8f8f9] hover:shadow-md sm:flex-row sm:rounded-lg sm:border-2 sm:p-3"
+            className="flex flex-col overflow-hidden rounded-md pb-3 hover:bg-[#f8f8f9] hover:shadow-md sm:flex-row sm:rounded-lg sm:border-2 sm:p-3"
           >
             <div
               className={`${
@@ -73,76 +73,61 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                 }
               />
             </div>
-            <div className="flex flex-col gap-2 truncate pb-3 pl-3 sm:pb-0 sm:pl-0">
-              <h1 className="text-start text-lg font-semibold md:text-2xl">
-                {items.name}{" "}
-                {items.alt_name && items.alt_name !== "-" && (
-                  <span className="font-thin">{items.alt_name}</span>
-                )}
-              </h1>
-              <div className="flex flex-col gap-1 text-start text-xs text-slate-500 md:text-sm">
-                <p>
-                  {items.original_band && (
-                    <>
-                      <span>
-                        By{" "}
-                        <button
-                          className="text-black underline lg:font-semibold lg:no-underline lg:hover:underline"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            void router.push(
-                              `/band/${items
-                                .original_band!.toLowerCase()
-                                .trim()
-                                .replace(/ /g, "-")}`,
-                            );
-                          }}
-                        >
-                          {items.original_band}
-                        </button>
-                      </span>{" "}
-                    </>
+            <div className="flex flex-col rounded-b-md border-x border-b px-3 py-2">
+              <div className="flex flex-row items-center justify-between">
+                <h1 className="truncate text-start text-lg font-semibold md:text-xl">
+                  {items.name}{" "}
+                  {items.alt_name && items.alt_name !== "-" && (
+                    <span className="font-thin">{items.alt_name}</span>
                   )}
+                </h1>
+                {items.original_key && (
+                  <div className="flex flex-row items-center rounded-md border border-black px-2 py-1 text-[10px]">
+                    <p>{items.original_key}</p>
+                  </div>
+                )}
+              </div>
+              <div className="flex w-full flex-col text-start text-xs">
+                {items.original_band && (
+                  <button
+                    className="text-left italic text-gray-400 underline lg:font-semibold"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      void router.push(
+                        `/band/${items
+                          .original_band!.toLowerCase()
+                          .trim()
+                          .replace(/ /g, "-")}`,
+                      );
+                    }}
+                  >
+                    {items.original_band}
+                  </button>
+                )}
 
-                  {items.album && items.album.trim() !== "-" && (
-                    <span>
-                      on album{" "}
-                      <button
-                        className="text-black underline lg:font-semibold lg:no-underline lg:hover:underline"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          void router.push(
-                            `/album/${items.album
-                              ?.toLowerCase()
-                              .trim()
-                              .replace(/ /g, "-")}`,
-                          );
-                        }}
-                      >
-                        {items.album}
-                      </button>
-                    </span>
-                  )}
-                </p>
-                {items.original_key && <p>Key of {items.original_key}</p>}
-                {items.song_language && (
-                  <p className="flex items-center gap-1">
-                    Language :
-                    <span className="flex gap-1">
-                      {items.song_language.split(" + ").map((language, j) => {
-                        return (
-                          <span key={j} className="rounded border px-1 text-xs">
-                            {language}
-                          </span>
-                        );
-                      })}
-                    </span>
-                  </p>
+                {items.album && items.album.trim() !== "-" && (
+                  <button
+                    className="text-left italic text-gray-400 underline lg:font-semibold"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      void router.push(
+                        `/album/${items.album
+                          ?.toLowerCase()
+                          .trim()
+                          .replace(/ /g, "-")}`,
+                      );
+                    }}
+                  >
+                    {items.album}
+                  </button>
                 )}
+
+                {/* {items.original_key && <p>Key of {items.original_key}</p>} */}
+
                 {items.tags.length > 0 && (
-                  <div className="flex gap-1 pt-1">
+                  <div className="flex gap-1.5 pt-3">
                     {items.tags.map((tag, i) => {
                       return (
                         <div

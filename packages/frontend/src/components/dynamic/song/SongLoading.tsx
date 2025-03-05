@@ -16,7 +16,7 @@ const SongLoading = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-5 p-5 pb-[70px] sm:pb-5">
+    <div className="flex flex-col gap-3 p-3 pb-[70px] sm:pb-3">
       <div className="flex h-[35px] items-center gap-2 rounded-lg border-2 px-3 text-sm text-neutral-500">
         <div className="h-[40%] w-[40px] overflow-hidden rounded">
           <Skeleton height={"100%"} />
@@ -30,7 +30,7 @@ const SongLoading = () => {
           <Skeleton height={"100%"} />
         </div>
       </div>
-      <div className="flex flex-col gap-5 md:flex-row">
+      <div className="flex flex-col gap-3 md:flex-row">
         <div className="flex h-fit flex-col gap-3 rounded-lg border-2 p-5 md:min-w-[244px] lg:min-w-[344px]">
           <div className="h-[150px]">
             <Skeleton height={"100%"} />

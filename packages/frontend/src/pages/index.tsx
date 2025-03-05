@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useMemo, useState } from "react";
 import SearchBar from "@/components/index/SearchBar";
 import type { Tag, Song, Sequencer } from "@prisma/client";
@@ -8,6 +9,8 @@ import SearchSongList from "@/components/index/SearchSongList";
 import SearchAlbumList from "@/components/index/SearchAlbumList";
 import SearchLoading from "@/components/index/SearchLoading";
 import Image from "next/image";
+import Footer from "@/components/layout/Footer";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 export type SongType = Song & { tags: Tag[]; file_sequencer: Sequencer[] };
 
@@ -22,31 +25,91 @@ const Home = () => {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+  const [nextCursor, setnextCursor] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [cursorStack, setCursorStack] = useState<string[]>([""]); // Stack to store cursors for previous pages
 
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!mounted) return;
-
-    void (async () => {
-      await fetch("/api/songs", {
-        method: "GET",
-      })
-        .then(async (res) => {
-          await res
-            .json()
-            .then((result: SongType[]) => {
-              setSongList(result);
-              setIsLoading(false);
-            })
-            .catch((err) => console.error(err));
-        })
-        .catch((err) => console.error(err));
-    })();
-
+    void fetchSongs();
     setSearchString(localStorage.getItem("song-search") ?? "");
     localStorage.removeItem("song-search");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted]);
+
+  const fetchSongs = async (cursor?: string) => {
+    try {
+      if (cursor) {
+        setIsFetching(true);
+      } else {
+        setIsLoading(true);
+      }
+      const queryParams = new URLSearchParams();
+
+      // Only add params that have values
+      if (cursor) queryParams.set("cursor", cursor);
+      if (searchString) queryParams.set("search", searchString);
+      if (selectedKey) queryParams.set("key", selectedKey);
+      if (selectedLanguage) queryParams.set("language", selectedLanguage);
+
+      const res = await fetch(`/api/songs?${queryParams.toString()}`);
+      const { items, hasMore }: { items: SongType[]; hasMore: boolean } =
+        await res.json();
+
+      setSongList(items);
+      setFilteredSongList(items);
+      setHasNextPage(hasMore);
+
+      if (items.length > 0) {
+        const lastItem = items[items.length - 1];
+        setnextCursor(lastItem?.id ?? "");
+        if (!cursor) {
+          setCursorStack([""]); // Reset stack for new search
+        } else {
+          setCursorStack((prev) =>
+            prev[prev.length - 1] !== cursor ? [...prev, cursor] : prev,
+          );
+        }
+      } else {
+        setHasNextPage(false);
+      }
+    } catch (err) {
+      console.error(err);
+      setSongList([]);
+      setFilteredSongList([]);
+    } finally {
+      setIsLoading(false);
+      setIsFetching(false);
+    }
+  };
+
+  // Handle filter changes
+  useEffect(() => {
+    if (mounted) {
+      setCurrentPage(1);
+      void fetchSongs(); // Fetch without cursor when filters change
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedKey, selectedLanguage, searchString]);
+
+  // Pagination handlers
+  const goToNextPage = async () => {
+    if (!hasNextPage || !nextCursor) return;
+    setCurrentPage((prev) => prev + 1);
+    await fetchSongs(nextCursor);
+  };
+
+  const goToPreviousPage = async () => {
+    if (currentPage <= 1) return;
+    const previousCursor = cursorStack[cursorStack.length - 2] ?? "";
+    setCursorStack((prev) => prev.slice(0, -1)); // Remove the last cursor
+    setCurrentPage((prev) => prev - 1);
+    await fetchSongs(previousCursor);
+  };
 
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_DATA_API;
@@ -94,198 +157,26 @@ const Home = () => {
   }, [filteredSongList, showBand]);
 
   useMemo(() => {
-    const filteredSongListWithoutFilterTags = songList.filter((items) => {
-      const songName = items.name?.concat(
-        " ",
-        items.alt_name ? items.alt_name : "",
-      );
-      const matchingSongName = songName!
-        .toLowerCase()
-        .replace(/[', ]/g, "")
-        .includes(searchString.toLowerCase().replace(/[', ]/g, ""));
-      const matchingBand = items
-        .original_band!.toLowerCase()
-        .replace(/ /g, "")
-        .includes(searchString.toLowerCase().replace(/ /g, ""));
-      const matchingAlbum = items.album
-        ?.toLowerCase()
-        .replace(/ /g, "")
-        .includes(searchString.toLowerCase().replace(/ /g, ""));
-      const matchingLyrics = items
-        .chord_lyrics!.toLowerCase()
-        .replace(/\[.*?\]|\n| /g, " ")
-        .includes(searchString.toLowerCase().trim());
-      const matchingTags = items.tags.some((tag) => {
-        return tag.content
-          .toLowerCase()
-          .includes(searchString.toLowerCase().trim());
-      });
-
-      return (
-        matchingSongName ||
-        matchingBand ||
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        matchingAlbum ||
-        matchingTags ||
-        matchingLyrics
-      );
-    });
-
-    let filteredSongList = filteredSongListWithoutFilterTags;
-    if (selectedKey && selectedLanguage) {
-      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
-        return (
-          items.original_key
-            ?.toString()
-            .toLowerCase()
-            .trim()
-            .includes(selectedKey.toString().toLowerCase()) &&
-          items.song_language
-            ?.toString()
-            .toLowerCase()
-            .trim()
-            .includes(selectedLanguage.toString().toLowerCase())
-        );
-      });
-    } else if (selectedKey && !selectedLanguage) {
-      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
-        return items.original_key
-          ?.toString()
-          .toLowerCase()
-          .trim()
-          .includes(selectedKey.toString().toLowerCase());
-      });
-    } else if (!selectedKey && selectedLanguage) {
-      filteredSongList = filteredSongListWithoutFilterTags.filter((items) => {
-        return items.song_language
-          ?.toString()
-          .toLowerCase()
-          .trim()
-          .includes(selectedLanguage.toString().toLowerCase());
-      });
-    }
-
-    let sortedFilteredSongList = filteredSongList.sort((a, b) => {
-      if (a.created_at && b.created_at) {
-        if (a.created_at > b.created_at) {
-          return -1;
-        } else {
-          return 1;
-        }
-      } else {
-        return 0;
-      }
-    });
-
-    if (searchString.trim() !== "") {
-      sortedFilteredSongList = filteredSongList.sort((a, b) => {
-        const aHasMatchingName = a
-          .name!.toLowerCase()
-          .includes(searchString.toLowerCase());
-        const bHasMatchingName = b
-          .name!.toLowerCase()
-          .includes(searchString.toLowerCase());
-        if (aHasMatchingName && !bHasMatchingName) {
-          return -1;
-        }
-        if (!aHasMatchingName && bHasMatchingName) {
-          return 1;
-        }
-
-        const aHasMatchingAltName = a.alt_name
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        const bHasMathchingAltName = b.alt_name
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        if (aHasMatchingAltName && !bHasMathchingAltName) {
-          return -1;
-        }
-        if (!aHasMatchingAltName && bHasMathchingAltName) {
-          return 1;
-        }
-
-        const aHasMatchingBand = a.original_band
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        const bHasMatchingBand = b.original_band
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        if (aHasMatchingBand && !bHasMatchingBand) {
-          return -1;
-        }
-        if (!aHasMatchingBand && bHasMatchingBand) {
-          return 1;
-        }
-
-        const aHasMatchingAlbum = a.album
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        const bHasMatchingAlbum = b.album
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        if (aHasMatchingAlbum && !bHasMatchingAlbum) {
-          return -1;
-        }
-        if (!aHasMatchingAlbum && bHasMatchingAlbum) {
-          return 1;
-        }
-
-        const aHasMatchingTag = a.tags.some(
-          (tag) =>
-            tag?.content.toLowerCase().includes(searchString.toLowerCase()),
-        );
-        const bHasMatchingTag = b.tags.some(
-          (tag) =>
-            tag?.content.toLowerCase().includes(searchString.toLowerCase()),
-        );
-        if (aHasMatchingTag && !bHasMatchingTag) {
-          return -1;
-        }
-        if (!aHasMatchingTag && bHasMatchingTag) {
-          return 1;
-        }
-
-        const aHasMatchingLyrics = a.chord_lyrics
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        const bHasMatchingLyrics = b.chord_lyrics
-          ?.toLowerCase()
-          .includes(searchString.toLowerCase());
-        if (aHasMatchingLyrics && !bHasMatchingLyrics) {
-          return -1;
-        }
-        if (!aHasMatchingLyrics && bHasMatchingLyrics) {
-          return 1;
-        }
-
-        return 0;
-      });
-    }
-
-    setFilteredSongList(sortedFilteredSongList);
-
     const showBand =
       searchString.trim() !== "" &&
-      filteredSongList[0]?.original_band
+      songList[0]?.original_band
         ?.toLowerCase()
         .replace(/ /g, "")
         .includes(searchString.toLowerCase().replace(/ /g, "")) &&
-      filteredSongList.every(
+      songList.every(
         (items, _, array) => items.original_band === array[0]?.original_band,
       );
     setShowBand(showBand);
+
     const showAlbum =
       searchString.trim() !== "" &&
-      filteredSongList[0]?.album
+      songList[0]?.album
         ?.toLowerCase()
         .replace(/ /g, "")
         .includes(searchString.toLowerCase().replace(/ /g, "")) &&
-      filteredSongList.every(
-        (items, _, array) => items.album === array[0]?.album,
-      );
+      songList.every((items, _, array) => items.album === array[0]?.album);
     setShowAlbum(showAlbum);
-  }, [songList, searchString, selectedKey, selectedLanguage]);
+  }, [songList, searchString]);
 
   const getYoutubeVideoId = (youtubeUrl: string) => {
     const regex =
@@ -293,9 +184,10 @@ const Home = () => {
     const match = youtubeUrl.match(regex);
     return match ? match[1] : null;
   };
+
   return (
-    <>
-      <div className="sticky top-[49px] z-10 justify-between border-b bg-white p-3 sm:top-[70px] sm:flex sm:px-5 md:flex lg:flex">
+    <section className="relative z-0 flex w-full flex-col pb-[50px]">
+      <div className="sticky top-[50px] z-10 justify-between border-b bg-white p-3 sm:top-[70px] sm:flex sm:px-3 md:flex lg:flex">
         <div className="z-20 flex items-center justify-between gap-4">
           <SearchBar
             searchString={searchString}
@@ -308,12 +200,51 @@ const Home = () => {
             setSelectedLanguage={setSelectedLanguage}
           />
         </div>
+        {filteredSongList.length > 0 && (
+          <div className="hidden items-center gap-2 sm:flex">
+            <button
+              onClick={goToPreviousPage}
+              disabled={currentPage <= 1 || isFetching}
+              className="flex items-center gap-1 p-2 disabled:cursor-not-allowed disabled:text-gray-300"
+            >
+              <IoChevronBack
+                size={20}
+                className={isFetching ? "animate-pulse" : ""}
+              />
+            </button>
+            <div className="flex items-center gap-3">
+              {currentPage > 1 ? (
+                <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-700" />
+              ) : (
+                <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-300" />
+              )}
+              <div className="flex h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-700 p-1 text-sm text-white">
+                {currentPage}
+              </div>
+              {hasNextPage ? (
+                <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-700" />
+              ) : (
+                <div className="h-[12.5px] w-[12.5px] rounded-full bg-gray-300" />
+              )}
+            </div>
+            <button
+              onClick={goToNextPage}
+              disabled={!hasNextPage || isFetching}
+              className="flex items-center gap-1 p-2 disabled:cursor-not-allowed disabled:text-gray-300"
+            >
+              <IoChevronForward
+                size={20}
+                className={isFetching ? "animate-pulse" : ""}
+              />
+            </button>
+          </div>
+        )}
       </div>
       {isLoading ? (
         <SearchLoading />
       ) : (
-        <div className="flex gap-5 pb-[45px] sm:h-fit sm:p-5">
-          <div className="flex w-full flex-col sm:gap-3">
+        <div className="flex p-3">
+          <div className="flex w-full flex-col gap-1.5 sm:gap-3">
             <SearchBand
               showBand={showBand}
               searchString={searchString}
@@ -334,6 +265,7 @@ const Home = () => {
               getYoutubeVideoId={getYoutubeVideoId}
               searchString={searchString}
             />
+
             {filteredSongList.length == 0 && (
               <div className="flex h-[75dvh] flex-col items-center justify-center gap-5">
                 <Image
@@ -354,7 +286,19 @@ const Home = () => {
           />
         </div>
       )}
-    </>
+
+      {/* Mobile Footer with Pagination */}
+      {filteredSongList.length > 0 ? (
+        <Footer
+          showPagination
+          currentPage={currentPage}
+          onNextPage={goToNextPage}
+          onPrevPage={goToPreviousPage}
+          hasNextPage={hasNextPage}
+          isLoading={isFetching}
+        />
+      ) : null}
+    </section>
   );
 };
 
