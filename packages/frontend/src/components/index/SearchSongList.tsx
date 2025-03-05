@@ -17,7 +17,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
   return (
     <>
       {filteredSongList.map((item) => {
-        const ytid = getYoutubeVideoId(item.original_youtube_url);
+        const ytid = getYoutubeVideoId(item.original_youtube_url ?? "");
 
         return (
           <Link
@@ -44,7 +44,7 @@ const SearchSongList: React.FC<SearchSongListProps> = ({
                     ? `https://i.ytimg.com/vi/${ytid}/hqdefault.jpg`
                     : "/no-song-cover.svg"
                 }
-                alt={item.name}
+                alt={item.name ?? ""}
                 className={`h-full w-full ${ytid === "" ? "object-contain" : "object-cover"}`}
               />
             </div>
