@@ -23,13 +23,22 @@ import { uploadFile } from "@/helpers/uploadFile";
 import { useDebounce } from "@uidotdev/usehooks";
 import { getContrastTextColor, stringToColor } from "@/helpers/hexToRGBA";
 import { FaDownload } from "react-icons/fa";
+import { parseChords } from "@/helpers/chordParser";
 
 const md = markdownit({
   breaks: true,
+  html: true, // Enable HTML parsing
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-md.use(chords);
+// Process chords before markdown
+const originalRender = md.render.bind(md);
+md.render = (src: string) => {
+  // First parse the chords
+  const withChords = parseChords(src);
+  // Then process with markdown
+  const rendered = originalRender(withChords);
+  return rendered;
+};
 
 export type FormikForm = {
   id?: string;
@@ -207,7 +216,7 @@ export default function Home() {
                       name="content"
                       disabled={isSubmitting || isSearching}
                       // placeholder="..."
-                      className="daisy-input daisy-input-bordered daisy-input-primary daisy-input-sm"
+                      className="daisy-input daisy-input-sm daisy-input-bordered daisy-input-primary"
                     />
                     {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
 
