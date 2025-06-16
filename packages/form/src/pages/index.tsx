@@ -297,7 +297,7 @@ export default function Home() {
                           setEditingMode(true);
                           setSecVoiceFile(undefined);
                           setSequencerFile(undefined);
-                          console.log(result);
+                          console.log(result.id);
                           await ref.current?.setValues({
                             agLink: result.ag_link,
                             chordLyrics: result.chord_lyrics,
@@ -328,7 +328,6 @@ export default function Home() {
                               ? String(result.file_sec_voice)
                               : "",
                           );
-
                           setIsSearching(false);
                         });
                       });
@@ -384,7 +383,7 @@ export default function Home() {
               songLanguage: Yup.string().oneOf(languageOptions),
               originalKey: Yup.string()
                 .required("Required.")
-                .max(3, "Max 3 characters"),
+                .max(15, "Max 15 characters"),
               originalBand: Yup.string().required("Required."),
               chordLyrics: Yup.string().required("Required."),
             })}
