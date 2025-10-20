@@ -15,7 +15,7 @@ const Header = ({ title }: HeaderProps) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <header className="flex justify-between border-b border-border px-24 py-4">
+      <header className="flex justify-between border-b border-border px-4 py-4 md:px-12 lg:px-24">
         <a href="/">
           <Image
             className="min-h-[60px] min-w-[60px] rounded"
