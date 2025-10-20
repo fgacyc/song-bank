@@ -1,5 +1,7 @@
 import React from "react";
 import { useTheme, type Theme } from "../hooks/useTheme";
+import { IoSunnyOutline } from "react-icons/io5";
+import { FiMoon } from "react-icons/fi";
 
 interface ThemeToggleProps {
   variant?: "buttons" | "dropdown" | "toggle";
@@ -18,31 +20,20 @@ const ThemeToggle = ({
 }: ThemeToggleProps) => {
   const { theme, setTheme, toggleTheme, availableThemes } = useTheme();
 
-  // Use provided themes or fall back to all available themes
   const displayThemes = themes ?? availableThemes;
 
-  // Size classes
   const sizeClasses = {
-    sm: "px-2 py-1 text-xs",
-    md: "px-3 py-1 text-sm",
-    lg: "px-4 py-2 text-base",
+    sm: "px-2 py-1 text-md",
+    md: "px-3 py-2 text-lg",
+    lg: "px-4 py-3 text-xl",
   };
 
-  // Theme icons
   const getThemeIcon = (themeName: Theme) => {
     switch (themeName) {
       case "light":
-        return (
-          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-        );
+        return <FiMoon />;
       case "dark":
-        return (
-          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-          </svg>
-        );
+        return <IoSunnyOutline />;
       default:
         return null;
     }
@@ -52,7 +43,7 @@ const ThemeToggle = ({
     return themeName.charAt(0).toUpperCase() + themeName.slice(1);
   };
 
-  // Button variant
+  // button variant
   if (variant === "buttons") {
     return (
       <div className={`flex gap-2 ${className}`}>
@@ -79,7 +70,7 @@ const ThemeToggle = ({
     );
   }
 
-  // Dropdown variant
+  // dropdown variant
   if (variant === "dropdown") {
     return (
       <div className={`relative ${className}`}>
@@ -103,20 +94,18 @@ const ThemeToggle = ({
     );
   }
 
-  // Toggle variant (cycles through themes)
+  // toggle variant
   if (variant === "toggle") {
     return (
       <button
         onClick={toggleTheme}
         className={`
-          flex items-center gap-2 rounded-md border border-border bg-bg-secondary text-text-primary 
-          transition-colors hover:bg-accent hover:text-white
+          hover:bg-bg-tertiary flex items-center justify-center rounded-md transition-colors
           ${sizeClasses[size]} ${className}
         `}
         aria-label={`Current theme: ${theme}. Click to toggle`}
       >
         {getThemeIcon(theme)}
-        {showLabels && <span>{getThemeLabel(theme)}</span>}
       </button>
     );
   }

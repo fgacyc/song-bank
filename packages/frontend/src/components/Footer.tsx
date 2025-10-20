@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border bg-bg-secondary p-4 text-center text-text-secondary">
-      <p>&copy; 2024 FGA Worship. All rights reserved.</p>
+    <footer className="border-t border-border bg-bg-primary p-8 text-center text-sm text-text-secondary">
+      <p>FGA Worship &copy; 2025</p>
     </footer>
   );
 };
