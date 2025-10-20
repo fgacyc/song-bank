@@ -23,9 +23,9 @@ const ThemeToggle = ({
   const displayThemes = themes ?? availableThemes;
 
   const sizeClasses = {
-    sm: "px-2 py-1 text-md",
-    md: "px-3 py-2 text-lg",
-    lg: "px-4 py-3 text-xl",
+    sm: "p-1 py-1 text-md",
+    md: "p-2 py-2 text-lg",
+    lg: "p-3 text-xl",
   };
 
   const getThemeIcon = (themeName: Theme) => {

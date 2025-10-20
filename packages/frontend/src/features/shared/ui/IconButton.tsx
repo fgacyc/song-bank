@@ -1,29 +1,80 @@
-import React from "react";
+import React, { type ReactNode } from "react";
+import Link from "next/link";
 
-interface IcontButtonProps {
-  icon: React.ReactNode;
+interface IconButtonProps {
+  icon: ReactNode;
+  size?: "sm" | "md" | "lg";
   text?: string;
   href?: string;
   onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
 }
 
-const IconButton = ({ icon, text, href, onClick }: IcontButtonProps) => {
-  if (href) {
+const IconButton = ({
+  icon,
+  size = "md",
+  text,
+  href,
+  onClick,
+  className = "",
+  disabled = false,
+}: IconButtonProps) => {
+  const sizeClasses = {
+    sm: "px-2 py-1 text-sm",
+    md: "px-3 py-2 text-base",
+    lg: "px-4 py-3 text-lg",
+  };
+
+  const baseClasses = [
+    "hover:bg-bg-tertiary flex items-center justify-center gap-4 rounded transition-colors",
+    sizeClasses[size],
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const content = (
+    <>
+      <span aria-hidden="true">{icon}</span>
+      {text && <span>{text}</span>}
+    </>
+  );
+
+  // link variant
+  if (href && !disabled) {
+    const isExternal = href.startsWith("http");
+    const isInternal = href.startsWith("/");
+
+    if (isInternal) {
+      return (
+        <Link href={href} className={baseClasses}>
+          {content}
+        </Link>
+      );
+    }
+
     return (
       <a
         href={href}
-        className="hover:bg-bg-tertiary flex items-center justify-center gap-4 rounded px-4 py-3 transition-colors"
+        className={baseClasses}
+        target={isExternal ? "_blank" : "_self"}
+        rel={isExternal ? "noopener noreferrer" : undefined}
       >
-        {icon} {text && text}
+        {content}
       </a>
     );
   }
+
+  // button variant
   return (
     <button
+      type="button"
       onClick={onClick}
-      className="hover:bg-bg-tertiary flex items-center justify-center gap-4 rounded px-4 py-3 transition-colors"
+      disabled={disabled}
+      className={baseClasses}
     >
-      {icon} {text && text}
+      {content}
     </button>
   );
 };

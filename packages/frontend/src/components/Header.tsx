@@ -25,10 +25,11 @@ const Header = ({ title }: HeaderProps) => {
             height={60}
           />
         </a>
-        <div className="flex gap-2">
+        <div className="flex items-center justify-center gap-2">
           <ThemeToggle variant="toggle" size="lg" />
           <IconButton
             icon={<FaRegHeart size={18} />}
+            size="lg"
             text="Library"
             href="/library"
           />

@@ -1,5 +1,5 @@
 :root {
-  /* Light theme */
+  /* light theme */
   --color-bg-primary: #ffffff;
   --color-bg-secondary: #fefefe;
   --color-bg-tertiary: #f5f5f5;
@@ -15,7 +15,7 @@
 }
 
 [data-theme="dark"] {
-  /* Dark theme */
+  /* dark theme */
   --color-bg-primary: #000000;
   --color-bg-secondary: #0e0e0e;
   --color-bg-tertiary: #141414;
