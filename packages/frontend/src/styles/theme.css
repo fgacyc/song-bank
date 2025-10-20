@@ -1,0 +1,87 @@
+/* CSS Variables for theming */
+:root {
+  /* Light theme */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f9fa;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --color-accent: #3b82f6;
+
+  --font-primary:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Fira Code", Consolas, "Monaco", monospace;
+
+  --chord-diagram-font-size: 10px;
+}
+
+[data-theme="dark"] {
+  /* Dark theme */
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #2d2d2d;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a1a1aa;
+  --color-border: #374151;
+  --color-accent: #60a5fa;
+}
+
+[data-theme="pastel"] {
+  /* Pastel theme */
+  --color-bg-primary: #fef7ff;
+  --color-bg-secondary: #f3e8ff;
+  --color-text-primary: #4c1d95;
+  --color-text-secondary: #7c3aed;
+  --color-border: #e9d5ff;
+  --color-accent: #8b5cf6;
+}
+
+/* Apply theme variables to body (only theme-related styles) */
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Chord styles with theme variables */
+.chord {
+  display: inline-block;
+  position: relative;
+  user-select: none;
+  height: 3em;
+  color: var(--color-text-primary);
+  font-size: 90%;
+  font-weight: 700;
+}
+
+.chord.diagram {
+  height: calc(1.5em + (3.5 * var(--chord-diagram-font-size)));
+}
+
+.chord .inner {
+  position: absolute;
+  display: block;
+  left: 0;
+  bottom: 1.3em;
+}
+
+.chord i {
+  font-style: normal;
+  display: inline-block;
+}
+
+.chord i.diagram {
+  font: 100 var(--chord-diagram-font-size) var(--font-mono);
+  line-height: 0.5em;
+  position: absolute;
+  bottom: 0;
+  display: none;
+}
+
+.chord .inner:hover i.diagram,
+.chord.diagram i.diagram,
+.chord i.diagram.show {
+  display: inline-block;
+}

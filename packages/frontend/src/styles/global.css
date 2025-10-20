@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import theme styles */
+@import "./theme.css";
+
+/* Global base styles (non-theme related) */
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Remove conflicting body styles from global.css since they're in theme.css */
+body {
+  height: 100%;
+  position: fixed;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+input:focus-within,
+select:focus-within {
+  outline: none;
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+}
