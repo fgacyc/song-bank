@@ -65,7 +65,7 @@ export function DatePicker() {
           <Button
             id="date-picker"
             variant="ghost"
-            className="absolute right-2 top-1/2 size-6 -translate-y-1/2"
+            className="absolute right-3 top-1/2 size-6 -translate-y-1/2"
           >
             <CalendarIcon className="size-3.5" />
             <span className="sr-only">Select date</span>
