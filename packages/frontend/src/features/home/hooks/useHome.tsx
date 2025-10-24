@@ -8,6 +8,12 @@ export const useHome = () => {
     staleTime: 5 * 60 * 1000, // 5 mins
   });
 
+  const featuredCreators = useQuery({
+    queryKey: ["home", "featuredCreators"],
+    queryFn: () => homeService.getFeaturedCreators(),
+    staleTime: 5 * 60 * 1000, // 5 mins
+  });
+
   const topHotSongs = useQuery({
     queryKey: ["home", "topHotSongs"],
     queryFn: () => homeService.getTopHotSongs(),
@@ -16,8 +22,12 @@ export const useHome = () => {
 
   return {
     latestAlbums,
+    featuredCreators,
     topHotSongs,
-    isLoading: latestAlbums.isLoading || topHotSongs.isLoading,
-    error: latestAlbums.error ?? topHotSongs.error,
+    isLoading:
+      latestAlbums.isLoading ||
+      featuredCreators.isLoading ||
+      topHotSongs.isLoading,
+    error: latestAlbums.error ?? featuredCreators.error ?? topHotSongs.error,
   };
 };

@@ -1,4 +1,7 @@
 import React from "react";
+import { HiMiniArrowTrendingUp } from "react-icons/hi2";
+import { useHome } from "../hooks/useHome";
+import Polaroid from "@/features/shared/ui/Polaroid";
 
 /* 
 TODO: 
@@ -7,7 +10,44 @@ TODO:
 */
 
 const FeaturedCreators = () => {
-  return <div>FeaturedCreators</div>;
+  const { featuredCreators, isLoading, error } = useHome();
+
+  // TODO: loading and error ui
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
+  if (error) {
+    return <div>error</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <h2>Featured Creators</h2>
+        <HiMiniArrowTrendingUp className="text-xl" />
+      </div>
+      <div className="flex flex-wrap gap-6">
+        {featuredCreators.data?.map((creator) => {
+          return (
+            <div key={creator.id} className="flex-shrink-0">
+              <Polaroid
+                title={creator.name}
+                captions={[
+                  `${creator.songCount} Songs`,
+                  `${creator.albumCount} Albums`,
+                ]}
+                width={250}
+                height={400}
+                imgRatio={0.6}
+                descriptionAlignment="topRight"
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default FeaturedCreators;

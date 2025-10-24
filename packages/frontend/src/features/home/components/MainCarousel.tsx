@@ -31,7 +31,7 @@ const MainCarousel = () => {
             <button
               onClick={onClickHandler}
               title={label}
-              className="absolute left-8 top-1/2 z-10 flex h-8 w-8 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100" // Added translate animation
+              className="absolute left-8 top-1/2 z-10 flex h-8 w-8 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100"
             >
               <ChevronLeft size={16} />
             </button>
@@ -42,14 +42,14 @@ const MainCarousel = () => {
             <button
               onClick={onClickHandler}
               title={label}
-              className="absolute right-8 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 translate-x-2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100" // Added translate animation
+              className="absolute right-8 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 translate-x-2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100"
             >
               <ChevronRight size={16} />
             </button>
           )
         }
       >
-        <div className="relative aspect-[16/9] sm:aspect-[21/9] lg:aspect-[32/9]">
+        <div className="relative aspect-[12/9] sm:aspect-[24/9] lg:aspect-[36/9]">
           <Image
             src="/carousel-1.jpg"
             alt="Carousel 1"
@@ -58,7 +58,7 @@ const MainCarousel = () => {
             className="rounded-lg object-cover"
           />
         </div>
-        <div className="relative aspect-[16/9] sm:aspect-[21/9] lg:aspect-[32/9]">
+        <div className="relative aspect-[12/9] sm:aspect-[24/9] lg:aspect-[36/9]">
           <Image
             src="/carousel-2.jpg"
             alt="Carousel 2"
@@ -66,7 +66,7 @@ const MainCarousel = () => {
             className="rounded-lg object-cover"
           />
         </div>
-        <div className="relative aspect-[16/9] sm:aspect-[21/9] lg:aspect-[32/9]">
+        <div className="relative aspect-[12/9] sm:aspect-[24/9] lg:aspect-[36/9]">
           <Image
             src="/carousel-3.jpg"
             alt="Carousel 3"

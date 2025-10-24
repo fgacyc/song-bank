@@ -8,6 +8,9 @@ export default async function handler(
 ) {
   if (req.method !== "GET") return res.status(405).end();
 
+  const { limit } = req.query;
+  const take = limit ? parseInt(limit as string) : undefined;
+
   try {
     const songs = await db.song.findMany({
       select: {
@@ -69,12 +72,16 @@ export default async function handler(
       }
     });
 
-    const creators = Array.from(creatorsMap.values())
+    let creators = Array.from(creatorsMap.values())
       .map((creator: Creator) => ({
         ...creator,
         albums: Array.from(creator.albums as Set<string>),
       }))
       .sort((a, b) => b.songCount - a.songCount);
+
+    if (take) {
+      creators = creators.slice(0, take);
+    }
 
     res.status(200).json(creators);
   } catch (error) {

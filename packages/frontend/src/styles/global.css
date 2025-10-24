@@ -13,6 +13,7 @@ body {
   height: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  font-family: "Poppins", sans-serif;
 }
 
 input:focus-within,
@@ -24,17 +25,16 @@ select:focus-within {
   width: 0px;
 }
 
-p,
-h1,
-h2,
-h3 {
-  font-family: "Poppins", sans-serif;
-}
-
 h1 {
   font-size: 4rem;
 }
 
 h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
 }
