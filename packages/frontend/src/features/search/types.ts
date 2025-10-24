@@ -36,4 +36,5 @@ export interface FilterTagProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  width?: string;
 }

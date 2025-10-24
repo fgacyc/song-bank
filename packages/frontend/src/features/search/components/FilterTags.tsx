@@ -15,6 +15,7 @@ const FilterTag = ({
   onChange,
   placeholder = "Select...",
   className = "",
+  width = "",
 }: FilterTagProps) => {
   return (
     <div className={`flex items-center gap-2 ${className}`}>
@@ -24,7 +25,9 @@ const FilterTag = ({
         </label>
       )}
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="text-md !h-[48px] w-[180px] border-[2px] bg-bg-secondary px-4 text-text-primary">
+        <SelectTrigger
+          className={`${width} !h-[36px]  border bg-bg-secondary px-4 text-sm text-text-primary`}
+        >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent className="border border-border bg-bg-secondary">
@@ -39,7 +42,7 @@ const FilterTag = ({
               <SelectItem
                 key={selectValue}
                 value={selectValue}
-                className="text-md hover:bg-bg-quaternary focus:bg-bg-quaternary relative flex h-12 w-full cursor-default select-none items-center gap-2 rounded border-none py-1.5 pl-4 pr-8 text-text-primary outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                className="relative flex h-8 w-full cursor-default select-none items-center gap-2 rounded border-none py-0 pl-4 text-sm text-text-primary outline-none hover:bg-bg-quaternary focus:bg-bg-quaternary data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
               >
                 {option.label}
               </SelectItem>

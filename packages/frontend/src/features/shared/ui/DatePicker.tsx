@@ -1,10 +1,8 @@
 import * as React from "react";
 import { CalendarIcon } from "lucide-react";
-
 import { Button } from "@/features/shared/ui/Button";
 import { Calendar } from "@/features/shared/ui/Calendar";
 import { Input } from "@/features/shared/ui/Input";
-import { Label } from "@/features/shared/ui/Label";
 import {
   Popover,
   PopoverContent,
@@ -32,19 +30,17 @@ function isValidDate(date: Date | undefined) {
 
 export function DatePicker() {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date("2025-06-01"),
-  );
+  const [date, setDate] = React.useState<Date | undefined>();
   const [month, setMonth] = React.useState<Date | undefined>(date);
   const [value, setValue] = React.useState(formatDate(date));
 
   return (
-    <div className="relative flex h-[48px] items-center justify-center gap-2 rounded-lg border-2 border-border">
+    <div className="relative flex items-center justify-center gap-2">
       <Input
         id="date"
         value={value}
         placeholder="Release Date"
-        className="bg-background pl-5"
+        className="!h-[36px] rounded-lg border border-border bg-background pl-5"
         onChange={(e) => {
           const date = new Date(e.target.value);
           setValue(e.target.value);

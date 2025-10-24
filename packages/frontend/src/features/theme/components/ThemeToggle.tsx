@@ -23,9 +23,9 @@ const ThemeToggle = ({
   const displayThemes = themes ?? availableThemes;
 
   const sizeClasses = {
-    sm: "p-1 py-1 text-md",
-    md: "p-2 py-2 text-lg",
-    lg: "p-3 text-xl",
+    sm: "p-2 text-md",
+    md: "p-3 text-lg",
+    lg: "p-4 text-xl",
   };
 
   const getThemeIcon = (themeName: Theme) => {
@@ -100,7 +100,7 @@ const ThemeToggle = ({
       <button
         onClick={toggleTheme}
         className={`
-          hover:bg-bg-tertiary flex items-center justify-center rounded-md transition-colors
+          flex items-center justify-center rounded-md transition-colors hover:bg-bg-tertiary
           ${sizeClasses[size]} ${className}
         `}
         aria-label={`Current theme: ${theme}. Click to toggle`}

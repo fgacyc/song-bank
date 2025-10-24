@@ -28,18 +28,18 @@ const Header = ({ title }: HeaderProps) => {
         <div className="flex justify-between">
           <a href="/">
             <Image
-              className="min-h-[60px] min-w-[60px] rounded transition-opacity hover:opacity-80"
+              className="min-h-[40px] min-w-[40px] rounded transition-opacity hover:opacity-80"
               src="/logo.png"
               alt="logo"
-              width={60}
-              height={60}
+              width={40}
+              height={40}
             />
           </a>
           <div className="flex items-center justify-center gap-2">
-            <ThemeToggle variant="toggle" size="lg" />
+            <ThemeToggle variant="toggle" size="sm" />
             <IconButton
-              icon={<FaRegHeart size={18} />}
-              size="lg"
+              icon={<FaRegHeart size={14} />}
+              size="sm"
               text="Library"
               href="/library"
             />

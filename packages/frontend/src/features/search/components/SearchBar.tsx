@@ -56,7 +56,7 @@ const SearchBar = ({
     <div className={`space-y-4 ${className}`}>
       {/* search bar */}
       <form onSubmit={handleSubmit}>
-        <div className="flex h-[48px] items-center gap-4 rounded-lg border-[2px] border-border px-4">
+        <div className="flex h-[36px] items-center gap-3 rounded-lg border border-border px-3">
           <CiSearch className="flex-shrink-0 text-text-secondary" size={20} />
           <input
             type="text"
@@ -64,7 +64,7 @@ const SearchBar = ({
             onChange={handleInputChange}
             placeholder={placeholder}
             disabled={isLoading}
-            className="flex-1 bg-transparent text-text-primary placeholder-text-secondary focus:outline-none disabled:opacity-50"
+            className="flex-1 bg-transparent text-sm text-text-primary placeholder-text-secondary focus:outline-none disabled:opacity-50"
           />
         </div>
       </form>
@@ -76,12 +76,14 @@ const SearchBar = ({
             options={LANGUAGE_OPTIONS}
             value={language}
             onChange={setLanguage}
+            width="w-[160px]"
           />
 
           <FilterTag
             options={KEY_SIGNATURE_OPTIONS}
             value={keySignature}
             onChange={setKeySignature}
+            width="w-[120px]"
           />
 
           {/* date picker */}

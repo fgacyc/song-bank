@@ -19,10 +19,10 @@ const MainCarousel = () => {
             key={index}
             onClick={onClickHandler}
             title={label}
-            className={`h-3 rounded-full bg-white transition-all ${
+            className={`h-2 rounded-full bg-white transition-all ${
               isSelected
-                ? "mx-3 w-12 scale-125"
-                : "mx-1 w-3 opacity-50 hover:opacity-75"
+                ? "mx-2.5 w-10 scale-125"
+                : "mx-1 w-2 opacity-50 hover:opacity-75"
             }`}
           />
         )}
@@ -31,9 +31,9 @@ const MainCarousel = () => {
             <button
               onClick={onClickHandler}
               title={label}
-              className="absolute left-8 top-1/2 z-10 flex h-10 w-10 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100" // Added translate animation
+              className="absolute left-8 top-1/2 z-10 flex h-8 w-8 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100" // Added translate animation
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={16} />
             </button>
           )
         }
@@ -42,9 +42,9 @@ const MainCarousel = () => {
             <button
               onClick={onClickHandler}
               title={label}
-              className="absolute right-8 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 translate-x-2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100" // Added translate animation
+              className="absolute right-8 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 translate-x-2 items-center justify-center rounded-lg bg-black/40 text-white opacity-0 transition-all duration-300 ease-out hover:bg-black/60 group-hover:translate-x-0 group-hover:opacity-100" // Added translate animation
             >
-              <ChevronRight size={24} />
+              <ChevronRight size={16} />
             </button>
           )
         }
