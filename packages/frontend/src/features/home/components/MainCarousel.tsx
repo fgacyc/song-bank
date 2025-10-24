@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const MainCarousel = () => {
   return (
-    <div className="group relative w-full px-4 md:px-12 lg:px-24">
+    <div className="group relative w-full">
       <Carousel
         showArrows
         showStatus={false}
@@ -19,10 +19,10 @@ const MainCarousel = () => {
             key={index}
             onClick={onClickHandler}
             title={label}
-            className={`h-3 w-3 rounded-full bg-white transition-all ${
+            className={`h-3 rounded-full bg-white transition-all ${
               isSelected
                 ? "mx-3 w-12 scale-125"
-                : "mx-1 opacity-50 hover:opacity-75"
+                : "mx-1 w-3 opacity-50 hover:opacity-75"
             }`}
           />
         )}
