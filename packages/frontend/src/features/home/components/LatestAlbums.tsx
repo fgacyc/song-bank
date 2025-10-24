@@ -84,7 +84,7 @@ const LatestAlbums = () => {
 
         <div
           ref={scrollContainerRef}
-          className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex gap-6 overflow-x-auto overflow-y-hidden pb-4"
+          className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex gap-6 overflow-x-auto overflow-y-hidden"
           onScroll={checkScrollButtons}
         >
           {latestAlbums.data?.map((album) => {

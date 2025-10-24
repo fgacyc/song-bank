@@ -27,10 +27,10 @@ const FeaturedCreators = () => {
         <h2>Featured Creators</h2>
         <HiMiniArrowTrendingUp className="text-xl" />
       </div>
-      <div className="flex flex-wrap gap-6">
+      <div className="grid w-fit grid-cols-2 items-center justify-center gap-6 lg:grid-cols-3 xl:grid-cols-4">
         {featuredCreators.data?.map((creator) => {
           return (
-            <div key={creator.id} className="flex-shrink-0">
+            <div key={creator.id} className="w-full flex-shrink-0 md:w-fit">
               <Polaroid
                 title={creator.name}
                 captions={[

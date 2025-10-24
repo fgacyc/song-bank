@@ -62,16 +62,13 @@ const Polaroid = ({
         className={`flex flex-col bg-bg-tertiary p-6 transition-colors group-hover/polaroid:bg-bg-primary ${textAlignment}`}
         style={{ height: `${height * (1 - imgRatio)}px` }}
       >
-        <div className="h-3/4 w-3/4">
-          <h3 className="mb-1 truncate text-text-primary">
+        <div className="h-3/4 w-3/4 space-y-2">
+          <h3 className="truncate text-text-primary">
             {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
             {title || "Untitled"}
           </h3>
           {captions?.map((caption, index) => (
-            <p
-              key={index}
-              className="truncate pb-2 text-sm text-text-secondary"
-            >
+            <p key={index} className="truncate text-sm text-text-secondary">
               {caption}
             </p>
           ))}
