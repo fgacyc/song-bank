@@ -24,6 +24,13 @@ select:focus-within {
   width: 0px;
 }
 
+p,
+h1,
+h2,
+h3 {
+  font-family: "Poppins", sans-serif;
+}
+
 h1 {
   font-size: 4rem;
 }

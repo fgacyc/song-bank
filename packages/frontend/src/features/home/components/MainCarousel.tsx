@@ -21,7 +21,7 @@ const MainCarousel = () => {
             title={label}
             className={`h-2 rounded-full bg-white transition-all ${
               isSelected
-                ? "mx-2.5 w-10 scale-125"
+                ? "mx-2 w-8 scale-125"
                 : "mx-1 w-2 opacity-50 hover:opacity-75"
             }`}
           />
