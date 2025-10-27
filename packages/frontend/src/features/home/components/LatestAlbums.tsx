@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHome } from "../hooks/useHome";
-import { Badge } from "@/features/shared/ui/badge";
 import Polaroid from "@/features/shared/ui/Polaroid";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Badge } from "@/features/shared/ui/Badge";
 
 const LatestAlbums = () => {
   const { latestAlbums, isLoading, error } = useHome();

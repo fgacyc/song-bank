@@ -28,6 +28,7 @@ model Song {
   song_language        String?
   file_sec_voice       String?
   original_youtube_url String?     @db.VarChar
+  cover_image_url      String?     @db.VarChar
   file_sequencer       Sequencer[]
   tags                 Tag[]
   favorite             Favorite[]

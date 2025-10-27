@@ -15,6 +15,8 @@ export const env = createEnv({
         "You forgot to change the default URL",
       ),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    SPOTIFY_CLIENT_ID: z.string().min(1, "Missing SPOTIFY_CLIENT_ID"),
+    SPOTIFY_CLIENT_SECRET: z.string().min(1, "Missing SPOTIFY_CLIENT_SECRET"),
   },
 
   /**
@@ -43,6 +45,8 @@ export const env = createEnv({
     NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY:
       process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
+    SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

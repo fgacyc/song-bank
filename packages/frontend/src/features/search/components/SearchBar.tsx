@@ -19,7 +19,7 @@ interface SearchBarProps {
 const SearchBar = ({
   onSearch,
   isLoading = false,
-  placeholder = "Search songs, albums, creators...",
+  placeholder = "Search songs, albums, or creators...",
   className = "",
   showFilters = true,
 }: SearchBarProps) => {

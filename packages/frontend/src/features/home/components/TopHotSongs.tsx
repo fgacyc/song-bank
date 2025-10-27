@@ -2,7 +2,7 @@ import React from "react";
 import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 import { useHome } from "../hooks/useHome";
 import type { Song } from "@prisma/client";
-import { Badge } from "@/features/shared/ui/badge";
+import { Badge } from "@/features/shared/ui/Badge";
 import Image from "next/image";
 
 const SongListItem = ({ song, index }: { song: Song; index: number }) => {
