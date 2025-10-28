@@ -6,6 +6,7 @@ export interface Album {
   songCount: number;
   created_at: Date;
   updated_at: Date;
+  cover_image_url?: string | null;
 }
 
 export interface AlbumSong {
@@ -13,6 +14,7 @@ export interface AlbumSong {
   name: string | null;
   original_key: string | null;
   song_language: string | null;
+  cover_image_url?: string | null;
 }
 
 export interface Creator {
@@ -24,6 +26,7 @@ export interface Creator {
   albumCount: number;
   created_at: Date;
   updated_at: Date;
+  cover_image_url?: string | null;
 }
 
 export interface CreatorSong {
@@ -33,4 +36,5 @@ export interface CreatorSong {
   original_key: string | null;
   song_language: string | null;
   original_youtube_url: string | null;
+  cover_image_url?: string | null;
 }

@@ -3,6 +3,7 @@ import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/features/shared/ui/Badge";
+import { Album } from "@/types/types";
 
 const LatestAlbums = () => {
   const { latestAlbums, isLoading, error } = useHome();
@@ -42,6 +43,12 @@ const LatestAlbums = () => {
   useEffect(() => {
     checkScrollButtons();
   }, [latestAlbums.data]);
+
+  const getAlbumImage = (
+    album: Album & { cover_image_url?: string | null },
+  ) => {
+    return album.cover_image_url ?? "/carousel-2.jpg";
+  };
 
   // TODO: loading and error ui
   if (isLoading) {
@@ -104,6 +111,7 @@ const LatestAlbums = () => {
             return (
               <div key={album.id} className="flex-shrink-0">
                 <Polaroid
+                  imageSrc={getAlbumImage(album)}
                   title={album.name}
                   captions={captions}
                   width={260}

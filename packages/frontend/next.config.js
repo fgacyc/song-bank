@@ -23,7 +23,7 @@ const config = {
       {
         protocol: "https",
         hostname: "i.ytimg.com",
-      }, // Add 'i.ytimg.com' to the list of domains
+      },
       {
         protocol: "https",
         hostname: "yt3.ggpht.com",
@@ -35,6 +35,10 @@ const config = {
       {
         protocol: "https",
         hostname: "s.gravatar.com",
+      },
+      {
+        protocol: "https",
+        hostname: "i.scdn.co",
       },
     ],
   },

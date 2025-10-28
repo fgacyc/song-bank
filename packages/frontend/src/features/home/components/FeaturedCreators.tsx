@@ -2,6 +2,7 @@ import React from "react";
 import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
+import type { Creator } from "@/types/types";
 
 /* 
 TODO: 
@@ -11,6 +12,14 @@ TODO:
 
 const FeaturedCreators = () => {
   const { featuredCreators, isLoading, error } = useHome();
+
+  const getCreatorImage = (creator: Creator) => {
+    console.log(
+      `Creator "${creator.name}" cover URL:`,
+      creator.cover_image_url,
+    );
+    return creator.cover_image_url ?? "/carousel-2.jpg";
+  };
 
   // TODO: loading and error ui
   if (isLoading) {
@@ -32,6 +41,7 @@ const FeaturedCreators = () => {
           return (
             <div key={creator.id} className="w-full flex-shrink-0 md:w-fit">
               <Polaroid
+                imageSrc={getCreatorImage(creator)}
                 title={creator.name}
                 captions={[
                   `${creator.songCount} Songs`,

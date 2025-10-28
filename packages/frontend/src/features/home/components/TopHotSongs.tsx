@@ -5,6 +5,33 @@ import type { Song } from "@prisma/client";
 import { Badge } from "@/features/shared/ui/Badge";
 import Image from "next/image";
 
+const TopHotSongs = () => {
+  const { topHotSongs, isLoading, error } = useHome();
+
+  // TODO: loading and error ui
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
+  if (error) {
+    return <div>error</div>;
+  }
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 pb-4">
+        <h2>Top 20 Hot Songs</h2>
+        <HiMiniArrowTrendingUp className="text-xl" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        {topHotSongs.data?.map((song, index) => {
+          return <SongListItem key={song.id} song={song} index={index} />;
+        })}
+      </div>
+    </div>
+  );
+};
+
 const SongListItem = ({ song, index }: { song: Song; index: number }) => {
   return (
     <div className="group flex gap-4 rounded-lg border border-border bg-bg-tertiary p-4 transition-colors hover:bg-bg-secondary">
@@ -17,7 +44,7 @@ const SongListItem = ({ song, index }: { song: Song; index: number }) => {
       <div className="h-16 w-16 overflow-hidden rounded-md">
         <div className="relative h-16 w-16 flex-shrink-0 transition group-hover:scale-105">
           <Image
-            src="/carousel-3.jpg"
+            src={song.cover_image_url ?? "/carousel-3.jpg"}
             alt={`${song.name} cover`}
             fill
             className="object-cover"
@@ -53,33 +80,6 @@ const SongListItem = ({ song, index }: { song: Song; index: number }) => {
             {song.song_language}
           </Badge>
         )}
-      </div>
-    </div>
-  );
-};
-
-const TopHotSongs = () => {
-  const { topHotSongs, isLoading, error } = useHome();
-
-  // TODO: loading and error ui
-  if (isLoading) {
-    return <div>loading</div>;
-  }
-
-  if (error) {
-    return <div>error</div>;
-  }
-
-  return (
-    <div>
-      <div className="flex items-center gap-2 pb-4">
-        <h2>Top 20 Hot Songs</h2>
-        <HiMiniArrowTrendingUp className="text-xl" />
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {topHotSongs.data?.map((song, index) => {
-          return <SongListItem key={song.id} song={song} index={index} />;
-        })}
       </div>
     </div>
   );

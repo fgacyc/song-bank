@@ -17,7 +17,7 @@ export const homeService = {
 
   async getFeaturedCreators(): Promise<Creator[]> {
     try {
-      const response = await fetch("/api/creators?limit=4");
+      const response = await fetch("/api/creators?limit=4withCovers=true");
       if (!response.ok) throw new Error("Failed to fetch creators");
       const creators = (await response.json()) as Creator[];
       return creators;
@@ -29,7 +29,7 @@ export const homeService = {
 
   async getTopHotSongs() {
     try {
-      const response = await fetch("/api/songs?limit=20");
+      const response = await fetch("/api/songs?limit=20&withCovers=true");
       if (!response.ok) throw new Error("Failed to fetch songs");
       const songs = (await response.json()) as Song[];
       return songs;
