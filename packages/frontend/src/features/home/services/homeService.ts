@@ -7,7 +7,6 @@ export const homeService = {
       const response = await fetch("/api/albums?limit=8");
       if (!response.ok) throw new Error("Failed to fetch albums");
       const albums = (await response.json()) as Album[];
-
       return albums;
     } catch (error) {
       console.error("Error fetching latest albums:", error);
@@ -17,7 +16,7 @@ export const homeService = {
 
   async getFeaturedCreators(): Promise<Creator[]> {
     try {
-      const response = await fetch("/api/creators?limit=4withCovers=true");
+      const response = await fetch("/api/creators?limit=4&withCovers=true");
       if (!response.ok) throw new Error("Failed to fetch creators");
       const creators = (await response.json()) as Creator[];
       return creators;
@@ -27,10 +26,10 @@ export const homeService = {
     }
   },
 
-  async getTopHotSongs() {
+  async getTopHotSongs(): Promise<Song[]> {
     try {
-      const response = await fetch("/api/songs?limit=20&withCovers=true");
-      if (!response.ok) throw new Error("Failed to fetch songs");
+      const response = await fetch("/api/songs?type=topHotSongs&limit=20");
+      if (!response.ok) throw new Error("Failed to fetch top hot songs");
       const songs = (await response.json()) as Song[];
       return songs;
     } catch (error) {

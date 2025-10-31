@@ -6,6 +6,7 @@ import { Badge } from "@/features/shared/ui/Badge";
 import Image from "next/image";
 import Link from "next/link";
 import { CiImageOff } from "react-icons/ci";
+import { songService } from "@/features/song/services/songService";
 
 const TopHotSongs = () => {
   const { topHotSongs, isLoading, error } = useHome();
@@ -35,9 +36,11 @@ const TopHotSongs = () => {
 };
 
 const SongListItem = ({ song, index }: { song: Song; index: number }) => {
+  const songSlug = songService.generateSongSlug(song);
+
   return (
     <Link
-      href={`/song/${song.name?.toLowerCase().replace(/ /g, "-")}-${song.id?.replace(/-/g, "")}`}
+      href={`/song/${songSlug}`}
       className="group flex gap-4 rounded-lg border border-border bg-bg-tertiary p-4 transition-colors hover:bg-bg-secondary"
     >
       {/* index */}

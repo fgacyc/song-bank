@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { creatorService } from "@/features/creators/services/creatorService";
+import { creatorService } from "@/features/creator/services/creatorService";
 import type { Creator } from "@/types/types";
 
 export default async function handler(

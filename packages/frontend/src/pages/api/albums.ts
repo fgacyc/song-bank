@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { albumService } from "@/features/albums/services/albumService";
+import { albumService } from "@/features/album/services/albumService";
 
 export default async function handler(
   req: NextApiRequest,
