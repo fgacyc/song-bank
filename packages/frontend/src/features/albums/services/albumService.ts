@@ -5,7 +5,11 @@ import type { Album } from "@/types/types";
 export const albumService = {
   async getAlbumsWithCovers(limit?: number): Promise<Album[]> {
     try {
-      // Fetch songs grouped by album
+      console.log(
+        `Starting getAlbumsWithCovers (Spotify-only), limit: ${limit}`,
+      );
+
+      // Step 1: Fetch songs grouped by album from database
       const songs = await db.song.findMany({
         select: {
           id: true,
@@ -18,10 +22,13 @@ export const albumService = {
           updated_at: true,
           cover_image_url: true,
         },
-        where: { album: { not: null } },
+        where: {
+          NOT: [{ album: null }, { album: "" }],
+        },
         orderBy: { album: "asc" },
       });
 
+      // Step 2: Group songs into albums
       const albumsMap = new Map<string, Album>();
 
       songs.forEach((song) => {
@@ -29,18 +36,18 @@ export const albumService = {
 
         if (!albumsMap.has(albumName)) {
           albumsMap.set(albumName, {
-            id: `album-${albumName.toLowerCase().replace(/\s+/g, "-")}`,
+            id: `${albumName.toLowerCase().replace(/\s+/g, "-")}`,
             name: albumName,
             artist: song.original_band ?? "unknown",
             songs: [],
             songCount: 0,
             created_at: song.created_at!,
             updated_at: song.updated_at!,
-            cover_image_url: song.cover_image_url,
+            cover_image_url: null, // Will be fetched from Spotify
           });
         }
 
-        const album = albumsMap.get(albumName)!; // Safe non-null assertion since we just set it
+        const album = albumsMap.get(albumName)!;
 
         album.songs.push({
           id: song.id,
@@ -50,12 +57,7 @@ export const albumService = {
         });
         album.songCount = album.songs.length;
 
-        // Use the first non-null cover image found
-        if (!album.cover_image_url && song.cover_image_url) {
-          album.cover_image_url = song.cover_image_url;
-        }
-
-        // Safe date comparisons
+        // Update dates
         if (
           song.created_at &&
           album.created_at &&
@@ -75,54 +77,52 @@ export const albumService = {
       const albums = Array.from(albumsMap.values()).sort(
         (a, b) => b.songCount - a.songCount,
       );
+      console.log(`Found ${albums.length} unique albums`);
 
-      // Fetch missing album covers in batches
-      const batchSize = 3;
-      const albumsWithCovers: Album[] = [];
+      // Step 3: Fetch album covers from Spotify for all albums
+      const albumsToProcess = albums.slice(
+        0,
+        Math.min(limit ?? albums.length, 8),
+      ); // Limit Spotify calls
+      const processedAlbums: Album[] = [];
 
-      for (let i = 0; i < albums.length; i += batchSize) {
-        const batch = albums.slice(i, i + batchSize);
+      for (const album of albumsToProcess) {
+        if (album.name && album.artist && album.artist !== "unknown") {
+          try {
+            console.log(
+              `Searching Spotify for album: "${album.name}" by "${album.artist}"`,
+            );
+            const coverUrl = await spotifyService.searchAlbumCover(
+              album.name,
+              album.artist,
+            );
 
-        const batchPromises = batch.map(async (album): Promise<Album> => {
-          // Only fetch if no cover exists and we have both album name and artist
-          if (!album.cover_image_url && album.name && album.artist) {
-            try {
-              const coverUrl = (await spotifyService.searchImage(
-                `${album.name} ${album.artist}`,
-                "album",
-              ))!;
-              return { ...album, cover_image_url: coverUrl };
-            } catch (error) {
-              console.error(
-                `Failed to fetch album cover for ${album.name}:`,
-                error,
+            if (coverUrl) {
+              console.log(
+                `Found Spotify cover for album "${album.name}": ${coverUrl}`,
               );
-              return album;
+              processedAlbums.push({ ...album, cover_image_url: coverUrl });
+            } else {
+              console.log(`No Spotify cover found for album "${album.name}"`);
+              processedAlbums.push(album);
             }
+          } catch (error) {
+            console.error(
+              `Failed to fetch Spotify cover for album "${album.name}":`,
+              error,
+            );
+            processedAlbums.push(album);
           }
-          return album;
-        });
 
-        try {
-          const batchResults = await Promise.all(batchPromises);
-          albumsWithCovers.push(...batchResults);
-        } catch (error) {
-          console.error("Batch processing error:", error);
-          // Add original albums if batch fails
-          albumsWithCovers.push(...batch);
-        }
-
-        // Small delay between batches to respect rate limits
-        if (i + batchSize < albums.length) {
-          await new Promise((resolve) => setTimeout(resolve, 200));
+          // Rate limiting
+          await new Promise((resolve) => setTimeout(resolve, 300));
+        } else {
+          processedAlbums.push(album);
         }
       }
 
-      if (limit) {
-        return albumsWithCovers.slice(0, limit);
-      }
-
-      return albumsWithCovers;
+      console.log(`Processed ${albumsToProcess.length} albums via Spotify`);
+      return processedAlbums;
     } catch (error) {
       console.error("Error in getAlbumsWithCovers:", error);
       throw new Error("Failed to fetch albums with covers");

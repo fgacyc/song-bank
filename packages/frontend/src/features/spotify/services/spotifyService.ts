@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { env } from "@/env";
 
@@ -32,10 +32,11 @@ export const spotifyService = {
     }
   },
 
+  // track
   async searchTrack(query: string) {
     try {
       const token = await this.getAccessToken();
-      const encodedQuery = encodeURIComponent(query);
+      const encodedQuery = encodeURIComponent(query.toLowerCase());
 
       console.log(`Searching Spotify for track: "${query}"`);
 
@@ -75,16 +76,16 @@ export const spotifyService = {
     artistName?: string,
   ): Promise<string | null> {
     try {
-      const query = artistName ? `${songName} artist:${artistName}` : songName;
+      const query = songName.toLowerCase();
       const track = await this.searchTrack(query);
 
       if (track?.album?.images?.length > 0) {
         const imageUrl = track.album.images[0].url;
-        console.log(`Found cover image for "${songName}": ${imageUrl}`);
+        console.log(`Found track cover for "${songName}": ${imageUrl}`);
         return imageUrl;
       }
 
-      console.log(`No cover image found for "${songName}"`);
+      console.log(`No track cover found for "${songName}"`);
       return null;
     } catch (error) {
       console.error(`Error getting track cover for "${songName}":`, error);
@@ -92,12 +93,76 @@ export const spotifyService = {
     }
   },
 
-  async searchArtist(query: string) {
+  // album
+  async searchAlbum(query: string) {
     try {
       const token = await this.getAccessToken();
       const encodedQuery = encodeURIComponent(query);
 
-      console.log(`Searching Spotify for artist: "${query}"`);
+      console.log(`Searching Spotify for album: "${query}"`);
+
+      const response = await fetch(
+        `${SPOTIFY_API_BASE}/search?q=${encodedQuery}&type=album&limit=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Spotify API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const album = data.albums?.items?.[0] || null;
+
+      if (album) {
+        console.log(
+          `Found album: ${album.name} by ${album.artists?.[0]?.name}`,
+        );
+      } else {
+        console.log(`No album found for query: "${query}"`);
+      }
+
+      return album;
+    } catch (error) {
+      console.error("Error searching Spotify album:", error);
+      return null;
+    }
+  },
+
+  async searchAlbumCover(
+    albumName: string,
+    artistName?: string,
+  ): Promise<string | null> {
+    try {
+      const query = artistName
+        ? `${albumName.toLowerCase()} ${artistName.toLowerCase()}`
+        : albumName;
+      const album = await this.searchAlbum(query);
+
+      if (album?.images?.length > 0) {
+        const imageUrl = album.images[0].url;
+        console.log(`Found album cover for "${albumName}": ${imageUrl}`);
+        return imageUrl;
+      }
+
+      console.log(`No album cover found for "${albumName}"`);
+      return null;
+    } catch (error) {
+      console.error(`Error getting album cover for "${albumName}":`, error);
+      return null;
+    }
+  },
+
+  // artist
+  async searchArtist(query: string) {
+    try {
+      const token = await this.getAccessToken();
+      const encodedQuery = encodeURIComponent(query.toLowerCase());
+
+      console.log(`Searching Spotify for artist: "${query.toLowerCase()}"`);
 
       const response = await fetch(
         `${SPOTIFY_API_BASE}/search?q=${encodedQuery}&type=artist&limit=1`,
@@ -155,9 +220,12 @@ export const spotifyService = {
     if (type === "artist") {
       return this.searchArtistImage(query);
     }
+    if (type === "album") {
+      return this.searchAlbumCover(query);
+    }
     if (type === "track") {
       return this.getTrackCover(query);
     }
-    return this.getTrackCover(query);
+    return null;
   },
 };

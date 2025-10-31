@@ -3,6 +3,7 @@ import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
 import type { Creator } from "@/types/types";
+import Link from "next/link";
 
 /* 
 TODO: 
@@ -18,7 +19,7 @@ const FeaturedCreators = () => {
       `Creator "${creator.name}" cover URL:`,
       creator.cover_image_url,
     );
-    return creator.cover_image_url ?? "/carousel-2.jpg";
+    return creator.cover_image_url ?? "";
   };
 
   // TODO: loading and error ui
@@ -39,7 +40,11 @@ const FeaturedCreators = () => {
       <div className="grid w-fit grid-cols-2 items-center justify-center gap-6 lg:grid-cols-3 xl:grid-cols-4">
         {featuredCreators.data?.map((creator) => {
           return (
-            <div key={creator.id} className="w-full flex-shrink-0 md:w-fit">
+            <Link
+              href={`/creator/${creator.id}`}
+              key={creator.id}
+              className="w-full flex-shrink-0 md:w-fit"
+            >
               <Polaroid
                 imageSrc={getCreatorImage(creator)}
                 title={creator.name}
@@ -52,7 +57,7 @@ const FeaturedCreators = () => {
                 imgRatio={0.6}
                 descriptionAlignment="topRight"
               />
-            </div>
+            </Link>
           );
         })}
       </div>

@@ -18,20 +18,24 @@ export const songService = {
     }
   },
 
-  async fetchAndStoreCover(song: Song): Promise<Song> {
+  async fetchAndStoreCoverFromSpotify(song: Song): Promise<Song> {
+    // Step 1: Check if song already has cover in DB
     if (song.cover_image_url) {
       console.log(
-        `Song "${song.name}" already has cover: ${song.cover_image_url}`,
+        `Song "${song.name}" already has cover from DB: ${song.cover_image_url}`,
       );
       return song;
     }
 
+    // Step 2: Skip if no song name
     if (!song.name) {
-      console.log(`Song ${song.id} has no name, skipping cover fetch`);
+      console.log(`Song ${song.id} has no name, skipping Spotify fetch`);
       return song;
     }
 
+    // Step 3: Search Spotify API only if no DB cover exists
     try {
+      console.log(`DB has no cover for "${song.name}", searching Spotify...`);
       console.log(
         `Fetching cover for: "${song.name}" by "${song.original_band ?? "Unknown"}"`,
       );
@@ -42,25 +46,28 @@ export const songService = {
       );
 
       if (coverUrl) {
-        console.log(`Found cover for "${song.name}": ${coverUrl}`);
-        console.log(`Attempting to save cover to database...`);
+        console.log(`Found Spotify cover for "${song.name}": ${coverUrl}`);
+        console.log(`Saving cover to database...`);
 
         const updatedSong = await this.updateSongCover(song.id, coverUrl);
         console.log(`Successfully stored cover for "${song.name}"`);
         return updatedSong;
       } else {
-        console.log(`No cover found for "${song.name}"`);
+        console.log(`No Spotify cover found for "${song.name}"`);
       }
     } catch (error) {
-      console.error(`Failed to fetch cover for "${song.name}":`, error);
+      console.error(`Failed to fetch Spotify cover for "${song.name}":`, error);
     }
 
     return song;
   },
 
   async getSongsWithCovers(limit?: number): Promise<Song[]> {
-    console.log(`Starting getSongsWithCovers, limit: ${limit}`);
+    console.log(
+      `Starting getSongsWithCovers (DB-first approach), limit: ${limit}`,
+    );
 
+    // Step 1: Fetch songs from database
     const songs = await db.song.findMany({
       take: limit,
       orderBy: { created_at: "desc" },
@@ -68,22 +75,34 @@ export const songService = {
 
     console.log(`Found ${songs.length} songs in database`);
 
-    // Process first 5 songs for testing
-    const songsToProcess = songs.slice(0, 5);
-    const updatedSongs: Song[] = [];
+    // Step 2: Count songs with existing covers
+    const songsWithCovers = songs.filter((s) => s.cover_image_url);
+    const songsWithoutCovers = songs.filter((s) => !s.cover_image_url);
+
+    console.log(`Songs with existing covers: ${songsWithCovers.length}`);
+    console.log(`Songs needing Spotify lookup: ${songsWithoutCovers.length}`);
+
+    // Step 3: Process only songs without covers (DB-first approach)
+    const songsToProcess = songsWithoutCovers.slice(0, 3); // Limit Spotify calls
+    const updatedSongs: Song[] = [...songsWithCovers]; // Start with songs that have covers
 
     for (let i = 0; i < songsToProcess.length; i++) {
       const song = songsToProcess[i];
+
+      if (!song || song == undefined) {
+        return updatedSongs;
+      }
+
       console.log(
-        `Processing song ${i + 1}/${songsToProcess.length}: "${song.name}"`,
+        `Processing song ${i + 1}/${songsToProcess.length}: "${song.name}" (no DB cover)`,
       );
 
       try {
-        const updatedSong = await this.fetchAndStoreCover(song);
+        const updatedSong = await this.fetchAndStoreCoverFromSpotify(song);
         updatedSongs.push(updatedSong);
 
         if (i < songsToProcess.length - 1) {
-          console.log("Waiting 1 second before next request...");
+          console.log("Waiting 1 second before next Spotify request...");
           await new Promise((resolve) => setTimeout(resolve, 1000));
         }
       } catch (error) {
@@ -92,18 +111,50 @@ export const songService = {
       }
     }
 
-    const remainingSongs = songs.slice(5);
-    updatedSongs.push(...remainingSongs);
+    // Step 4: Add remaining songs without processing
+    const remainingSongsWithoutCovers = songsWithoutCovers.slice(3);
+    updatedSongs.push(...remainingSongsWithoutCovers);
 
     console.log(
-      `Processed ${songsToProcess.length} songs, returning ${updatedSongs.length} total`,
+      `Processed ${songsToProcess.length} songs via Spotify, returning ${updatedSongs.length} total`,
     );
 
-    const songsWithCovers = updatedSongs.filter((s) => s.cover_image_url);
+    const finalSongsWithCovers = updatedSongs.filter((s) => s.cover_image_url);
     console.log(
-      `Songs with covers: ${songsWithCovers.length}/${updatedSongs.length}`,
+      `Final count - Songs with covers: ${finalSongsWithCovers.length}/${updatedSongs.length}`,
     );
 
     return updatedSongs;
+  },
+
+  // New method for single song cover fetch
+  async getSongCoverUrl(songId: string): Promise<string | null> {
+    try {
+      const song = await db.song.findUnique({ where: { id: songId } });
+      if (!song) return null;
+
+      // Return existing cover if available
+      if (song.cover_image_url) {
+        return song.cover_image_url;
+      }
+
+      // Fetch from Spotify if no cover in DB
+      if (song.name) {
+        const coverUrl = await spotifyService.getTrackCover(
+          song.name,
+          song.original_band ?? undefined,
+        );
+
+        if (coverUrl) {
+          await this.updateSongCover(song.id, coverUrl);
+          return coverUrl;
+        }
+      }
+
+      return null;
+    } catch (error) {
+      console.error(`Error getting cover for song ${songId}:`, error);
+      return null;
+    }
   },
 };

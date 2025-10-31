@@ -4,6 +4,8 @@ import { useHome } from "../hooks/useHome";
 import type { Song } from "@prisma/client";
 import { Badge } from "@/features/shared/ui/Badge";
 import Image from "next/image";
+import Link from "next/link";
+import { CiImageOff } from "react-icons/ci";
 
 const TopHotSongs = () => {
   const { topHotSongs, isLoading, error } = useHome();
@@ -34,21 +36,30 @@ const TopHotSongs = () => {
 
 const SongListItem = ({ song, index }: { song: Song; index: number }) => {
   return (
-    <div className="group flex gap-4 rounded-lg border border-border bg-bg-tertiary p-4 transition-colors hover:bg-bg-secondary">
+    <Link
+      href={`/song/${song.name?.toLowerCase().replace(/ /g, "-")}-${song.id?.replace(/-/g, "")}`}
+      className="group flex gap-4 rounded-lg border border-border bg-bg-tertiary p-4 transition-colors hover:bg-bg-secondary"
+    >
       {/* index */}
-      <h3 className="flex px-4 pt-2 text-2xl font-semibold text-text-secondary">
+      <h3 className="flex w-12 px-2 pt-2 text-2xl font-semibold text-text-secondary">
         {index + 1}
       </h3>
 
       {/* image */}
       <div className="h-16 w-16 overflow-hidden rounded-md">
         <div className="relative h-16 w-16 flex-shrink-0 transition group-hover:scale-105">
-          <Image
-            src={song.cover_image_url ?? "/carousel-3.jpg"}
-            alt={`${song.name} cover`}
-            fill
-            className="object-cover"
-          />
+          {song.cover_image_url ? (
+            <Image
+              src={song.cover_image_url}
+              alt={`${song.name} cover`}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-bg-secondary text-text-secondary">
+              <CiImageOff />
+            </div>
+          )}
         </div>
       </div>
 
@@ -81,7 +92,7 @@ const SongListItem = ({ song, index }: { song: Song; index: number }) => {
           </Badge>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 

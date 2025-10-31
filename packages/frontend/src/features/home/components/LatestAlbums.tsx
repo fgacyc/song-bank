@@ -3,7 +3,8 @@ import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/features/shared/ui/Badge";
-import { Album } from "@/types/types";
+import type { Album } from "@/types/types";
+import Link from "next/link";
 
 const LatestAlbums = () => {
   const { latestAlbums, isLoading, error } = useHome();
@@ -47,7 +48,7 @@ const LatestAlbums = () => {
   const getAlbumImage = (
     album: Album & { cover_image_url?: string | null },
   ) => {
-    return album.cover_image_url ?? "/carousel-2.jpg";
+    return album.cover_image_url ?? "";
   };
 
   // TODO: loading and error ui
@@ -109,7 +110,11 @@ const LatestAlbums = () => {
             ].filter(Boolean);
 
             return (
-              <div key={album.id} className="flex-shrink-0">
+              <Link
+                href={`/album/${album.id}`}
+                key={album.id}
+                className="flex-shrink-0"
+              >
                 <Polaroid
                   imageSrc={getAlbumImage(album)}
                   title={album.name}
@@ -119,7 +124,7 @@ const LatestAlbums = () => {
                   imgRatio={0.48}
                   descriptionAlignment="bottomLeft"
                 />
-              </div>
+              </Link>
             );
           })}
         </div>

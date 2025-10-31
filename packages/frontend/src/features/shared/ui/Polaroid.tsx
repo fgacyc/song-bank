@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { CiImageOff } from "react-icons/ci";
 
 interface PolaroidProps {
   imageSrc?: string;
@@ -21,7 +22,7 @@ interface PolaroidProps {
 }
 
 const Polaroid = ({
-  imageSrc = "/carousel-2.jpg",
+  imageSrc,
   title,
   captions,
   width = 200,
@@ -50,12 +51,18 @@ const Polaroid = ({
         className="relative w-full overflow-hidden bg-gray-100"
         style={{ height: `${height * imgRatio}px` }}
       >
-        <Image
-          src={imageSrc}
-          alt={title ?? "Untitled"}
-          fill
-          className="object-cover transition-transform duration-300 group-hover/polaroid:scale-110"
-        />
+        {imageSrc ? (
+          <Image
+            src={imageSrc}
+            alt={title ?? "Untitled"}
+            fill
+            className="object-cover transition-transform duration-300 group-hover/polaroid:scale-110"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-bg-secondary text-text-secondary transition-transform duration-300 group-hover/polaroid:scale-110">
+            <CiImageOff />
+          </div>
+        )}
       </div>
 
       <div

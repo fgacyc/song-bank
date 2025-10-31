@@ -43,7 +43,7 @@ export default async function handler(
 
         if (!creatorsMap.has(creatorName)) {
           creatorsMap.set(creatorName, {
-            id: `creator-${creatorName.toLowerCase().replace(/\s+/g, "-")}`,
+            id: `${creatorName.toLowerCase().replace(/\s+/g, "-")}`,
             name: creatorName,
             songs: [],
             albums: new Set(),
