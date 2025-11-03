@@ -76,7 +76,9 @@ export const spotifyService = {
     artistName?: string,
   ): Promise<string | null> {
     try {
-      const query = songName.toLowerCase();
+      const query = artistName
+        ? ` ${artistName.toLowerCase()} ${songName.toLowerCase()}`
+        : songName.toLowerCase();
       const track = await this.searchTrack(query);
 
       if (track?.album?.images?.length > 0) {

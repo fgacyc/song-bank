@@ -68,6 +68,9 @@ export const songServiceServer = {
 
       const song = await db.song.findUnique({
         where: { id: songId },
+        include: {
+          tags: true,
+        },
       });
 
       if (!song) {
