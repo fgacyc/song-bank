@@ -3,8 +3,8 @@ import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/features/shared/ui/Badge";
-import type { Album } from "@/types/types";
 import Link from "next/link";
+import type { AlbumWithArtist } from "@/types/types";
 
 const LatestAlbums = () => {
   const { latestAlbums, isLoading, error } = useHome();
@@ -45,10 +45,8 @@ const LatestAlbums = () => {
     checkScrollButtons();
   }, [latestAlbums.data]);
 
-  const getAlbumImage = (
-    album: Album & { cover_image_url?: string | null },
-  ) => {
-    return album.cover_image_url ?? "";
+  const getAlbumImage = (album: AlbumWithArtist) => {
+    return album.image_cover_url ?? "";
   };
 
   // TODO: loading and error ui
@@ -96,8 +94,8 @@ const LatestAlbums = () => {
           onScroll={checkScrollButtons}
         >
           {latestAlbums.data?.map((album) => {
-            const createdDate = album.created_at
-              ? new Date(album.created_at).toLocaleDateString("en-US", {
+            const createdDate = album.release_date
+              ? new Date(album.release_date).toLocaleDateString("en-US", {
                   month: "short",
                   year: "numeric",
                   day: "2-digit",
@@ -105,7 +103,7 @@ const LatestAlbums = () => {
               : "";
 
             const captions = [
-              album.artist || "Unknown artist",
+              album.artist.name || "Unknown artist",
               createdDate,
             ].filter(Boolean);
 

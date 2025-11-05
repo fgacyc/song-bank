@@ -1,9 +1,10 @@
-import type { Song, Tag } from "@prisma/client";
+import type { SongWithAlbumAndArtist } from "@/types/types";
+import type { Song } from "@prisma/client";
 
 export const songService = {
   async getSongByIdViaAPI(
     songId: string,
-  ): Promise<(Song & { tags: Tag[] }) | null> {
+  ): Promise<SongWithAlbumAndArtist | null> {
     try {
       console.log(`Fetching song by ID: ${songId}`);
       const response = await fetch(`/api/songs?type=byId&id=${songId}`);
@@ -16,7 +17,7 @@ export const songService = {
         throw new Error(`Failed to fetch song: ${response.status}`);
       }
 
-      const song = (await response.json()) as Song & { tags: Tag[] };
+      const song = (await response.json()) as SongWithAlbumAndArtist;
       console.log(`Found song: "${song.name}"`);
       return song;
     } catch (error) {
@@ -25,7 +26,7 @@ export const songService = {
     }
   },
 
-  async getTopHotSongsViaAPI(limit = 20): Promise<Song & { tags: Tag[] }[]> {
+  async getTopHotSongsViaAPI(limit = 20): Promise<SongWithAlbumAndArtist[]> {
     try {
       console.log(`Fetching top hot songs, limit: ${limit}`);
       const response = await fetch(
@@ -36,7 +37,7 @@ export const songService = {
         throw new Error(`Failed to fetch top hot songs: ${response.status}`);
       }
 
-      const songs = (await response.json()) as Song & { tags: Tag[] }[];
+      const songs = (await response.json()) as SongWithAlbumAndArtist[];
       console.log(`Found ${songs.length} top hot songs`);
       return songs;
     } catch (error) {

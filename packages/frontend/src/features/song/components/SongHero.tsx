@@ -1,13 +1,13 @@
 import { Badge } from "@/features/shared/ui/Badge";
 import IconButton from "@/features/shared/ui/IconButton";
-import type { Song, Tag } from "@prisma/client";
+import type { SongWithAlbumAndArtist } from "@/types/types";
 import { Heart, Share2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { CiImageOff } from "react-icons/ci";
 
 interface SongHeroProps {
-  song: Song & { tags: Tag[] };
+  song: SongWithAlbumAndArtist;
 }
 
 const SongHero = ({ song }: SongHeroProps) => {
@@ -61,9 +61,9 @@ const SongHero = ({ song }: SongHeroProps) => {
             )}
 
             {/* song album */}
-            {song.album && (
+            {song.album.name && (
               <p className="text-sm font-light text-text-secondary">
-                {song.album}
+                {song.album.name}
               </p>
             )}
 

@@ -1,40 +1,11 @@
-export interface Album {
-  id: string;
-  name: string;
-  artist: string;
-  songs: AlbumSong[];
-  songCount: number;
-  created_at: Date;
-  updated_at: Date;
-  cover_image_url?: string | null;
-}
+import type { Album, Artist, Song, Tag } from "@prisma/client";
 
-export interface AlbumSong {
-  id: string;
-  name: string | null;
-  original_key: string | null;
-  song_language: string | null;
-  cover_image_url?: string | null;
-}
+export type AlbumWithArtist = Album & {
+  artist: Artist;
+};
 
-export interface Creator {
-  id: string;
-  name: string;
-  songs: CreatorSong[];
-  albums: string[] | Set<string>;
-  songCount: number;
-  albumCount: number;
-  created_at: Date;
-  updated_at: Date;
-  cover_image_url?: string | null;
-}
-
-export interface CreatorSong {
-  id: string;
-  name: string | null;
-  album: string | null;
-  original_key: string | null;
-  song_language: string | null;
-  original_youtube_url: string | null;
-  cover_image_url?: string | null;
-}
+export type SongWithAlbumAndArtist = Song & {
+  artist: Artist;
+  album: Album;
+  tags: Tag[];
+};

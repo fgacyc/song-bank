@@ -5,11 +5,11 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/features/shared/ui/Breadcrumb";
-import type { Song } from "@prisma/client";
+import type { SongWithAlbumAndArtist } from "@/types/types";
 import React from "react";
 
 interface SongPageBreadcrumbProps {
-  song: Song;
+  song: SongWithAlbumAndArtist;
 }
 
 const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
@@ -34,14 +34,14 @@ const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
             </>
           )}
 
-          {song.album && (
+          {song.album.name && (
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink
-                  href={`/album/${song.album.toLowerCase().replace(/\s+/g, "-")}`}
+                  href={`/album/${song.album.name.toLowerCase().replace(/\s+/g, "-")}`}
                 >
-                  {song.album}
+                  {song.album.name}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </>

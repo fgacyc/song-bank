@@ -70,6 +70,8 @@ export const songServiceServer = {
         where: { id: songId },
         include: {
           tags: true,
+          artist: true,
+          album: true,
         },
       });
 
@@ -106,6 +108,7 @@ export const songServiceServer = {
     }
   },
 
+  // TODO: remove this once new form is created where user can select the image they want before inputting
   async getSongsWithCovers(limit?: number): Promise<Song[]> {
     console.log(
       `Starting getSongsWithCovers (DB-first approach), limit: ${limit}`,
@@ -116,6 +119,10 @@ export const songServiceServer = {
       const songs = await db.song.findMany({
         take: limit,
         orderBy: { created_at: "desc" },
+        include: {
+          artist: true,
+          album: true,
+        },
       });
 
       console.log(`Found ${songs.length} songs in database`);

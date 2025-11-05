@@ -10,9 +10,9 @@ datasource db {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model Song {
-  id                   String      @id @unique @default(uuid())
+  id                   String      @id(map: "song_pkey") @unique(map: "song_id_key") @default(uuid())
   name                 String?
-  album                String?
+  album_old            String?
   ag_link              String?
   eg_link              String?
   alt_name             String?
@@ -29,9 +29,16 @@ model Song {
   file_sec_voice       String?
   original_youtube_url String?     @db.VarChar
   cover_image_url      String?     @db.VarChar
+  artist_id            String?     @db.Uuid
+  album_id             String?     @db.Uuid
   file_sequencer       Sequencer[]
   tags                 Tag[]
   favorite             Favorite[]
+  album                Album?      @relation(fields: [album_id], references: [id])
+  artist               Artist?     @relation(fields: [artist_id], references: [id])
+
+  @@index([album_id])
+  @@index([artist_id])
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -77,4 +84,27 @@ model SongToTag {
   @@unique([A, B], map: "_SongToTag_AB_unique")
   @@index([B], map: "_SongToTag_B_index")
   @@map("_SongToTag")
+}
+
+model Album {
+  id              String   @id @db.Uuid
+  name            String
+  release_date    DateTime @db.Date
+  image_cover_url String?
+  artist_id       String   @db.Uuid
+  artist          Artist?  @relation(fields: [artist_id], references: [id])
+  Song            Song[]
+
+  @@index([artist_id])
+}
+
+model Artist {
+  id              String  @id @db.Uuid
+  name            String
+  bio             String?
+  image_cover_url String?
+  album_count     Int?
+  song_count      Int?
+  Song            Song[]
+  Album           Album[]
 }

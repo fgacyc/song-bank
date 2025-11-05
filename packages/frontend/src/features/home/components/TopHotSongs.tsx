@@ -1,12 +1,12 @@
 import React from "react";
 import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 import { useHome } from "../hooks/useHome";
-import type { Song } from "@prisma/client";
 import { Badge } from "@/features/shared/ui/Badge";
 import Image from "next/image";
 import Link from "next/link";
 import { CiImageOff } from "react-icons/ci";
 import { songService } from "@/features/song/services/songService";
+import type { SongWithAlbumAndArtist } from "@/types/types";
 
 const TopHotSongs = () => {
   const { topHotSongs, isLoading, error } = useHome();
@@ -35,7 +35,13 @@ const TopHotSongs = () => {
   );
 };
 
-const SongListItem = ({ song, index }: { song: Song; index: number }) => {
+const SongListItem = ({
+  song,
+  index,
+}: {
+  song: SongWithAlbumAndArtist;
+  index: number;
+}) => {
   const songSlug = songService.generateSongSlug(song);
 
   return (
@@ -75,7 +81,9 @@ const SongListItem = ({ song, index }: { song: Song; index: number }) => {
           {song.original_band}
         </p>
         {song.album && (
-          <p className="truncate text-sm text-text-secondary">{song.album}</p>
+          <p className="truncate text-sm text-text-secondary">
+            {song.album.name}
+          </p>
         )}
       </div>
 

@@ -1,13 +1,13 @@
-import type { Song, Tag } from "@prisma/client";
 import React from "react";
 import SongBreadcrumb from "./SongBreadcrumb";
 import SongHero from "./SongHero";
 import SongTransposition from "./SongTransposition";
 import SongLyrics from "./SongLyrics";
 import SongYouTubeLink from "./SongYouTubeLink";
+import type { SongWithAlbumAndArtist } from "@/types/types";
 
 interface SongPageProps {
-  song?: (Song & { tags: Tag[] }) | null;
+  song?: SongWithAlbumAndArtist | null;
 }
 
 const SongPage = ({ song }: SongPageProps) => {

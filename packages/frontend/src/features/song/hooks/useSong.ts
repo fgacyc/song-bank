@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { songService } from "@/features/song/services/songService";
-import type { Song, Tag } from "@prisma/client";
+import type { SongWithAlbumAndArtist } from "@/types/types";
 
 export const useSong = (songParam: string | undefined) => {
-  return useQuery<(Song & { tags: Tag[] }) | null>({
+  return useQuery<SongWithAlbumAndArtist | null>({
     queryKey: ["song", songParam],
     queryFn: async () => {
       if (!songParam) throw new Error("Song parameter is required");
@@ -24,7 +24,7 @@ export const useSong = (songParam: string | undefined) => {
 
 // Hook for top hot songs
 export const useTopHotSongs = (limit = 20) => {
-  return useQuery<Song & { tags: Tag[] }[]>({
+  return useQuery<SongWithAlbumAndArtist[]>({
     queryKey: ["topHotSongs", limit],
     queryFn: () => songService.getTopHotSongsViaAPI(limit),
     staleTime: 1000 * 60 * 5, // 5 mins

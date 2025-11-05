@@ -2,24 +2,20 @@ import React from "react";
 import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
-import type { Creator } from "@/types/types";
 import Link from "next/link";
+import type { Artist } from "@prisma/client";
 
 /* 
 TODO: 
     implement collaborative filtering, 
-    currently use static mock data first
+    currently use mock data first
 */
 
 const FeaturedCreators = () => {
   const { featuredCreators, isLoading, error } = useHome();
 
-  const getCreatorImage = (creator: Creator) => {
-    console.log(
-      `Creator "${creator.name}" cover URL:`,
-      creator.cover_image_url,
-    );
-    return creator.cover_image_url ?? "";
+  const getCreatorImage = (creator: Artist) => {
+    return creator.image_cover_url ?? "";
   };
 
   // TODO: loading and error ui
@@ -49,8 +45,8 @@ const FeaturedCreators = () => {
                 imageSrc={getCreatorImage(creator)}
                 title={creator.name}
                 captions={[
-                  `${creator.songCount} Songs`,
-                  `${creator.albumCount} Albums`,
+                  `${creator.song_count} Songs`,
+                  `${creator.album_count} Albums`,
                 ]}
                 width={250}
                 height={400}
