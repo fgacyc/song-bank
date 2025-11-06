@@ -1,5 +1,5 @@
 import { isYouTubeUrl, transformToEmbedUrl } from "@/helpers/youtubeHelpers";
-import { type FormikForm } from "@/pages";
+import { type FormikForm } from "@/pages/legacy/home";
 import { Field, useFormikContext } from "formik";
 import type { Dispatch, SetStateAction } from "react";
 import { IoSearch } from "react-icons/io5";

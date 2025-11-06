@@ -11,11 +11,11 @@ TODO:
     currently use mock data first
 */
 
-const FeaturedCreators = () => {
-  const { featuredCreators, isLoading, error } = useHome();
+const FeaturedArtists = () => {
+  const { featuredArtists, isLoading, error } = useHome();
 
-  const getCreatorImage = (creator: Artist) => {
-    return creator.image_cover_url ?? "";
+  const getArtistImage = (artist: Artist) => {
+    return artist.image_cover_url ?? "";
   };
 
   // TODO: loading and error ui
@@ -30,23 +30,23 @@ const FeaturedCreators = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <h2>Featured Creators</h2>
+        <h2>Featured Artists</h2>
         <HiMiniArrowTrendingUp className="text-xl" />
       </div>
       <div className="grid w-fit grid-cols-2 items-center justify-center gap-6 lg:grid-cols-3 xl:grid-cols-4">
-        {featuredCreators.data?.map((creator) => {
+        {featuredArtists.data?.map((artist) => {
           return (
             <Link
-              href={`/creator/${creator.id}`}
-              key={creator.id}
+              href={`/artist/${artist.id}`}
+              key={artist.id}
               className="w-full flex-shrink-0 md:w-fit"
             >
               <Polaroid
-                imageSrc={getCreatorImage(creator)}
-                title={creator.name}
+                imageSrc={getArtistImage(artist)}
+                title={artist.name}
                 captions={[
-                  `${creator.song_count} Songs`,
-                  `${creator.album_count} Albums`,
+                  `${artist.song_count} Songs`,
+                  `${artist.album_count} Albums`,
                 ]}
                 width={250}
                 height={400}
@@ -61,4 +61,4 @@ const FeaturedCreators = () => {
   );
 };
 
-export default FeaturedCreators;
+export default FeaturedArtists;

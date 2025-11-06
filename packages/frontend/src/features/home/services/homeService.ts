@@ -14,14 +14,14 @@ export const homeService = {
     }
   },
 
-  async getFeaturedCreators(): Promise<Artist[]> {
+  async getFeaturedArtists(): Promise<Artist[]> {
     try {
-      const response = await fetch("/api/creators?limit=4&withCovers=true");
-      if (!response.ok) throw new Error("Failed to fetch creators");
-      const creators = (await response.json()) as Artist[];
-      return creators;
+      const response = await fetch("/api/artists?limit=4&withCovers=true");
+      if (!response.ok) throw new Error("Failed to fetch artists");
+      const artists = (await response.json()) as Artist[];
+      return artists;
     } catch (error) {
-      console.error("Error fetching featured creators:", error);
+      console.error("Error fetching featured artists:", error);
       throw error;
     }
   },

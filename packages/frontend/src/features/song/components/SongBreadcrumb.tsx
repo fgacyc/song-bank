@@ -26,7 +26,7 @@ const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink
-                  href={`/creator/${song.original_band.toLowerCase().replace(/\s+/g, "-")}`}
+                  href={`/artist/${song.original_band.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   {song.original_band}
                 </BreadcrumbLink>

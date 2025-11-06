@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import type { FormikForm } from "@/pages";
+import type { FormikForm } from "@/pages/legacy/home";
 import type { Tag } from "@prisma/client";
 import { Field, useFormikContext } from "formik";
 

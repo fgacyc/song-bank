@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import type { NextApiHandler } from "next";
-import { type FormikForm } from "..";
+import { type FormikForm } from "../legacy/home";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {

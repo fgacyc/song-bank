@@ -2,12 +2,12 @@ import { db } from "@/lib/prisma";
 import { spotifyService } from "@/features/spotify/services/spotifyService";
 import type { Artist } from "@prisma/client";
 
-export const creatorService = {
+export const artistService = {
   // TODO: remove this once new form is created where user can select the image they want before inputting
-  async getCreatorsWithCovers(limit?: number): Promise<Artist[]> {
+  async getArtistsWithCovers(limit?: number): Promise<Artist[]> {
     try {
       console.log(
-        `Starting getCreatorsWithCovers (Spotify-only), limit: ${limit}`,
+        `Starting getArtistsWithCovers (Spotify-only), limit: ${limit}`,
       );
 
       const artists = await db.artist.findMany({
@@ -16,62 +16,62 @@ export const creatorService = {
         },
       });
 
-      // Step 3: Fetch artist images from Spotify for all valid creators
-      const creatorsToProcess = artists
-        .filter((c) => c.name !== "Unknown Creator" && c.name)
+      // Step 3: Fetch artist images from Spotify for all valid artists
+      const artistsToProcess = artists
+        .filter((c) => c.name !== "Unknown Artist" && c.name)
         .slice(0, Math.min(limit ?? 4, 4)); // Limit Spotify calls
 
-      const processedCreators: Artist[] = [];
+      const processedArtists: Artist[] = [];
 
-      for (const creator of creatorsToProcess) {
+      for (const artist of artistsToProcess) {
         try {
-          console.log(`Searching Spotify for artist: "${creator.name}"`);
+          console.log(`Searching Spotify for artist: "${artist.name}"`);
           const coverUrl = await spotifyService.searchArtistImage(
-            creator.name.toLowerCase(),
+            artist.name.toLowerCase(),
           );
 
           if (coverUrl) {
             console.log(
-              `Found Spotify cover for artist "${creator.name}": ${coverUrl}`,
+              `Found Spotify cover for artist "${artist.name}": ${coverUrl}`,
             );
-            processedCreators.push({ ...creator, image_cover_url: coverUrl });
+            processedArtists.push({ ...artist, image_cover_url: coverUrl });
           } else {
-            console.log(`No Spotify cover found for artist "${creator.name}"`);
-            processedCreators.push(creator);
+            console.log(`No Spotify cover found for artist "${artist.name}"`);
+            processedArtists.push(artist);
           }
         } catch (error) {
           console.error(
-            `Failed to fetch Spotify cover for artist "${creator.name}":`,
+            `Failed to fetch Spotify cover for artist "${artist.name}":`,
             error,
           );
-          processedCreators.push(creator);
+          processedArtists.push(artist);
         }
 
         // Rate limiting
         await new Promise((resolve) => setTimeout(resolve, 300));
       }
 
-      // Add creators not processed (Unknown Creator, etc.)
-      const remainingCreators = artists.filter(
+      // Add artists not processed (Unknown Artist, etc.)
+      const remainingArtists = artists.filter(
         (c) =>
-          c.name === "Unknown Creator" ||
+          c.name === "Unknown Artist" ||
           !c.name ||
-          !creatorsToProcess.find((p) => p.id === c.id),
+          !artistsToProcess.find((p) => p.id === c.id),
       );
-      processedCreators.push(...remainingCreators);
+      processedArtists.push(...remainingArtists);
 
       console.log(
-        `Processed ${creatorsToProcess.length} creators via Spotify, returning ${processedCreators.length} total`,
+        `Processed ${artistsToProcess.length} artists via Spotify, returning ${processedArtists.length} total`,
       );
 
       if (limit) {
-        return processedCreators.slice(0, limit);
+        return processedArtists.slice(0, limit);
       }
 
-      return processedCreators;
+      return processedArtists;
     } catch (error) {
-      console.error("Error in getCreatorsWithCovers:", error);
-      throw new Error("Failed to fetch creators with covers");
+      console.error("Error in getArtistsWithCovers:", error);
+      throw new Error("Failed to fetch artists with covers");
     }
   },
 };
