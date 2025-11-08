@@ -75,7 +75,7 @@ const Polaroid = ({
             {title || "Untitled"}
           </h3>
           {captions?.map((caption, index) => (
-            <p key={index} className="truncate text-sm text-text-secondary">
+            <p key={index} className="text-wrap text-sm text-text-secondary">
               {caption}
             </p>
           ))}

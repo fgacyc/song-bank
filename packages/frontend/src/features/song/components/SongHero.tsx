@@ -1,13 +1,13 @@
 import { Badge } from "@/features/shared/ui/Badge";
 import IconButton from "@/features/shared/ui/IconButton";
-import type { SongWithAlbumAndArtist } from "@/types/types";
+import type { SongType } from "@/types/types";
 import { Heart, Share2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { CiImageOff } from "react-icons/ci";
 
 interface SongHeroProps {
-  song: SongWithAlbumAndArtist;
+  song: SongType;
 }
 
 const SongHero = ({ song }: SongHeroProps) => {

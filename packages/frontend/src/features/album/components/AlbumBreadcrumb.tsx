@@ -5,15 +5,15 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/features/shared/ui/Breadcrumb";
-import type { SongType } from "@/types/types";
+import { AlbumType } from "@/types/types";
 import React from "react";
 import slugify from "slugify";
 
-interface SongPageBreadcrumbProps {
-  song: SongType;
+interface AlbumBreadcrumbProps {
+  album: AlbumType;
 }
 
-const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
+const AlbumBreadcrumb = ({ album }: AlbumBreadcrumbProps) => {
   return (
     <div className="flex justify-center px-6">
       <Breadcrumb className="w-full text-start sm:max-w-[80dvw] lg:max-w-[60dvw]">
@@ -22,27 +22,14 @@ const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
 
-          {song.original_band && (
+          {album.artist && (
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink
-                  href={`/artist/${song.artist.id}/${slugify(song.artist.name, { lower: true })}`}
+                  href={`/artist/${album.artist.id}/${slugify(album.artist.name, { lower: true })}`}
                 >
-                  {song.original_band}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </>
-          )}
-
-          {song.album.name && (
-            <>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  href={`/album/${song.album.id}/${slugify(song.album.name, { lower: true })}`}
-                >
-                  {song.album.name}
+                  {album.artist.name}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </>
@@ -50,7 +37,7 @@ const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
 
           <BreadcrumbSeparator />
           <BreadcrumbItem className="text-text-primary">
-            {song.name}
+            {album.name}
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -58,4 +45,4 @@ const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
   );
 };
 
-export default SongBreadcrumb;
+export default AlbumBreadcrumb;

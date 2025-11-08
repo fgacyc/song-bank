@@ -1,19 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { songService } from "@/features/song/services/songService";
-import type { SongWithAlbumAndArtist } from "@/types/types";
+import type { SongType } from "@/types/types";
 
-export const useSong = (songParam: string | undefined) => {
-  return useQuery<SongWithAlbumAndArtist | null>({
-    queryKey: ["song", songParam],
+export const useSong = (songId: string | undefined) => {
+  return useQuery<SongType | null>({
+    queryKey: ["song", songId],
     queryFn: async () => {
-      if (!songParam) throw new Error("Song parameter is required");
-
-      const songId = songService.extractSongId(songParam);
-      if (!songId) throw new Error("Invalid song parameter format");
+      if (!songId) throw new Error("Song parameter is required");
 
       return await songService.getSongByIdViaAPI(songId);
     },
-    enabled: !!songParam,
+    enabled: !!songId,
     staleTime: 1000 * 60 * 5, // 5 mins
     retry: (failureCount, error) => {
       if (error.message.includes("Song not found")) return false;
@@ -24,7 +21,7 @@ export const useSong = (songParam: string | undefined) => {
 
 // Hook for top hot songs
 export const useTopHotSongs = (limit = 20) => {
-  return useQuery<SongWithAlbumAndArtist[]>({
+  return useQuery<SongType[]>({
     queryKey: ["topHotSongs", limit],
     queryFn: () => songService.getTopHotSongsViaAPI(limit),
     staleTime: 1000 * 60 * 5, // 5 mins

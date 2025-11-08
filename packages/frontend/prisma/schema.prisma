@@ -103,8 +103,6 @@ model Artist {
   name            String
   bio             String?
   image_cover_url String?
-  album_count     Int?
-  song_count      Int?
   Song            Song[]
   Album           Album[]
 }

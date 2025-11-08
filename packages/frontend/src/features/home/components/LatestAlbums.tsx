@@ -4,7 +4,8 @@ import Polaroid from "@/features/shared/ui/Polaroid";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/features/shared/ui/Badge";
 import Link from "next/link";
-import type { AlbumWithArtist } from "@/types/types";
+import type { AlbumType } from "@/types/types";
+import slugify from "slugify";
 
 const LatestAlbums = () => {
   const { latestAlbums, isLoading, error } = useHome();
@@ -45,7 +46,7 @@ const LatestAlbums = () => {
     checkScrollButtons();
   }, [latestAlbums.data]);
 
-  const getAlbumImage = (album: AlbumWithArtist) => {
+  const getAlbumImage = (album: AlbumType) => {
     return album.image_cover_url ?? "";
   };
 
@@ -109,7 +110,7 @@ const LatestAlbums = () => {
 
             return (
               <Link
-                href={`/album/${album.id}`}
+                href={`/album/${album.id}/${slugify(album.name, { lower: true })}`}
                 key={album.id}
                 className="flex-shrink-0"
               >

@@ -3,7 +3,8 @@ import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
 import Link from "next/link";
-import type { Artist } from "@prisma/client";
+import slugify from "slugify";
+import type { ArtistType } from "@/types/types";
 
 /* 
 TODO: 
@@ -14,7 +15,7 @@ TODO:
 const FeaturedArtists = () => {
   const { featuredArtists, isLoading, error } = useHome();
 
-  const getArtistImage = (artist: Artist) => {
+  const getArtistImage = (artist: ArtistType) => {
     return artist.image_cover_url ?? "";
   };
 
@@ -37,21 +38,18 @@ const FeaturedArtists = () => {
         {featuredArtists.data?.map((artist) => {
           return (
             <Link
-              href={`/artist/${artist.id}`}
+              href={`/artist/${artist.id}/${slugify(artist.name, { lower: true })}`}
               key={artist.id}
               className="w-full flex-shrink-0 md:w-fit"
             >
               <Polaroid
                 imageSrc={getArtistImage(artist)}
                 title={artist.name}
-                captions={[
-                  `${artist.song_count} Songs`,
-                  `${artist.album_count} Albums`,
-                ]}
+                captions={[artist.bio ?? "lorem ipsum dolor sit amet"]}
                 width={250}
                 height={400}
                 imgRatio={0.6}
-                descriptionAlignment="topRight"
+                descriptionAlignment="center"
               />
             </Link>
           );

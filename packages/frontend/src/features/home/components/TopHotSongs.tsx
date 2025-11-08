@@ -5,8 +5,8 @@ import { Badge } from "@/features/shared/ui/Badge";
 import Image from "next/image";
 import Link from "next/link";
 import { CiImageOff } from "react-icons/ci";
-import { songService } from "@/features/song/services/songService";
-import type { SongWithAlbumAndArtist } from "@/types/types";
+import slugify from "slugify";
+import type { SongType } from "@/types/types";
 
 const TopHotSongs = () => {
   const { topHotSongs, isLoading, error } = useHome();
@@ -35,18 +35,10 @@ const TopHotSongs = () => {
   );
 };
 
-const SongListItem = ({
-  song,
-  index,
-}: {
-  song: SongWithAlbumAndArtist;
-  index: number;
-}) => {
-  const songSlug = songService.generateSongSlug(song);
-
+const SongListItem = ({ song, index }: { song: SongType; index: number }) => {
   return (
     <Link
-      href={`/song/${songSlug}`}
+      href={`/song/${song.id}/${slugify(song.name!, { lower: true })}`}
       className="group flex gap-4 rounded-lg border border-border bg-bg-tertiary p-4 transition-colors hover:bg-bg-secondary"
     >
       {/* index */}

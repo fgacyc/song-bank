@@ -1,12 +1,11 @@
-import type { AlbumWithArtist, SongWithAlbumAndArtist } from "@/types/types";
-import type { Artist } from "@prisma/client";
+import type { ArtistType, AlbumType, SongType } from "@/types/types";
 
 export const homeService = {
-  async getLatestAlbums(): Promise<AlbumWithArtist[]> {
+  async getLatestAlbums(): Promise<AlbumType[]> {
     try {
       const response = await fetch("/api/albums?limit=8");
       if (!response.ok) throw new Error("Failed to fetch albums");
-      const albums = (await response.json()) as AlbumWithArtist[];
+      const albums = (await response.json()) as AlbumType[];
       return albums;
     } catch (error) {
       console.error("Error fetching latest albums:", error);
@@ -14,11 +13,11 @@ export const homeService = {
     }
   },
 
-  async getFeaturedArtists(): Promise<Artist[]> {
+  async getFeaturedArtists(): Promise<ArtistType[]> {
     try {
-      const response = await fetch("/api/artists?limit=4&withCovers=true");
+      const response = await fetch("/api/artists?limit=4");
       if (!response.ok) throw new Error("Failed to fetch artists");
-      const artists = (await response.json()) as Artist[];
+      const artists = (await response.json()) as ArtistType[];
       return artists;
     } catch (error) {
       console.error("Error fetching featured artists:", error);
@@ -26,11 +25,11 @@ export const homeService = {
     }
   },
 
-  async getTopHotSongs(): Promise<SongWithAlbumAndArtist[]> {
+  async getTopHotSongs(): Promise<SongType[]> {
     try {
       const response = await fetch("/api/songs?type=topHotSongs&limit=20");
       if (!response.ok) throw new Error("Failed to fetch top hot songs");
-      const songs = (await response.json()) as SongWithAlbumAndArtist[];
+      const songs = (await response.json()) as SongType[];
       return songs;
     } catch (error) {
       console.error("Error fetching top hot songs:", error);

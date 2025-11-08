@@ -4,10 +4,10 @@ import SongHero from "./SongHero";
 import SongTransposition from "./SongTransposition";
 import SongLyrics from "./SongLyrics";
 import SongYouTubeLink from "./SongYouTubeLink";
-import type { SongWithAlbumAndArtist } from "@/types/types";
+import type { SongType } from "@/types/types";
 
 interface SongPageProps {
-  song?: SongWithAlbumAndArtist | null;
+  song?: SongType | null;
 }
 
 const SongPage = ({ song }: SongPageProps) => {

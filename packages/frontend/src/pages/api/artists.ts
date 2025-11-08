@@ -7,7 +7,7 @@ export default async function handler(
 ) {
   if (req.method !== "GET") return res.status(405).end();
 
-  const { limit, withCovers } = req.query;
+  const { limit } = req.query;
   const take = limit ? parseInt(limit as string) : undefined;
 
   try {
@@ -16,9 +16,24 @@ export default async function handler(
         name: "asc",
       },
       take: take,
+      include: {
+        _count: {
+          select: {
+            Album: true,
+            Song: true,
+          },
+        },
+      },
     });
 
-    res.status(200).json(artists);
+    const artistsWithCounts = artists.map((artist) => ({
+      ...artist,
+      album_count: artist._count.Album,
+      song_count: artist._count.Song,
+      _count: undefined,
+    }));
+
+    res.status(200).json(artistsWithCounts);
   } catch (error) {
     console.error("API Error:", error);
     res.status(500).json({
