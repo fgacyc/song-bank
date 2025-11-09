@@ -5,11 +5,6 @@ export type ArtistType = Artist & {
   song_count: number;
 };
 
-export type AlbumType = Album & {
-  artist: Artist;
-  song_count: number;
-};
-
 export type SongType = Song & {
   artist: Artist;
   album: Album;

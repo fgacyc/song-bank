@@ -4,7 +4,6 @@ import Polaroid from "@/features/shared/ui/Polaroid";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/features/shared/ui/Badge";
 import Link from "next/link";
-import type { AlbumType } from "@/types/types";
 import slugify from "slugify";
 
 const LatestAlbums = () => {
@@ -45,10 +44,6 @@ const LatestAlbums = () => {
   useEffect(() => {
     checkScrollButtons();
   }, [latestAlbums.data]);
-
-  const getAlbumImage = (album: AlbumType) => {
-    return album.image_cover_url ?? "";
-  };
 
   // TODO: loading and error ui
   if (isLoading) {
@@ -115,7 +110,7 @@ const LatestAlbums = () => {
                 className="flex-shrink-0"
               >
                 <Polaroid
-                  imageSrc={getAlbumImage(album)}
+                  imageSrc={album.image_cover_url ?? ""}
                   title={album.name}
                   captions={captions}
                   width={260}

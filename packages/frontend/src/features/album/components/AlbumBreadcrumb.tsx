@@ -5,12 +5,12 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/features/shared/ui/Breadcrumb";
-import type { AlbumType } from "@/types/types";
 import React from "react";
 import slugify from "slugify";
+import type { AlbumTypeWithSongs } from "../types/types";
 
 interface AlbumBreadcrumbProps {
-  album: AlbumType;
+  album: AlbumTypeWithSongs;
 }
 
 const AlbumBreadcrumb = ({ album }: AlbumBreadcrumbProps) => {

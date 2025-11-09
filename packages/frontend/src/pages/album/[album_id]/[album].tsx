@@ -1,13 +1,13 @@
-import type { AlbumType } from "@/types/types";
 import Head from "next/head";
 import React from "react";
 import AlbumPage from "../../../features/album/components/AlbumPage";
 import MainLayout from "@/layouts/MainLayout";
 import type { GetServerSideProps } from "next";
-import { db } from "legacy/server/db";
+import { albumService } from "@/features/album/services/albumService";
+import type { AlbumTypeWithSongs } from "@/features/album/types/types";
 
 interface AlbumProps {
-  album: AlbumType | null;
+  album: AlbumTypeWithSongs | null;
 }
 
 const Album = ({ album }: AlbumProps) => {
@@ -58,13 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { album_id } = context.params as { album_id: string };
 
   try {
-    const album = await db.album.findUnique({
-      where: { id: album_id },
-      include: {
-        artist: true,
-        Song: true,
-      },
-    });
+    const album = await albumService.getAlbumById(album_id);
 
     if (!album) {
       console.warn(`Album not found: ${album_id}`);
@@ -75,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
       props: {
-        album: JSON.parse(JSON.stringify(album)) as AlbumType,
+        album: JSON.parse(JSON.stringify(album)) as AlbumTypeWithSongs,
       },
     };
   } catch (error) {

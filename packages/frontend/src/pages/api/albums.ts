@@ -11,7 +11,7 @@ export default async function handler(
   const take = limit ? parseInt(limit as string) : undefined;
 
   try {
-    const albums = await albumService.getAlbumsWithCovers(take);
+    const albums = await albumService.getAlbums(take);
     res.status(200).json(albums);
   } catch (error) {
     console.error(error);
