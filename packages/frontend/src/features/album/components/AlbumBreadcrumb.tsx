@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/features/shared/ui/Breadcrumb";
-import { AlbumType } from "@/types/types";
+import type { AlbumType } from "@/types/types";
 import React from "react";
 import slugify from "slugify";
 
@@ -15,8 +15,8 @@ interface AlbumBreadcrumbProps {
 
 const AlbumBreadcrumb = ({ album }: AlbumBreadcrumbProps) => {
   return (
-    <div className="flex justify-center px-6">
-      <Breadcrumb className="w-full text-start sm:max-w-[80dvw] lg:max-w-[60dvw]">
+    <div className="flex justify-center px-4 md:px-12 lg:px-24">
+      <Breadcrumb className="w-full text-start">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>

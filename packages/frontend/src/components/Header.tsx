@@ -1,4 +1,3 @@
-// src/components/header.tsx
 import { SearchBar, useSearch } from "@/features/search";
 import { useScrollPosition } from "@/features/shared/hooks/useScrollPosition";
 import IconButton from "@/features/shared/ui/IconButton";

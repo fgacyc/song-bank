@@ -12,8 +12,8 @@ const AlbumPage = ({ album }: AlbumPageProps) => {
   return (
     <div className="space-y-2 pt-6">
       <AlbumBreadcrumb album={album} />
-      <AlbumHero />
-      <AlbumSongList />
+      <AlbumHero album={album} />
+      <AlbumSongList album={album} />
     </div>
   );
 };

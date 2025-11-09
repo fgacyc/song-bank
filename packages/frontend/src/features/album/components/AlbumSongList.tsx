@@ -1,6 +1,11 @@
+import type { AlbumType } from "@/types/types";
 import React from "react";
 
-const AlbumSongList = () => {
+interface AlbumSongListProps {
+  album: AlbumType;
+}
+
+const AlbumSongList = ({ album }: AlbumSongListProps) => {
   return <div>AlbumSongList</div>;
 };
 
