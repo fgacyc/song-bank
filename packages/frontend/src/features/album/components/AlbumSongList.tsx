@@ -12,6 +12,7 @@ interface AlbumSongProps {
 }
 
 const AlbumSong = ({ song, index }: AlbumSongProps) => {
+  // TODO: add hover effect
   return (
     <Link
       href={`/song/${song.id}/${slugify(song.name!, { lower: true })}`}
