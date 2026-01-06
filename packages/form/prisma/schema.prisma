@@ -34,6 +34,11 @@ model Song {
   file_sequencer       Sequencer[]
   tags                 Tag[]
   favorite             Favorite[]
+  album                Album?      @relation(fields: [album_id], references: [id])
+  artist               Artist?     @relation(fields: [artist_id], references: [id])
+
+  @@index([album_id])
+  @@index([artist_id])
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -87,6 +92,10 @@ model Album {
   release_date    DateTime @db.Date
   image_cover_url String?
   artist_id       String   @db.Uuid
+  artist          Artist?  @relation(fields: [artist_id], references: [id])
+  Song            Song[]
+
+  @@index([artist_id])
 }
 
 model Artist {
@@ -94,4 +103,6 @@ model Artist {
   name            String
   bio             String?
   image_cover_url String?
+  Song            Song[]
+  Album           Album[]
 }

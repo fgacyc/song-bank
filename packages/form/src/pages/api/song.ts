@@ -21,7 +21,9 @@ const handler: NextApiHandler = async (req, res) => {
               alt_name: { contains: name, mode: "insensitive" },
             },
             {
-              album: { contains: name, mode: "insensitive" },
+              album: {
+                name: { contains: name, mode: "insensitive" },
+              },
             },
             {
               original_band: { contains: name, mode: "insensitive" },
@@ -72,7 +74,7 @@ const handler: NextApiHandler = async (req, res) => {
       original_band: originalBand,
       original_key: originalKey,
       song_language: songLanguage,
-      album: album,
+      album: album ? { connect: { id: album } } : undefined, // Connect to Album relation
       alt_name: altName,
       original_youtube_url: originalYoutubeURL,
       file_sequencer:
