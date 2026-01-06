@@ -3,8 +3,120 @@
 @tailwind utilities;
 
 :root {
+  /* light theme */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #fefefe;
+  --color-bg-tertiary: #f5f5f5;
+  --color-bg-quaternary: #f1f1f1;
+  --color-text-primary: #000000;
+  --color-text-secondary: #737373;
+  --color-border: #d8d8d8;
+
+  --font-primary:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Fira Code", Consolas, "Monaco", monospace;
+
   --chord-diagram-font-size: 10px;
+
+  /* shadcn variables */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 85%;
+  --input: 0 0% 85%;
+  --ring: 0 0% 9%;
+  --radius: 0.5rem;
 }
+
+[data-theme="dark"] {
+  /* dark theme */
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #0e0e0e;
+  --color-bg-tertiary: #141414;
+  --color-bg-quaternary: #202020;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a7a7a7;
+  --color-border: #2a2a2a;
+
+  /* shadcn dark variables */
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 0%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 0%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 64%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 0 0% 83%;
+}
+
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  font-family: var(--font-primary);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+input:focus-within,
+select:focus-within,
+textarea:focus-within {
+  outline: none;
+}
+
+*::-webkit-scrollbar,
+::-webkit-scrollbar-button {
+  width: 0px;
+  display: none;
+}
+
 .chord {
   display: inline-block;
   position: relative;
@@ -41,9 +153,4 @@
 .chord:not(.diagram) .inner:hover i.diagram {
   background: white;
   z-index: 5;
-}
-
-*::-webkit-scrollbar,
-::-webkit-scrollbar-button {
-  display: none;
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
+import MainLayout from "@/layouts/MainLayout";
 
 interface Artist {
   id: string;
@@ -106,117 +107,134 @@ const Artist = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        Loading...
-      </div>
+      <MainLayout title="Artists | Song Bank Admin">
+        <div className="flex h-[calc(100vh-200px)] items-center justify-center">
+          <div className="text-lg text-text-secondary">Loading...</div>
+        </div>
+      </MainLayout>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Manage Artists</h1>
-        <Button onClick={openCreateModal}>Add New Artist</Button>
-      </div>
+    <MainLayout title="Artists | Song Bank Admin">
+      <div className="container mx-auto px-4 py-8 md:px-12 lg:px-24">
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Manage Artists</h1>
+          <Button onClick={openCreateModal}>Add New Artist</Button>
+        </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {artists.map((artist) => (
-          <div key={artist.id} className="rounded-lg bg-white p-6 shadow-md">
-            {artist.image_cover_url && (
-              <img
-                src={artist.image_cover_url}
-                alt={artist.name}
-                className="mb-4 h-48 w-full rounded-md object-cover"
-              />
-            )}
-            <h3 className="mb-2 text-xl font-semibold">{artist.name}</h3>
-            {artist.bio && (
-              <p className="mb-4 line-clamp-3 text-gray-600">{artist.bio}</p>
-            )}
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-500">
-                {artist.song_count && `${artist.song_count} songs`}
-                {artist.album_count && ` • ${artist.album_count} albums`}
-              </div>
-              <div className="space-x-2">
-                <Button size="sm" onClick={() => handleEdit(artist)}>
-                  Edit
-                </Button>
-                <Button
-                  size="sm"
-                  variant="danger"
-                  onClick={() => handleDelete(artist.id)}
-                >
-                  Delete
-                </Button>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {artists.map((artist) => (
+            <div
+              key={artist.id}
+              className="rounded-lg border border-border bg-card p-6 shadow-md transition-shadow hover:shadow-lg"
+            >
+              {artist.image_cover_url && (
+                <img
+                  src={artist.image_cover_url}
+                  alt={artist.name}
+                  className="mb-4 h-48 w-full rounded-md object-cover"
+                />
+              )}
+              <h3 className="mb-2 text-xl font-semibold text-card-foreground">
+                {artist.name}
+              </h3>
+              {artist.bio && (
+                <p className="mb-4 line-clamp-3 text-text-secondary">
+                  {artist.bio}
+                </p>
+              )}
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-text-secondary">
+                  {artist.song_count && `${artist.song_count} songs`}
+                  {artist.album_count && ` • ${artist.album_count} albums`}
+                </div>
+                <div className="space-x-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleEdit(artist)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    onClick={() => handleDelete(artist.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={editingArtist ? "Edit Artist" : "Add New Artist"}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-primary">
+                Name
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-primary">
+                Bio
+              </label>
+              <textarea
+                value={formData.bio}
+                onChange={(e) =>
+                  setFormData({ ...formData, bio: e.target.value })
+                }
+                rows={3}
+                className="flex min-h-[80px] w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-primary">
+                Image URL
+              </label>
+              <input
+                type="url"
+                value={formData.imageUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, imageUrl: e.target.value })
+                }
+                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {editingArtist ? "Update" : "Create"}
+              </Button>
+            </div>
+          </form>
+        </Modal>
       </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={editingArtist ? "Edit Artist" : "Add New Artist"}
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Bio
-            </label>
-            <textarea
-              value={formData.bio}
-              onChange={(e) =>
-                setFormData({ ...formData, bio: e.target.value })
-              }
-              rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Image URL
-            </label>
-            <input
-              type="url"
-              value={formData.imageUrl}
-              onChange={(e) =>
-                setFormData({ ...formData, imageUrl: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-
-          <div className="flex justify-end space-x-2">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setIsModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit">{editingArtist ? "Update" : "Create"}</Button>
-          </div>
-        </form>
-      </Modal>
-    </div>
+    </MainLayout>
   );
 };
 

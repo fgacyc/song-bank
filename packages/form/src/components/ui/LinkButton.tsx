@@ -29,12 +29,12 @@ const LinkButton = ({
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
-        return "bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700";
+        return "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:border-primary/90";
       case "secondary":
-        return "bg-gray-600 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-700";
+        return "bg-secondary text-secondary-foreground border-secondary hover:bg-secondary/80 hover:border-secondary/80";
       case "default":
       default:
-        return "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900";
+        return "bg-card text-card-foreground border-border hover:bg-accent hover:border-accent hover:text-accent-foreground";
     }
   };
 

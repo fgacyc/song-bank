@@ -6,7 +6,7 @@ interface ArtistHeroProps {
 }
 
 const ArtistHero = ({ artist }: ArtistHeroProps) => {
-  return <div>ArtistHero</div>;
+  return <div>{/* bg */}</div>;
 };
 
 export default ArtistHero;

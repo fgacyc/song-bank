@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
+import MainLayout from "@/layouts/MainLayout";
 
 interface Album {
   id: string;
@@ -130,141 +131,153 @@ const Album = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        Loading...
-      </div>
+      <MainLayout title="Albums | Song Bank Admin">
+        <div className="flex h-[calc(100vh-200px)] items-center justify-center">
+          <div className="text-lg text-text-secondary">Loading...</div>
+        </div>
+      </MainLayout>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Manage Albums</h1>
-        <Button onClick={openCreateModal}>Add New Album</Button>
-      </div>
+    <MainLayout title="Albums | Song Bank Admin">
+      <div className="container mx-auto px-4 py-8 md:px-12 lg:px-24">
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Manage Albums</h1>
+          <Button onClick={openCreateModal}>Add New Album</Button>
+        </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {albums.map((album) => (
-          <div
-            key={album.id}
-            className="overflow-hidden rounded-lg bg-white shadow-md"
-          >
-            {album.image_cover_url && (
-              <img
-                src={album.image_cover_url}
-                alt={album.name}
-                className="h-48 w-full object-cover"
-              />
-            )}
-            <div className="p-4">
-              <h3 className="mb-2 text-xl font-semibold">{album.name}</h3>
-              <p className="mb-2 text-gray-600">
-                {getArtistName(album.artist_id)}
-              </p>
-              <p className="mb-4 text-sm text-gray-500">
-                {new Date(album.release_date).toLocaleDateString()}
-              </p>
-              <div className="flex justify-end space-x-2">
-                <Button size="sm" onClick={() => handleEdit(album)}>
-                  Edit
-                </Button>
-                <Button
-                  size="sm"
-                  variant="danger"
-                  onClick={() => handleDelete(album.id)}
-                >
-                  Delete
-                </Button>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {albums.map((album) => (
+            <div
+              key={album.id}
+              className="overflow-hidden rounded-lg border border-border bg-card shadow-md transition-shadow hover:shadow-lg"
+            >
+              {album.image_cover_url && (
+                <img
+                  src={album.image_cover_url}
+                  alt={album.name}
+                  className="h-48 w-full object-cover"
+                />
+              )}
+              <div className="p-4">
+                <h3 className="mb-2 text-xl font-semibold text-card-foreground">
+                  {album.name}
+                </h3>
+                <p className="mb-2 text-text-secondary">
+                  {getArtistName(album.artist_id)}
+                </p>
+                <p className="mb-4 text-sm text-text-secondary">
+                  {new Date(album.release_date).toLocaleDateString()}
+                </p>
+                <div className="flex justify-end space-x-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleEdit(album)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    onClick={() => handleDelete(album.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={editingAlbum ? "Edit Album" : "Add New Album"}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-primary">
+                Name
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-primary">
+                Artist
+              </label>
+              <select
+                value={formData.artistId}
+                onChange={(e) =>
+                  setFormData({ ...formData, artistId: e.target.value })
+                }
+                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                required
+              >
+                <option value="">Select an artist</option>
+                {artists.map((artist) => (
+                  <option key={artist.id} value={artist.id}>
+                    {artist.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-primary">
+                Release Date
+              </label>
+              <input
+                type="date"
+                value={formData.releaseDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, releaseDate: e.target.value })
+                }
+                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-primary">
+                Image URL
+              </label>
+              <input
+                type="url"
+                value={formData.imageUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, imageUrl: e.target.value })
+                }
+                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {editingAlbum ? "Update" : "Create"}
+              </Button>
+            </div>
+          </form>
+        </Modal>
       </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={editingAlbum ? "Edit Album" : "Add New Album"}
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Artist
-            </label>
-            <select
-              value={formData.artistId}
-              onChange={(e) =>
-                setFormData({ ...formData, artistId: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              required
-            >
-              <option value="">Select an artist</option>
-              {artists.map((artist) => (
-                <option key={artist.id} value={artist.id}>
-                  {artist.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Release Date
-            </label>
-            <input
-              type="date"
-              value={formData.releaseDate}
-              onChange={(e) =>
-                setFormData({ ...formData, releaseDate: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Image URL
-            </label>
-            <input
-              type="url"
-              value={formData.imageUrl}
-              onChange={(e) =>
-                setFormData({ ...formData, imageUrl: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-
-          <div className="flex justify-end space-x-2">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setIsModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit">{editingAlbum ? "Update" : "Create"}</Button>
-          </div>
-        </form>
-      </Modal>
-    </div>
+    </MainLayout>
   );
 };
 

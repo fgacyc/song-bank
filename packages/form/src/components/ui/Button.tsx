@@ -24,17 +24,17 @@ const Button = ({
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
-        return "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 border-transparent shadow-sm";
+        return "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring border-transparent shadow-sm";
       case "secondary":
-        return "bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500 border-transparent shadow-sm";
+        return "bg-secondary text-secondary-foreground hover:bg-secondary/80 focus:ring-ring border-transparent shadow-sm";
       case "danger":
-        return "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 border-transparent shadow-sm";
+        return "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus:ring-ring border-transparent shadow-sm";
       case "outline":
-        return "bg-white text-gray-700 hover:bg-gray-50 focus:ring-blue-500 border-gray-300 shadow-sm";
+        return "bg-transparent text-text-primary hover:bg-accent hover:text-accent-foreground focus:ring-ring border-border shadow-sm";
       case "ghost":
-        return "bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500 border-transparent";
+        return "bg-transparent text-text-primary hover:bg-accent hover:text-accent-foreground focus:ring-ring border-transparent";
       default:
-        return "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 border-transparent shadow-sm";
+        return "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring border-transparent shadow-sm";
     }
   };
 

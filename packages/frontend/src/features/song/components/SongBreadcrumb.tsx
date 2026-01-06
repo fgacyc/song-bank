@@ -22,20 +22,20 @@ const SongBreadcrumb = ({ song }: SongPageBreadcrumbProps) => {
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
 
-          {song.original_band && (
+          {song.artist && (
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink
                   href={`/artist/${song.artist.id}/${slugify(song.artist.name, { lower: true })}`}
                 >
-                  {song.original_band}
+                  {song.artist.name}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </>
           )}
 
-          {song.album.name && (
+          {song.album && (
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>

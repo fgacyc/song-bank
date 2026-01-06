@@ -24,14 +24,13 @@ const handler: NextApiHandler = async (req, res) => {
         const newSong = await db.song.create({
           data: {
             name: req.body.name,
-            album_old: req.body.album,
-            original_band: req.body.artist,
-            original_key: req.body.key,
-            song_language: req.body.language,
-            chord_lyrics: req.body.lyrics,
-            original_youtube_url: req.body.youtubeUrl,
-            artist_id: req.body.artistId || null,
-            album_id: req.body.albumId || null,
+            original_key: req.body.original_key || null,
+            song_language: req.body.song_language || null,
+            chord_lyrics: req.body.chord_lyrics || null,
+            original_youtube_url: req.body.original_youtube_url || null,
+            cover_image_url: req.body.cover_image_url || null,
+            artist_id: req.body.artist_id || null,
+            album_id: req.body.album_id || null,
           },
         });
         console.log("Successfully created song:", newSong.id);
@@ -44,14 +43,13 @@ const handler: NextApiHandler = async (req, res) => {
         // Clean up the data - map form fields to database fields
         const cleanUpdateData = {
           name: updateData.name,
-          album_old: updateData.album,
-          original_band: updateData.artist,
-          original_key: updateData.key,
-          song_language: updateData.language,
-          chord_lyrics: updateData.lyrics,
-          original_youtube_url: updateData.youtubeUrl,
-          artist_id: updateData.artistId || null,
-          album_id: updateData.albumId || null,
+          original_key: updateData.original_key || null,
+          song_language: updateData.song_language || null,
+          chord_lyrics: updateData.chord_lyrics || null,
+          original_youtube_url: updateData.original_youtube_url || null,
+          cover_image_url: updateData.cover_image_url || null,
+          artist_id: updateData.artist_id || null,
+          album_id: updateData.album_id || null,
         };
 
         const updatedSong = await db.song.update({

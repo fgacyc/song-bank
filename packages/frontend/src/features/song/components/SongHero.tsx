@@ -55,12 +55,12 @@ const SongHero = ({ song }: SongHeroProps) => {
           </h1>
 
           {/* song artist */}
-          {song.original_band && (
-            <h3 className="text-text-secondary">{song.original_band}</h3>
+          {song.artist && (
+            <h3 className="text-text-secondary">{song.artist.name}</h3>
           )}
 
           {/* song album */}
-          {song.album.name && (
+          {song.album && (
             <p className="text-sm font-light text-text-secondary">
               {song.album.name}
             </p>

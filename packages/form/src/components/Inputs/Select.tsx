@@ -25,22 +25,18 @@ export const SelectField: React.FunctionComponent<SelectProps> = ({
 }) => {
   const context = useFormikContext<FormikForm>();
   return (
-    <label className="daisy-form-control w-full">
-      <div className="daisy-label">
-        <span className="daisy-label-text">
+    <label className="flex w-full flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium text-text-primary">
           {name}{" "}
-          {required && (
-            <span className="daisy-label-text-alt text-error">*</span>
-          )}
+          {required && <span className="text-sm text-destructive">*</span>}
         </span>
       </div>
       <Field
         as="select"
         name={formikKey}
         disabled={disabled}
-        // defaultValue={options[0]}
-        // placeholder="..."
-        className="daisy-select daisy-select-bordered daisy-select-primary w-full"
+        className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
       >
         {options.map((o) => (
           <option key={o}>{o}</option>
@@ -48,12 +44,10 @@ export const SelectField: React.FunctionComponent<SelectProps> = ({
       </Field>
       {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
       {context.errors[formikKey] ? (
-        <div className="daisy-label">
-          <span className="daisy-label-text flex w-full flex-row justify-between">
-            <span className="daisy-label-text-alt italic"></span>
-            <span className="daisy-label-text-alt italic text-error">
-              {context.errors[formikKey]}
-            </span>
+        <div className="flex w-full flex-row justify-between">
+          <span className="text-xs italic text-text-secondary"></span>
+          <span className="text-xs italic text-destructive">
+            {context.errors[formikKey]}
           </span>
         </div>
       ) : null}

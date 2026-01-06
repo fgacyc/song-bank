@@ -79,34 +79,28 @@ export const TextField: React.FunctionComponent<TextProps> = ({
   const context = useFormikContext<FormikForm>();
   return (
     <label
-      className={`daisy-form-control w-full${className ? ` ${className}` : ""}`}
+      className={`flex w-full flex-col gap-2${className ? ` ${className}` : ""}`}
     >
-      <div className="daisy-label">
-        <span className="daisy-label-text">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium text-text-primary">
           {name}{" "}
-          {required && (
-            <span className="daisy-label-text-alt text-error">*</span>
-          )}
+          {required && <span className="text-sm text-destructive">*</span>}
         </span>
-        <span className="daisy-label-text-alt"></span>
       </div>
       <Field
         name={formikKey}
         type="text"
         disabled={disabled}
-        // placeholder="..."
-        className="daisy-input daisy-input-bordered daisy-input-primary w-full"
+        className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
       />
       {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
       {hint || context.errors[formikKey] ? (
-        <div className="daisy-label">
-          <span className="daisy-label-text flex w-full flex-row justify-between">
-            <span className="daisy-label-text-alt italic">
-              {hint ? hint : context.errors[formikKey] ? " " : hint}
-            </span>
-            <span className="daisy-label-text-alt italic text-error">
-              {context.errors[formikKey]}
-            </span>
+        <div className="flex w-full flex-row justify-between">
+          <span className="text-xs italic text-text-secondary">
+            {hint ? hint : context.errors[formikKey] ? " " : hint}
+          </span>
+          <span className="text-xs italic text-destructive">
+            {context.errors[formikKey]}
           </span>
         </div>
       ) : null}
@@ -161,13 +155,11 @@ export const TextAreaField: React.FunctionComponent<TextAreaProps> = ({
 }) => {
   const context = useFormikContext<FormikForm>();
   return (
-    <label className="daisy-form-control w-full">
-      <div className="daisy-label">
-        <span className="daisy-label-text">
+    <label className="flex w-full flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium text-text-primary">
           {name}{" "}
-          {required && (
-            <span className="daisy-label-text-alt text-error">*</span>
-          )}
+          {required && <span className="text-sm text-destructive">*</span>}
         </span>
       </div>
       <Field
@@ -175,19 +167,17 @@ export const TextAreaField: React.FunctionComponent<TextAreaProps> = ({
         disabled={disabled}
         as="textarea"
         {...rest}
-        className="daisy-textarea daisy-textarea-bordered daisy-textarea-primary w-full resize-y"
+        className="flex min-h-[80px] w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         rows={5}
       />
       {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
       {hint || context.errors[formikKey] ? (
-        <div className="daisy-label">
-          <span className="daisy-label-text flex w-full flex-row justify-between">
-            <span className="daisy-label-text-alt italic">
-              {hint ? hint : context.errors[formikKey] ? " " : hint}
-            </span>
-            <span className="daisy-label-text-alt italic text-error">
-              {context.errors[formikKey]}
-            </span>
+        <div className="flex w-full flex-row justify-between">
+          <span className="text-xs italic text-text-secondary">
+            {hint ? hint : context.errors[formikKey] ? " " : hint}
+          </span>
+          <span className="text-xs italic text-destructive">
+            {context.errors[formikKey]}
           </span>
         </div>
       ) : null}
