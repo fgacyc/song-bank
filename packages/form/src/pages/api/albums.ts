@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { db } from "@/server/db";
 import type { NextApiHandler } from "next";
+import { randomUUID } from "crypto";
 
 const handler: NextApiHandler = async (req, res) => {
   try {
@@ -17,22 +18,26 @@ const handler: NextApiHandler = async (req, res) => {
       case "POST":
         const newAlbum = await db.album.create({
           data: {
-            id: req.body.id || undefined,
+            id: req.body.id || randomUUID(),
             name: req.body.name,
-            release_date: new Date(req.body.releaseDate),
-            image_cover_url: req.body.imageUrl,
-            artist_id: req.body.artistId,
+            release_date: new Date(req.body.release_date),
+            image_cover_url: req.body.image_cover_url || null,
+            artist_id: req.body.artist_id,
           },
         });
         return res.status(201).json(newAlbum);
 
       case "PUT":
-        const { id, releaseDate, ...updateData } = req.body;
+        const { id, ...updateData } = req.body;
         const updatedAlbum = await db.album.update({
           where: { id },
           data: {
-            ...updateData,
-            release_date: releaseDate ? new Date(releaseDate) : undefined,
+            name: updateData.name,
+            release_date: updateData.release_date
+              ? new Date(updateData.release_date)
+              : undefined,
+            image_cover_url: updateData.image_cover_url || null,
+            artist_id: updateData.artist_id,
           },
         });
         return res.status(200).json(updatedAlbum);

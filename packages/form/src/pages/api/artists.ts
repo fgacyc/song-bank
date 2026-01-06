@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { db } from "@/server/db";
 import type { NextApiHandler } from "next";
+import { randomUUID } from "crypto";
 
 const handler: NextApiHandler = async (req, res) => {
   try {
@@ -16,10 +17,10 @@ const handler: NextApiHandler = async (req, res) => {
       case "POST":
         const newArtist = await db.artist.create({
           data: {
-            id: req.body.id || undefined,
+            id: req.body.id || randomUUID(),
             name: req.body.name,
-            bio: req.body.bio,
-            image_cover_url: req.body.imageUrl,
+            bio: req.body.bio || null,
+            image_cover_url: req.body.image_cover_url || null,
           },
         });
         return res.status(201).json(newArtist);
@@ -28,7 +29,11 @@ const handler: NextApiHandler = async (req, res) => {
         const { id, ...updateData } = req.body;
         const updatedArtist = await db.artist.update({
           where: { id },
-          data: updateData,
+          data: {
+            name: updateData.name,
+            bio: updateData.bio || null,
+            image_cover_url: updateData.image_cover_url || null,
+          },
         });
         return res.status(200).json(updatedArtist);
 

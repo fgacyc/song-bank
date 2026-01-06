@@ -12,6 +12,13 @@ interface Artist {
   song_count: number | null;
 }
 
+interface SpotifyResult {
+  name: string;
+  artist: string;
+  imageUrl: string;
+  albumName: string;
+}
+
 const Artist = () => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +29,10 @@ const Artist = () => {
     bio: "",
     imageUrl: "",
   });
+  const [imageSearchQuery, setImageSearchQuery] = useState("");
+  const [imageResults, setImageResults] = useState<SpotifyResult[]>([]);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [searchingImages, setSearchingImages] = useState(false);
 
   useEffect(() => {
     fetchArtists();
@@ -39,13 +50,53 @@ const Artist = () => {
     }
   };
 
+  const searchSpotifyImages = async (query?: string) => {
+    const searchQuery = query || imageSearchQuery;
+    if (!searchQuery) return;
+
+    setSearchingImages(true);
+    try {
+      const response = await fetch(
+        `/api/spotify-search?query=${encodeURIComponent(searchQuery)}`,
+      );
+      if (response.ok) {
+        const data = (await response.json()) as SpotifyResult[];
+        setImageResults(data);
+
+        // Auto-select first image if none selected
+        if (data.length > 0 && !selectedImage && data[0]) {
+          setSelectedImage(data[0].imageUrl);
+          setFormData((prev) => ({ ...prev, imageUrl: data[0]!.imageUrl }));
+        }
+      }
+    } catch (error) {
+      console.error("Error searching Spotify:", error);
+    } finally {
+      setSearchingImages(false);
+    }
+  };
+
+  const selectImage = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setFormData((prev) => ({ ...prev, imageUrl: imageUrl }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const method = editingArtist ? "PUT" : "POST";
       const body = editingArtist
-        ? { id: editingArtist.id, ...formData }
-        : formData;
+        ? {
+            id: editingArtist.id,
+            name: formData.name,
+            bio: formData.bio || null,
+            image_cover_url: formData.imageUrl || null,
+          }
+        : {
+            name: formData.name,
+            bio: formData.bio || null,
+            image_cover_url: formData.imageUrl || null,
+          };
 
       const response = await fetch("/api/artists", {
         method,
@@ -54,7 +105,7 @@ const Artist = () => {
       });
 
       if (response.ok) {
-        fetchArtists();
+        await fetchArtists();
         setIsModalOpen(false);
         resetForm();
       }
@@ -88,6 +139,10 @@ const Artist = () => {
       bio: artist.bio || "",
       imageUrl: artist.image_cover_url || "",
     });
+    setSelectedImage(artist.image_cover_url || "");
+    if (artist.name) {
+      setImageSearchQuery(artist.name);
+    }
     setIsModalOpen(true);
   };
 
@@ -98,6 +153,9 @@ const Artist = () => {
       imageUrl: "",
     });
     setEditingArtist(null);
+    setImageSearchQuery("");
+    setImageResults([]);
+    setSelectedImage("");
   };
 
   const openCreateModal = () => {
@@ -174,11 +232,12 @@ const Artist = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title={editingArtist ? "Edit Artist" : "Add New Artist"}
+          size="lg"
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="mb-2 block text-sm font-medium text-text-primary">
-                Name
+                Artist Name *
               </label>
               <input
                 type="text"
@@ -201,25 +260,125 @@ const Artist = () => {
                   setFormData({ ...formData, bio: e.target.value })
                 }
                 rows={3}
+                placeholder="Artist biography or description..."
                 className="flex min-h-[80px] w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium text-text-primary">
-                Image URL
+            {/* Image Search Section */}
+            <div className="space-y-3 border-t border-border pt-4">
+              <label className="block text-sm font-medium text-text-primary">
+                Artist Image
               </label>
-              <input
-                type="url"
-                value={formData.imageUrl}
-                onChange={(e) =>
-                  setFormData({ ...formData, imageUrl: e.target.value })
-                }
-                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              />
+
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={imageSearchQuery}
+                  onChange={(e) => setImageSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      searchSpotifyImages();
+                    }
+                  }}
+                  placeholder="Search for artist image on Spotify..."
+                  className="flex h-10 flex-1 rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                />
+                <Button
+                  type="button"
+                  onClick={() => searchSpotifyImages()}
+                  disabled={searchingImages || !imageSearchQuery}
+                  variant="outline"
+                >
+                  {searchingImages ? "Searching..." : "Search"}
+                </Button>
+              </div>
+
+              {/* Selected Image Preview */}
+              {selectedImage && (
+                <div className="mt-3">
+                  <p className="mb-2 text-xs text-text-secondary">
+                    Selected Image:
+                  </p>
+                  <div className="relative inline-block">
+                    <img
+                      src={selectedImage}
+                      alt="Selected artist"
+                      className="h-32 w-32 rounded-md border-2 border-primary object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedImage("");
+                        setFormData((prev) => ({ ...prev, imageUrl: "" }));
+                      }}
+                      className="absolute -right-2 -top-2 rounded-full bg-danger p-1 text-white shadow-md hover:bg-danger/80"
+                    >
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Image Results Grid */}
+              {imageResults.length > 0 && (
+                <div className="mt-4 max-h-[300px] overflow-y-auto rounded-md border border-border p-3">
+                  <p className="mb-3 text-sm font-medium text-text-primary">
+                    Select an image:
+                  </p>
+                  <div className="grid grid-cols-4 gap-3">
+                    {imageResults.map((result, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => selectImage(result.imageUrl)}
+                        className={`group relative overflow-hidden rounded-md border-2 transition-all hover:scale-105 ${
+                          selectedImage === result.imageUrl
+                            ? "border-primary shadow-lg"
+                            : "border-transparent hover:border-border"
+                        }`}
+                      >
+                        <img
+                          src={result.imageUrl}
+                          alt={result.artist}
+                          className="h-20 w-20 object-cover"
+                        />
+                        {selectedImage === result.imageUrl && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-primary/20">
+                            <svg
+                              className="h-8 w-8 text-primary"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className="flex justify-end space-x-2 pt-4">
+            <div className="flex justify-end space-x-2 border-t border-border pt-4">
               <Button
                 type="button"
                 variant="outline"
@@ -228,7 +387,7 @@ const Artist = () => {
                 Cancel
               </Button>
               <Button type="submit">
-                {editingArtist ? "Update" : "Create"}
+                {editingArtist ? "Update Artist" : "Create Artist"}
               </Button>
             </div>
           </form>

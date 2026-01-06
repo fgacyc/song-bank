@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { NextApiRequest, NextApiResponse } from "next";
 
 let cachedAccessToken: string | null = null;
@@ -34,7 +39,7 @@ async function getSpotifyAccessToken(): Promise<string> {
   // Set expiration to 5 minutes before actual expiration
   tokenExpiration = Date.now() + (data.expires_in - 300) * 1000;
 
-  return cachedAccessToken;
+  return cachedAccessToken ?? "";
 }
 
 export default async function handler(
@@ -68,14 +73,56 @@ export default async function handler(
     }
 
     const data = await response.json();
-    const tracks = data.tracks.items.map((track: any) => ({
-      id: track.id,
-      name: track.name,
-      artist: track.artists.map((a: any) => a.name).join(", "),
-      album: track.album.name,
-      imageUrl: track.album.images[0]?.url ?? "",
-      spotifyUrl: track.external_urls.spotify,
-    }));
+    interface SpotifyArtist {
+      name: string;
+    }
+
+    interface SpotifyImage {
+      url: string;
+    }
+
+    interface SpotifyAlbum {
+      name: string;
+      images: SpotifyImage[];
+    }
+
+    interface SpotifyExternalUrls {
+      spotify: string;
+    }
+
+    interface SpotifyTrack {
+      id: string;
+      name: string;
+      artists: SpotifyArtist[];
+      album: SpotifyAlbum;
+      external_urls: SpotifyExternalUrls;
+    }
+
+    interface SpotifyTracksResponse {
+      tracks: {
+        items: SpotifyTrack[];
+      };
+    }
+
+    interface Track {
+      id: string;
+      name: string;
+      artist: string;
+      album: string;
+      imageUrl: string;
+      spotifyUrl: string;
+    }
+
+    const tracks: Track[] = (data as SpotifyTracksResponse).tracks.items.map(
+      (track) => ({
+        id: track.id,
+        name: track.name,
+        artist: track.artists.map((a: SpotifyArtist) => a.name).join(", "),
+        album: track.album.name,
+        imageUrl: track.album.images[0]?.url ?? "",
+        spotifyUrl: track.external_urls.spotify,
+      }),
+    );
 
     res.status(200).json(tracks);
   } catch (error) {

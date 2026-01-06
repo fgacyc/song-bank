@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useState, useEffect } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import MainLayout from "@/layouts/MainLayout";
 import { extractYoutubeVideoId } from "@/helpers/spotifyHelpers";
 import { SearchableSelect } from "@/components/Inputs/SearchableSelect";
+import Image from "next/image";
 
 interface Song {
   id: string;
@@ -359,10 +364,12 @@ const Song = () => {
                 >
                   <td className="whitespace-nowrap px-6 py-4">
                     {song.cover_image_url ? (
-                      <img
+                      <Image
                         src={song.cover_image_url}
                         alt={song.name ?? "Song"}
                         className="h-12 w-12 rounded object-cover"
+                        width={48}
+                        height={48}
                       />
                     ) : (
                       <div className="flex h-12 w-12 items-center justify-center rounded bg-muted text-xs text-muted-foreground">
@@ -514,6 +521,7 @@ const Song = () => {
                 }
               />
 
+              {/* TODO: use select filter input for both fields */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-text-primary">
