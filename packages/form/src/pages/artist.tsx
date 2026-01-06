@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import MainLayout from "@/layouts/MainLayout";
@@ -35,13 +36,15 @@ const Artist = () => {
   const [searchingImages, setSearchingImages] = useState(false);
 
   useEffect(() => {
-    fetchArtists();
+    void (async () => {
+      await fetchArtists();
+    });
   }, []);
 
   const fetchArtists = async () => {
     try {
       const response = await fetch("/api/artists");
-      const data = await response.json();
+      const data = (await response.json()) as Artist[];
       setArtists(data);
     } catch (error) {
       console.error("Error fetching artists:", error);
@@ -51,7 +54,7 @@ const Artist = () => {
   };
 
   const searchSpotifyImages = async (query?: string) => {
-    const searchQuery = query || imageSearchQuery;
+    const searchQuery = query ?? imageSearchQuery;
     if (!searchQuery) return;
 
     setSearchingImages(true);
@@ -124,7 +127,7 @@ const Artist = () => {
         });
 
         if (response.ok) {
-          fetchArtists();
+          await fetchArtists();
         }
       } catch (error) {
         console.error("Error deleting artist:", error);
@@ -136,10 +139,10 @@ const Artist = () => {
     setEditingArtist(artist);
     setFormData({
       name: artist.name,
-      bio: artist.bio || "",
-      imageUrl: artist.image_cover_url || "",
+      bio: artist.bio ?? "",
+      imageUrl: artist.image_cover_url ?? "",
     });
-    setSelectedImage(artist.image_cover_url || "");
+    setSelectedImage(artist.image_cover_url ?? "");
     if (artist.name) {
       setImageSearchQuery(artist.name);
     }
@@ -188,9 +191,11 @@ const Artist = () => {
               className="rounded-lg border border-border bg-card p-6 shadow-md transition-shadow hover:shadow-lg"
             >
               {artist.image_cover_url && (
-                <img
+                <Image
                   src={artist.image_cover_url}
                   alt={artist.name}
+                  width={400}
+                  height={192}
                   className="mb-4 h-48 w-full rounded-md object-cover"
                 />
               )}
@@ -276,10 +281,10 @@ const Artist = () => {
                   type="text"
                   value={imageSearchQuery}
                   onChange={(e) => setImageSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
+                  onKeyDown={async (e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
-                      searchSpotifyImages();
+                      await searchSpotifyImages();
                     }
                   }}
                   placeholder="Search for artist image on Spotify..."
@@ -302,9 +307,11 @@ const Artist = () => {
                     Selected Image:
                   </p>
                   <div className="relative inline-block">
-                    <img
+                    <Image
                       src={selectedImage}
                       alt="Selected artist"
+                      width={128}
+                      height={128}
                       className="h-32 w-32 rounded-md border-2 border-primary object-cover"
                     />
                     <button
@@ -351,9 +358,11 @@ const Artist = () => {
                             : "border-transparent hover:border-border"
                         }`}
                       >
-                        <img
+                        <Image
                           src={result.imageUrl}
                           alt={result.artist}
+                          width={80}
+                          height={80}
                           className="h-20 w-20 object-cover"
                         />
                         {selectedImage === result.imageUrl && (

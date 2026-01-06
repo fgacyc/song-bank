@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import MainLayout from "@/layouts/MainLayout";
@@ -42,14 +43,16 @@ const Album = () => {
   const [searchingImages, setSearchingImages] = useState(false);
 
   useEffect(() => {
-    fetchAlbums();
-    fetchArtists();
+    void (async () => {
+      await fetchAlbums();
+      await fetchArtists();
+    })();
   }, []);
 
   const fetchAlbums = async () => {
     try {
       const response = await fetch("/api/albums");
-      const data = await response.json();
+      const data = (await response.json()) as Album[];
       setAlbums(data);
     } catch (error) {
       console.error("Error fetching albums:", error);
@@ -61,7 +64,7 @@ const Album = () => {
   const fetchArtists = async () => {
     try {
       const response = await fetch("/api/artists");
-      const data = await response.json();
+      const data = (await response.json()) as Artist[];
       setArtists(data);
     } catch (error) {
       console.error("Error fetching artists:", error);
@@ -69,7 +72,7 @@ const Album = () => {
   };
 
   const searchSpotifyImages = async (query?: string) => {
-    const searchQuery = query || imageSearchQuery;
+    const searchQuery = query ?? imageSearchQuery;
     if (!searchQuery) return;
 
     setSearchingImages(true);
@@ -150,7 +153,7 @@ const Album = () => {
         });
 
         if (response.ok) {
-          fetchAlbums();
+          await fetchAlbums();
         }
       } catch (error) {
         console.error("Error deleting album:", error);
@@ -163,10 +166,10 @@ const Album = () => {
     setFormData({
       name: album.name,
       releaseDate: album.release_date.split("T")[0] ?? "",
-      imageUrl: album.image_cover_url || "",
+      imageUrl: album.image_cover_url ?? "",
       artistId: album.artist_id,
     });
-    setSelectedImage(album.image_cover_url || "");
+    setSelectedImage(album.image_cover_url ?? "");
     if (album.name) {
       setImageSearchQuery(album.name);
     }
@@ -193,7 +196,7 @@ const Album = () => {
 
   const getArtistName = (artistId: string) => {
     const artist = artists.find((a) => a.id === artistId);
-    return artist?.name || "Unknown Artist";
+    return artist?.name ?? "Unknown Artist";
   };
 
   if (loading) {
@@ -221,9 +224,11 @@ const Album = () => {
               className="overflow-hidden rounded-lg border border-border bg-card shadow-md transition-shadow hover:shadow-lg"
             >
               {album.image_cover_url && (
-                <img
+                <Image
                   src={album.image_cover_url}
                   alt={album.name}
+                  width={400}
+                  height={192}
                   className="h-48 w-full object-cover"
                 />
               )}
@@ -282,24 +287,18 @@ const Album = () => {
             </div>
 
             {/* Artist Selection with SearchableSelect */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-text-primary">
-                Artist *
-              </label>
-              <SearchableSelect
-                options={artists}
-                value={formData.artistId}
-                onChange={(value) =>
-                  setFormData({ ...formData, artistId: value })
-                }
-                placeholder="Search and select artist..."
-                getOptionLabel={(artist) => artist.name}
-                getOptionValue={(artist) => artist.id}
-                maxResults={20}
-                required
-                createNewLink="/artist"
-              />
-            </div>
+            <SearchableSelect
+              label="Artist"
+              options={artists}
+              value={formData.artistId}
+              onChange={(value) =>
+                setFormData({ ...formData, artistId: value })
+              }
+              placeholder="Search and select artist..."
+              maxResults={20}
+              required
+              createNewLink="/artist"
+            />
 
             {/* Release Date */}
             <div>
@@ -328,10 +327,10 @@ const Album = () => {
                   type="text"
                   value={imageSearchQuery}
                   onChange={(e) => setImageSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
+                  onKeyDown={async (e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
-                      searchSpotifyImages();
+                      await searchSpotifyImages();
                     }
                   }}
                   placeholder="Search for album cover on Spotify..."
@@ -354,9 +353,11 @@ const Album = () => {
                     Selected Cover:
                   </p>
                   <div className="relative inline-block">
-                    <img
+                    <Image
                       src={selectedImage}
                       alt="Selected cover"
+                      width={128}
+                      height={128}
                       className="h-32 w-32 rounded-md border-2 border-primary object-cover"
                     />
                     <button
@@ -403,9 +404,11 @@ const Album = () => {
                             : "border-transparent hover:border-border"
                         }`}
                       >
-                        <img
+                        <Image
                           src={result.imageUrl}
                           alt={result.albumName}
+                          width={80}
+                          height={80}
                           className="h-20 w-20 object-cover"
                         />
                         {selectedImage === result.imageUrl && (

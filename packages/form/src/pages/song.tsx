@@ -116,6 +116,7 @@ const Song = () => {
     }
   };
 
+  // TODO: remove this feature soon
   const extractYoutubeInfo = async () => {
     if (!youtubeUrl) return;
 
@@ -598,9 +599,11 @@ const Song = () => {
                   <p className="mb-2 text-xs text-text-secondary">
                     Selected Image:
                   </p>
-                  <img
+                  <Image
                     src={selectedImage}
                     alt="Selected cover"
+                    width={128}
+                    height={128}
                     className="h-32 w-32 rounded-md object-cover"
                   />
                 </div>
@@ -622,9 +625,11 @@ const Song = () => {
                             : "border-transparent"
                         }`}
                       >
-                        <img
+                        <Image
                           src={result.imageUrl}
                           alt={result.name}
+                          width={80}
+                          height={80}
                           className="h-20 w-full rounded object-cover"
                         />
                         <p className="mt-1 truncate text-xs text-text-secondary">
