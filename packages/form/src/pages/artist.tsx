@@ -42,7 +42,6 @@ const Artist = () => {
   }, []);
 
   const fetchArtists = async () => {
-    console.log("Fetching artists from API...");
     try {
       const response = await fetch("/api/artists");
       const data = (await response.json()) as Artist[];
@@ -60,7 +59,7 @@ const Artist = () => {
     setSearchingImages(true);
     try {
       const response = await fetch(
-        `/api/spotify-search?query=${encodeURIComponent(searchQuery)}`,
+        `/api/spotify-search?query=${encodeURIComponent(searchQuery)}&type=artist`,
       );
       if (response.ok) {
         const data = (await response.json()) as SpotifyResult[];
@@ -360,7 +359,7 @@ const Artist = () => {
                       >
                         <Image
                           src={result.imageUrl}
-                          alt={result.artist}
+                          alt={result.name ?? ""}
                           width={80}
                           height={80}
                           className="h-20 w-20 object-cover"

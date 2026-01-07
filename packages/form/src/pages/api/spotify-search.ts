@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { Album, Artist } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 let cachedAccessToken: string | null = null;
@@ -50,17 +51,20 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { query } = req.query;
+  const { query, type } = req.query;
 
   if (!query || typeof query !== "string") {
     return res.status(400).json({ error: "Query parameter is required" });
   }
 
+  const searchType =
+    typeof type === "string" && type.length > 0 ? type : "track";
+
   try {
     const accessToken = await getSpotifyAccessToken();
 
     const response = await fetch(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=10`,
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=${encodeURIComponent(searchType)}&limit=10`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -104,6 +108,31 @@ export default async function handler(
       };
     }
 
+    interface SpotifyArtistItem {
+      id: string;
+      name: string;
+      images?: SpotifyImage[];
+    }
+
+    interface SpotifyArtistsResponse {
+      artists: {
+        items: SpotifyArtistItem[];
+      };
+    }
+
+    interface SpotifyAlbumItem {
+      id: string;
+      name: string;
+      artists: SpotifyArtist[];
+      images?: SpotifyImage[];
+    }
+
+    interface SpotifyAlbumsResponse {
+      albums: {
+        items: SpotifyAlbumItem[];
+      };
+    }
+
     interface Track {
       id: string;
       name: string;
@@ -111,6 +140,27 @@ export default async function handler(
       album: string;
       imageUrl: string;
       spotifyUrl: string;
+    }
+
+    if (searchType.includes("artist")) {
+      const artists = (data as SpotifyArtistsResponse).artists.items.map(
+        (a) => ({
+          id: a.id,
+          name: a.name,
+          imageUrl: a.images?.[0]?.url ?? "",
+        }),
+      );
+      return res.status(200).json(artists);
+    }
+
+    if (searchType.includes("album")) {
+      const albums = (data as SpotifyAlbumsResponse).albums.items.map((a) => ({
+        id: a.id,
+        name: a.name,
+        artist: a.artists.map((ar) => ar.name).join(", "),
+        imageUrl: a.images?.[0]?.url ?? "",
+      }));
+      return res.status(200).json(albums);
     }
 
     const tracks: Track[] = (data as SpotifyTracksResponse).tracks.items.map(
