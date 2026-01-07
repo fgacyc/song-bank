@@ -59,11 +59,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       include: {
         Album: true,
         Song: true,
+        _count: {
+          select: {
+            Album: true,
+            Song: true,
+          },
+        },
       },
     });
 
     if (!artist) {
-      console.warn(`Song not found: ${artist_id}`);
+      console.warn(`Artist not found: ${artist_id}`);
       return {
         notFound: true,
       };
@@ -71,11 +77,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
       props: {
-        artist: JSON.parse(JSON.stringify(artist)) as ArtistType,
+        artist: JSON.parse(
+          JSON.stringify({
+            ...artist,
+            album_count: artist._count.Album,
+            song_count: artist._count.Song,
+          }),
+        ) as ArtistType,
       },
     };
   } catch (error) {
-    console.error(`Error fetching song ${artist_id}:`, error);
+    console.error(`Error fetching artist ${artist_id}:`, error);
 
     return {
       notFound: true,
