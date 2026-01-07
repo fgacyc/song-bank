@@ -10,7 +10,7 @@ interface ArtistHeroProps {
 
 const ArtistHero = ({ artist }: ArtistHeroProps) => {
   return (
-    <div className="relative flex items-center justify-center overflow-hidden px-4 py-12 md:justify-start md:px-12 lg:px-24">
+    <div className="relative flex items-center justify-center overflow-hidden border-b border-border px-4 py-12 md:justify-start md:px-12 lg:px-24">
       {/* bg */}
       <div
         className="absolute h-full w-full"

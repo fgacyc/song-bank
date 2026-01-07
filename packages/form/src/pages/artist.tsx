@@ -38,16 +38,16 @@ const Artist = () => {
   useEffect(() => {
     void (async () => {
       await fetchArtists();
-    });
+    })();
   }, []);
 
   const fetchArtists = async () => {
+    console.log("Fetching artists from API...");
     try {
       const response = await fetch("/api/artists");
       const data = (await response.json()) as Artist[];
       setArtists(data);
     } catch (error) {
-      console.error("Error fetching artists:", error);
     } finally {
       setLoading(false);
     }

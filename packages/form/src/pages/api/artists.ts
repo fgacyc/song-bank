@@ -8,11 +8,30 @@ import { randomUUID } from "crypto";
 const handler: NextApiHandler = async (req, res) => {
   try {
     switch (req.method) {
-      case "GET":
+      case "GET": {
         const artists = await db.artist.findMany({
           orderBy: { name: "asc" },
+          include: {
+            _count: {
+              select: {
+                Album: true,
+                Song: true,
+              },
+            },
+          },
         });
-        return res.status(200).json(artists);
+
+        const artistsWithCounts = artists.map((a) => ({
+          id: a.id,
+          name: a.name,
+          bio: a.bio,
+          image_cover_url: a.image_cover_url,
+          album_count: a._count.Album,
+          song_count: a._count.Song,
+        }));
+
+        return res.status(200).json(artistsWithCounts);
+      }
 
       case "POST":
         const newArtist = await db.artist.create({
