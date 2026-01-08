@@ -8,6 +8,7 @@ interface PolaroidProps {
   captions?: string[];
   width?: number;
   height?: number;
+  fill?: boolean;
   imgRatio?: number;
   descriptionAlignment?:
     | "topLeft"
@@ -27,6 +28,7 @@ const Polaroid = ({
   captions,
   width = 200,
   height = 280,
+  fill = false,
   imgRatio = 0.7,
   descriptionAlignment = "center",
 }: PolaroidProps) => {
@@ -45,7 +47,10 @@ const Polaroid = ({
   return (
     <div
       className="group/polaroid relative overflow-hidden rounded-xl border border-border duration-300"
-      style={{ width: `${width}px`, height: `${height}px` }}
+      style={{
+        width: fill ? "100%" : `${width}px`,
+        height: fill ? "100%" : `${height}px`,
+      }}
     >
       <div
         className="relative w-full overflow-hidden bg-gray-100"

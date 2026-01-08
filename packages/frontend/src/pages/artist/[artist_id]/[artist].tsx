@@ -57,7 +57,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const artist = await db.artist.findUnique({
       where: { id: artist_id },
       include: {
-        Album: true,
+        Album: {
+          include: {
+            _count: {
+              select: {
+                Song: true,
+              },
+            },
+          },
+        },
         Song: true,
         _count: {
           select: {
@@ -80,7 +88,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         artist: JSON.parse(
           JSON.stringify({
             ...artist,
-            albums: artist.Album,
+            albums: artist.Album.map((album) => ({
+              ...album,
+              song_count: album._count.Song,
+            })),
             songs: artist.Song,
             album_count: artist._count.Album,
             song_count: artist._count.Song,
