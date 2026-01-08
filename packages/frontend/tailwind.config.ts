@@ -15,6 +15,8 @@ export default {
         "bg-quaternary": "var(--color-bg-quaternary)",
         "text-primary": "var(--color-text-primary)",
         "text-secondary": "var(--color-text-secondary)",
+        "toggle-button": "var(--color-toggle-button)",
+        "toggle-button-focus": "var(--color-toggle-button-focus)",
         border: "hsl(var(--border))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

@@ -80,6 +80,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         artist: JSON.parse(
           JSON.stringify({
             ...artist,
+            albums: artist.Album,
+            songs: artist.Song,
             album_count: artist._count.Album,
             song_count: artist._count.Song,
           }),

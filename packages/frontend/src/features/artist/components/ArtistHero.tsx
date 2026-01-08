@@ -31,7 +31,7 @@ const ArtistHero = ({ artist }: ArtistHeroProps) => {
       {/* content */}
       <div className="flex flex-col items-center gap-10 md:flex-row md:items-start">
         {/* img cover */}
-        <div className="relative h-56 w-56 flex-shrink-0 overflow-hidden rounded-full border-4 border-bg-primary">
+        <div className="relative h-48 w-48 flex-shrink-0 overflow-hidden rounded-full border-4 border-bg-primary">
           {artist.image_cover_url ? (
             <Image
               src={artist.image_cover_url}
@@ -49,17 +49,23 @@ const ArtistHero = ({ artist }: ArtistHeroProps) => {
         {/* album details */}
         <div className="flex flex-col items-center justify-center gap-6 text-center md:items-start md:text-start">
           <h1 className="text-[3rem] font-semibold">{artist.name}</h1>
-          <p className="text-sm text-text-secondary">{artist.bio}</p>
+          {artist.bio && (
+            <p className="text-sm text-text-secondary">{artist.bio}</p>
+          )}
           <div className="flex gap-4 text-sm">
-            <div className="flex items-center justify-center gap-2">
-              <Disc3 className="h-4 w-4 text-text-secondary" />
-              {artist.album_count}{" "}
-              {artist.album_count === 1 ? "Album" : "Albums"}
-            </div>
-            <div className="flex items-center justify-center gap-2">
-              <Music className="h-4 w-4 text-text-secondary" />
-              {artist.song_count} {artist.song_count === 1 ? "Song" : "Songs"}
-            </div>
+            {artist.album_count > 0 && (
+              <div className="flex items-center justify-center gap-2">
+                <Disc3 className="h-4 w-4 text-text-secondary" />
+                {artist.album_count}{" "}
+                {artist.album_count === 1 ? "Album" : "Albums"}
+              </div>
+            )}
+            {artist.song_count > 0 && (
+              <div className="flex items-center justify-center gap-2">
+                <Music className="h-4 w-4 text-text-secondary" />
+                {artist.song_count} {artist.song_count === 1 ? "Song" : "Songs"}
+              </div>
+            )}
           </div>
         </div>
       </div>

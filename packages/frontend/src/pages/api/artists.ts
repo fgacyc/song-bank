@@ -17,6 +17,8 @@ export default async function handler(
       },
       take: take,
       include: {
+        Album: true,
+        Song: true,
         _count: {
           select: {
             Album: true,
@@ -28,6 +30,8 @@ export default async function handler(
 
     const artistsWithCounts = artists.map((artist) => ({
       ...artist,
+      albums: artist.Album,
+      songs: artist.Song,
       album_count: artist._count.Album,
       song_count: artist._count.Song,
       _count: undefined,
