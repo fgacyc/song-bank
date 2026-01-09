@@ -44,13 +44,22 @@ const FeaturedArtists = () => {
             >
               <Polaroid
                 imageSrc={getArtistImage(artist)}
-                title={artist.name}
-                captions={[artist.bio ?? "lorem ipsum dolor sit amet"]}
+                imageAlt={artist.name}
                 width={250}
                 height={400}
                 imgRatio={0.6}
-                descriptionAlignment="center"
-              />
+              >
+                <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
+                  <div className="w-3/4 space-y-2">
+                    <h3 className="truncate text-text-primary">
+                      {artist.name}
+                    </h3>
+                    <p className="text-wrap text-sm text-text-secondary">
+                      {artist.bio ?? "lorem ipsum dolor sit amet"}
+                    </p>
+                  </div>
+                </div>
+              </Polaroid>
             </Link>
           );
         })}

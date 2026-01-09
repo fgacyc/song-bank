@@ -111,13 +111,27 @@ const LatestAlbums = () => {
               >
                 <Polaroid
                   imageSrc={album.image_cover_url ?? ""}
-                  title={album.name}
-                  captions={captions}
+                  imageAlt={album.name}
                   width={260}
                   height={300}
                   imgRatio={0.48}
-                  descriptionAlignment="bottomLeft"
-                />
+                >
+                  <div className="flex h-full w-full flex-col items-start justify-end p-6 text-start">
+                    <div className="h-3/4 w-3/4 space-y-2">
+                      <h3 className="truncate text-text-primary">
+                        {album.name}
+                      </h3>
+                      {captions.map((caption, index) => (
+                        <p
+                          key={index}
+                          className="text-wrap text-sm text-text-secondary"
+                        >
+                          {caption}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </Polaroid>
               </Link>
             );
           })}
