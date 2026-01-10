@@ -1,26 +1,26 @@
-import React from "react";
-import type { AlbumTypeWithSongs, SongType } from "../types/types";
-import Image from "next/image";
-import { CiImageOff } from "react-icons/ci";
 import { Badge } from "@/features/shared/ui/Badge";
+import type { SongType } from "@/types/types";
+import Image from "next/image";
 import Link from "next/link";
-import slugify from "slugify";
+import React from "react";
+import { CiImageOff } from "react-icons/ci";
 import { FiMusic } from "react-icons/fi";
+import slugify from "slugify";
 
 interface AlbumSongProps {
   song: SongType;
   index: number;
 }
 
-const AlbumSong = ({ song, index }: AlbumSongProps) => {
+const ArtistSong = ({ song, index }: AlbumSongProps) => {
   return (
     <Link
       href={`/song/${song.id}/${slugify(song.name!, { lower: true })}`}
       className="group"
     >
-      <div className="flex w-full justify-between rounded p-4 transition-all duration-200 group-hover:bg-bg-quaternary">
+      <div className="flex justify-between rounded p-4 transition-all duration-200 group-hover:bg-bg-quaternary">
         <div className="flex items-center justify-center gap-7">
-          <div className="text-sm font-semibold text-text-secondary">
+          <div className="text-sm font-medium text-text-secondary">
             {index + 1}
           </div>
           <div className="relative h-12 w-20 overflow-hidden rounded-md">
@@ -38,14 +38,17 @@ const AlbumSong = ({ song, index }: AlbumSongProps) => {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <div className="text-text-primary">{song.name}</div>
+            <div className="text-sm text-text-primary">{song.name}</div>
+            <div className="text-sm font-medium text-text-secondary">
+              {song.album.name}
+            </div>
             <div className="space-x-1">
               {song.song_language && (
                 <Badge variant="outline" className="rounded-md border-border">
                   {song.song_language}
                 </Badge>
               )}
-              {song.tags.map((tag) => {
+              {song.tags?.map((tag) => {
                 return (
                   <Badge
                     key={tag.id}
@@ -68,20 +71,24 @@ const AlbumSong = ({ song, index }: AlbumSongProps) => {
   );
 };
 
-interface AlbumSongListProps {
-  album: AlbumTypeWithSongs;
+interface ArtistSongListProps {
+  songs: SongType[];
 }
 
-const AlbumSongList = ({ album }: AlbumSongListProps) => {
+const ArtistSongList = ({ songs }: ArtistSongListProps) => {
+  if (!songs || songs.length === 0) {
+    return <div>No songs found</div>;
+  }
+
   return (
-    <div className="flex items-center justify-center px-4 pb-12">
-      <div className="w-full rounded-lg border border-border bg-bg-tertiary p-8 md:max-w-[60dvw]">
-        {album.Song.map((song, index) => (
-          <AlbumSong key={song.id} song={song} index={index} />
-        ))}
-      </div>
+    <div className="flex w-full flex-col rounded-xl border border-border bg-bg-tertiary p-6">
+      {songs.map((song) => {
+        return (
+          <ArtistSong key={song.id} song={song} index={songs.indexOf(song)} />
+        );
+      })}
     </div>
   );
 };
 
-export default AlbumSongList;
+export default ArtistSongList;

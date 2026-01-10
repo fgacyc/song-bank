@@ -17,6 +17,7 @@ export default {
         "text-secondary": "var(--color-text-secondary)",
         "toggle-button": "var(--color-toggle-button)",
         "toggle-button-focus": "var(--color-toggle-button-focus)",
+        "toggle-button-focus-border": "var(--color-toggle-button-focus-border)",
         border: "hsl(var(--border))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

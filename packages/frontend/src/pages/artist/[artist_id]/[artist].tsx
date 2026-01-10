@@ -66,7 +66,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             },
           },
         },
-        Song: true,
+        Song: {
+          include: {
+            tags: true,
+            album: true,
+          },
+        },
         _count: {
           select: {
             Album: true,
