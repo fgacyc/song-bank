@@ -12,7 +12,7 @@ const ArtistContent = ({ artist }: ArtistContentProps) => {
   const [selected, setSelected] = useState("Albums");
 
   return (
-    <div className="relative flex w-full flex-col items-start justify-center overflow-hidden border-b border-border px-4 py-12 md:justify-start md:px-12 lg:px-24">
+    <div className="relative flex w-full flex-col items-start justify-center overflow-hidden px-4 py-12 md:justify-start md:px-12 lg:px-24">
       <ToggleButton
         left="Albums"
         right="All Songs"

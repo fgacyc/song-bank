@@ -39,9 +39,11 @@ const ArtistSong = ({ song, index }: AlbumSongProps) => {
           </div>
           <div className="flex flex-col gap-1">
             <div className="text-sm text-text-primary">{song.name}</div>
-            <div className="text-sm font-medium text-text-secondary">
-              {song.album.name}
-            </div>
+            {song.album && (
+              <div className="text-sm font-medium text-text-secondary">
+                {song.album.name}
+              </div>
+            )}
             <div className="space-x-1">
               {song.song_language && (
                 <Badge variant="outline" className="rounded-md border-border">

@@ -12,7 +12,7 @@ interface SongHeroProps {
 
 const SongHero = ({ song }: SongHeroProps) => {
   return (
-    <div className="relative flex items-center justify-center overflow-hidden py-12">
+    <div className="relative flex items-center justify-center overflow-hidden border-b border-border py-12">
       {/* bg */}
       <div
         className="absolute h-full w-full"

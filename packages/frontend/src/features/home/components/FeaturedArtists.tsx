@@ -5,6 +5,7 @@ import Polaroid from "@/features/shared/ui/Polaroid";
 import Link from "next/link";
 import slugify from "slugify";
 import type { ArtistType } from "@/types/types";
+import { Disc3, Music } from "lucide-react";
 
 /* 
 TODO: 
@@ -49,14 +50,31 @@ const FeaturedArtists = () => {
                 height={400}
                 imgRatio={0.6}
               >
-                <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
+                <div className="flex h-full w-full flex-col items-center justify-center p-6 text-start">
                   <div className="w-3/4 space-y-2">
                     <h3 className="truncate text-text-primary">
                       {artist.name}
                     </h3>
-                    <p className="text-wrap text-sm text-text-secondary">
+                    {/* <p className="text-wrap text-sm text-text-secondary">
                       {artist.bio ?? "lorem ipsum dolor sit amet"}
-                    </p>
+                    </p> */}
+
+                    <div className="flex flex-col items-start justify-center gap-2">
+                      {artist.album_count > 0 && (
+                        <div className="flex items-center justify-center gap-2 text-xs">
+                          <Disc3 className="h-4 w-4 text-text-secondary" />
+                          {artist.album_count}{" "}
+                          {artist.album_count === 1 ? "Album" : "Albums"}
+                        </div>
+                      )}
+                      {artist.song_count > 0 && (
+                        <div className="flex items-center justify-center gap-2 text-xs">
+                          <Music className="h-4 w-4 text-text-secondary" />
+                          {artist.song_count}{" "}
+                          {artist.song_count === 1 ? "Song" : "Songs"}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Polaroid>

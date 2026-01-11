@@ -56,7 +56,7 @@ const SearchBar = ({
     <div className={`space-y-4 ${className}`}>
       {/* search bar */}
       <form onSubmit={handleSubmit}>
-        <div className="flex h-[36px] items-center gap-3 rounded-lg border border-border px-3">
+        <div className="flex h-[36px] max-w-2xl items-center gap-3 rounded-lg border border-border px-3">
           <CiSearch className="flex-shrink-0 text-text-secondary" size={20} />
           <input
             type="text"
