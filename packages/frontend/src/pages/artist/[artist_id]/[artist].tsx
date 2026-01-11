@@ -1,7 +1,7 @@
 import ArtistPage from "@/features/artist/components/ArtistPage";
 import MainLayout from "@/layouts/MainLayout";
+import { db } from "@/lib/prisma";
 import type { ArtistType } from "@/types/types";
-import { db } from "legacy/server/db";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import React from "react";
