@@ -28,11 +28,25 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime());
 }
 
-export function DatePicker() {
+interface DatePickerProps {
+  value?: Date;
+  onChange?: (date: Date | undefined) => void;
+}
+
+export function DatePicker({
+  value: controlledValue,
+  onChange,
+}: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>();
-  const [month, setMonth] = React.useState<Date | undefined>(date);
-  const [value, setValue] = React.useState(formatDate(date));
+  const [date, setDate] = React.useState<Date | undefined>(controlledValue);
+  const [month, setMonth] = React.useState<Date | undefined>(controlledValue);
+  const [value, setValue] = React.useState(formatDate(controlledValue));
+
+  React.useEffect(() => {
+    setDate(controlledValue);
+    setMonth(controlledValue);
+    setValue(formatDate(controlledValue));
+  }, [controlledValue]);
 
   return (
     <div className="relative flex items-center justify-center gap-2">
@@ -47,6 +61,7 @@ export function DatePicker() {
           if (isValidDate(date)) {
             setDate(date);
             setMonth(date);
+            onChange?.(date);
           }
         }}
         onKeyDown={(e) => {
@@ -82,6 +97,7 @@ export function DatePicker() {
             onSelect={(date) => {
               setDate(date);
               setValue(formatDate(date));
+              onChange?.(date);
               setOpen(false);
             }}
           />

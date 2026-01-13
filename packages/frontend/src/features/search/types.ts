@@ -1,24 +1,58 @@
 export interface Song {
   id: string;
-  title: string;
-  artist: string;
-  album?: string;
-  lyrics?: string;
-  chords?: string;
-  language?: string;
-  keySignature?: string;
+  name: string | null;
+  alt_name: string | null;
+  chord_lyrics: string | null;
+  original_key: string | null;
+  song_language: string | null;
+  cover_image_url: string | null;
+  original_youtube_url: string | null;
+  artist?: {
+    id: string;
+    name: string;
+  } | null;
+  album?: {
+    id: string;
+    name: string;
+  } | null;
+}
+
+export interface Album {
+  id: string;
+  name: string;
+  release_date: Date;
+  image_cover_url: string | null;
+  artist: {
+    id: string;
+    name: string;
+  } | null;
+  _count?: {
+    Song: number;
+  };
+}
+
+export interface Artist {
+  id: string;
+  name: string;
+  bio: string | null;
+  image_cover_url: string | null;
+  _count?: {
+    Song: number;
+    Album: number;
+  };
 }
 
 export interface SearchFilters {
   query: string;
   language?: string;
   keySignature?: string;
-  // sortBy?: "title" | "artist" | "relevance";
-  // sortOrder?: "asc" | "desc";
+  date?: string;
 }
 
 export interface SearchResult {
   songs: Song[];
+  albums: Album[];
+  artists: Artist[];
   total: number;
   page: number;
   hasMore: boolean;

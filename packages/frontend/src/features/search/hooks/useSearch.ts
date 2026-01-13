@@ -1,10 +1,18 @@
-import { useState, useCallback, useEffect } from "react";
-import type { Song, SearchFilters, SearchResult } from "../types";
+import { useState, useCallback } from "react";
+import type {
+  Song,
+  Album,
+  Artist,
+  SearchFilters,
+  SearchResult,
+} from "../types";
 import { searchService } from "../services/searchService";
 
 interface UseSearchReturn {
   // state
-  results: Song[];
+  songs: Song[];
+  albums: Album[];
+  artists: Artist[];
   isLoading: boolean;
   error: string | null;
   hasMore: boolean;
@@ -17,7 +25,9 @@ interface UseSearchReturn {
 }
 
 export const useSearch = (): UseSearchReturn => {
-  const [results, setResults] = useState<Song[]>([]);
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [artists, setArtists] = useState<Artist[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(false);
@@ -36,12 +46,16 @@ export const useSearch = (): UseSearchReturn => {
 
       const result = await searchService.search(filters, 1);
 
-      setResults(result.songs);
+      setSongs(result.songs);
+      setAlbums(result.albums);
+      setArtists(result.artists);
       setHasMore(result.hasMore);
       setTotal(result.total);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Search failed");
-      setResults([]);
+      setSongs([]);
+      setAlbums([]);
+      setArtists([]);
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +71,9 @@ export const useSearch = (): UseSearchReturn => {
       const nextPage = currentPage + 1;
       const result = await searchService.search(currentFilters, nextPage);
 
-      setResults((prev) => [...prev, ...result.songs]);
+      setSongs((prev) => [...prev, ...result.songs]);
+      setAlbums((prev) => [...prev, ...result.albums]);
+      setArtists((prev) => [...prev, ...result.artists]);
       setHasMore(result.hasMore);
       setCurrentPage(nextPage);
     } catch (err) {
@@ -70,7 +86,9 @@ export const useSearch = (): UseSearchReturn => {
   }, [currentFilters, currentPage, hasMore, isLoading]);
 
   const clearResults = useCallback(() => {
-    setResults([]);
+    setSongs([]);
+    setAlbums([]);
+    setArtists([]);
     setError(null);
     setHasMore(false);
     setTotal(0);
@@ -79,7 +97,9 @@ export const useSearch = (): UseSearchReturn => {
   }, []);
 
   return {
-    results,
+    songs,
+    albums,
+    artists,
     isLoading,
     error,
     hasMore,

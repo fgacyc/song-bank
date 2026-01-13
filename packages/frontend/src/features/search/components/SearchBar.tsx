@@ -10,7 +10,6 @@ import { DatePicker } from "@/features/shared/ui/DatePicker";
 
 interface SearchBarProps {
   onSearch: (filters: SearchFilters) => void;
-  isLoading?: boolean;
   placeholder?: string;
   className?: string;
   showFilters?: boolean;
@@ -18,7 +17,6 @@ interface SearchBarProps {
 
 const SearchBar = ({
   onSearch,
-  isLoading = false,
   placeholder = "Search songs, albums, or artists...",
   className = "",
   showFilters = true,
@@ -26,6 +24,7 @@ const SearchBar = ({
   const [query, setQuery] = useState("");
   const [language, setLanguage] = useState("all");
   const [keySignature, setKeySignature] = useState("all");
+  const [date, setDate] = useState<Date | undefined>();
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -38,11 +37,12 @@ const SearchBar = ({
         if (language && language !== "all") filters.language = language;
         if (keySignature && keySignature !== "all")
           filters.keySignature = keySignature;
+        if (date) filters.date = date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
 
         onSearch(filters);
       }
     },
-    [query, language, keySignature, onSearch],
+    [query, language, keySignature, date, onSearch],
   );
 
   const handleInputChange = useCallback(
@@ -63,7 +63,6 @@ const SearchBar = ({
             value={query}
             onChange={handleInputChange}
             placeholder={placeholder}
-            disabled={isLoading}
             className="flex-1 bg-transparent text-sm text-text-primary placeholder-text-secondary focus:outline-none disabled:opacity-50"
           />
         </div>
@@ -87,7 +86,7 @@ const SearchBar = ({
           />
 
           {/* date picker */}
-          <DatePicker />
+          <DatePicker value={date} onChange={setDate} />
         </FilterTags>
       )}
     </div>

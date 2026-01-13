@@ -5,19 +5,32 @@ import { ThemeToggle } from "@/features/theme";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
+import type { SearchFilters } from "@/features/search/types";
 
 interface HeaderProps {
   title: string;
 }
 
 const Header = ({ title }: HeaderProps) => {
-  const { search, isLoading } = useSearch();
+  const router = useRouter();
 
   const { isAboveThreshold: showSearchBar } = useScrollPosition({
     threshold: 400,
   });
+
+  const handleSearch = async (filters: SearchFilters) => {
+    const params = new URLSearchParams();
+
+    if (filters.query) params.set("query", filters.query);
+    if (filters.language) params.set("language", filters.language);
+    if (filters.keySignature) params.set("key", filters.keySignature);
+    if (filters.date) params.set("date", filters.date);
+
+    await router.push(`/search?${params.toString()}`);
+  };
 
   return (
     <>
@@ -53,7 +66,7 @@ const Header = ({ title }: HeaderProps) => {
               : "max-h-64 pb-4 opacity-100"
           }`}
         >
-          <SearchBar onSearch={search} isLoading={isLoading} />
+          <SearchBar onSearch={handleSearch} />
         </div>
       </header>
     </>
