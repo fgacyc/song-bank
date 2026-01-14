@@ -2,10 +2,10 @@ import React from "react";
 import AlbumBreadcrumb from "./AlbumBreadcrumb";
 import AlbumHero from "./AlbumHero";
 import AlbumSongList from "./AlbumSongList";
-import type { AlbumTypeWithSongs } from "../types/types";
+import type { AlbumType } from "@/types/types";
 
 interface AlbumPageProps {
-  album: AlbumTypeWithSongs;
+  album: AlbumType;
 }
 
 const AlbumPage = ({ album }: AlbumPageProps) => {

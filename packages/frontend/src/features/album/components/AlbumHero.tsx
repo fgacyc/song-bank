@@ -3,10 +3,10 @@ import Image from "next/image";
 import React from "react";
 import { CiImageOff } from "react-icons/ci";
 import { FiMusic } from "react-icons/fi";
-import type { AlbumTypeWithSongs } from "../types/types";
+import type { AlbumType } from "@/types/types";
 
 interface AlbumHeroProps {
-  album: AlbumTypeWithSongs;
+  album: AlbumType;
 }
 
 const AlbumHero = ({ album }: AlbumHeroProps) => {

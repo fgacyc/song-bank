@@ -1,8 +1,8 @@
 import { db } from "@/lib/prisma";
-import type { AlbumTypeBase, AlbumTypeWithSongs } from "../types/types";
+import type { AlbumType } from "@/types/types";
 
 export const albumService = {
-  async getAlbums(limit?: number): Promise<AlbumTypeBase[]> {
+  async getAlbums(limit?: number): Promise<AlbumType[]> {
     try {
       const albums = await db.album.findMany({
         orderBy: { release_date: "asc" },
@@ -25,7 +25,7 @@ export const albumService = {
           ...albumWithoutCount,
           song_count: _count.Song,
         };
-      }) as AlbumTypeBase[];
+      }) as AlbumType[];
 
       return albumsWithCounts;
     } catch (error) {
@@ -34,7 +34,7 @@ export const albumService = {
     }
   },
 
-  async getAlbumById(albumId: string): Promise<AlbumTypeWithSongs | null> {
+  async getAlbumById(albumId: string): Promise<AlbumType | null> {
     try {
       const album = await db.album.findUnique({
         where: { id: albumId },
@@ -55,11 +55,12 @@ export const albumService = {
 
       if (!album) return null;
 
-      const { _count, ...albumWithoutCount } = album;
-      const albumWithCount: AlbumTypeWithSongs = {
+      const { _count, Song, ...albumWithoutCount } = album;
+      const albumWithCount: AlbumType = {
         ...albumWithoutCount,
         song_count: _count.Song,
-      } as AlbumTypeWithSongs;
+        songs: Song,
+      } as AlbumType;
 
       return albumWithCount;
     } catch (error) {

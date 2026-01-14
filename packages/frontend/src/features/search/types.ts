@@ -1,4 +1,4 @@
-export interface Song {
+export interface SearchSong {
   id: string;
   name: string | null;
   alt_name: string | null;
@@ -17,7 +17,7 @@ export interface Song {
   } | null;
 }
 
-export interface Album {
+export interface SearchAlbum {
   id: string;
   name: string;
   release_date: Date;
@@ -31,7 +31,7 @@ export interface Album {
   };
 }
 
-export interface Artist {
+export interface SearchArtist {
   id: string;
   name: string;
   bio: string | null;
@@ -50,9 +50,9 @@ export interface SearchFilters {
 }
 
 export interface SearchResult {
-  songs: Song[];
-  albums: Album[];
-  artists: Artist[];
+  songs: SearchSong[];
+  albums: SearchAlbum[];
+  artists: SearchArtist[];
   total: number;
   page: number;
   hasMore: boolean;

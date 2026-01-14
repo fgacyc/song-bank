@@ -4,10 +4,10 @@ import AlbumPage from "../../../features/album/components/AlbumPage";
 import MainLayout from "@/layouts/MainLayout";
 import type { GetServerSideProps } from "next";
 import { albumService } from "@/features/album/services/albumService";
-import type { AlbumTypeWithSongs } from "@/features/album/types/types";
+import type { AlbumType } from "@/types/types";
 
 interface AlbumProps {
-  album: AlbumTypeWithSongs | null;
+  album: AlbumType;
 }
 
 const Album = ({ album }: AlbumProps) => {
@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
       props: {
-        album: JSON.parse(JSON.stringify(album)) as AlbumTypeWithSongs,
+        album: JSON.parse(JSON.stringify(album)) as AlbumType,
       },
     };
   } catch (error) {

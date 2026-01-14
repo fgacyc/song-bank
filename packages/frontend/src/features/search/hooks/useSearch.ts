@@ -1,18 +1,17 @@
 import { useState, useCallback } from "react";
 import type {
-  Song,
-  Album,
-  Artist,
+  SearchSong,
+  SearchAlbum,
+  SearchArtist,
   SearchFilters,
-  SearchResult,
 } from "../types";
 import { searchService } from "../services/searchService";
 
 interface UseSearchReturn {
   // state
-  songs: Song[];
-  albums: Album[];
-  artists: Artist[];
+  songs: SearchSong[];
+  albums: SearchAlbum[];
+  artists: SearchArtist[];
   isLoading: boolean;
   error: string | null;
   hasMore: boolean;
@@ -25,9 +24,9 @@ interface UseSearchReturn {
 }
 
 export const useSearch = (): UseSearchReturn => {
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [albums, setAlbums] = useState<Album[]>([]);
-  const [artists, setArtists] = useState<Artist[]>([]);
+  const [songs, setSongs] = useState<SearchSong[]>([]);
+  const [albums, setAlbums] = useState<SearchAlbum[]>([]);
+  const [artists, setArtists] = useState<SearchArtist[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(false);

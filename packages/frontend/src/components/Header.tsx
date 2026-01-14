@@ -1,4 +1,4 @@
-import { SearchBar, useSearch } from "@/features/search";
+import { SearchBar } from "@/features/search";
 import { useScrollPosition } from "@/features/shared/hooks/useScrollPosition";
 import IconButton from "@/features/shared/ui/IconButton";
 import { ThemeToggle } from "@/features/theme";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
-import type { SearchFilters } from "@/features/search/types";
+import type { SearchFilters } from "@/features/search";
 
 interface HeaderProps {
   title: string;

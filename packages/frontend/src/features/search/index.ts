@@ -4,7 +4,9 @@ export { default as FilterTag, FilterTags } from "./components/FilterTags";
 export { useSearch } from "./hooks/useSearch";
 export { searchService } from "./services/searchService";
 export type {
-  Song,
+  SearchSong,
+  SearchAlbum,
+  SearchArtist,
   SearchFilters,
   SearchResult,
   FilterOption,

@@ -1,12 +1,12 @@
-import type { AlbumTypeBase } from "@/features/album/types/types";
+import type { AlbumType } from "@/types/types";
 import type { ArtistType, SongType } from "@/types/types";
 
 export const homeService = {
-  async getLatestAlbums(): Promise<AlbumTypeBase[]> {
+  async getLatestAlbums(): Promise<AlbumType[]> {
     try {
       const response = await fetch("/api/albums?limit=8");
       if (!response.ok) throw new Error("Failed to fetch albums");
-      const albums = (await response.json()) as AlbumTypeBase[];
+      const albums = (await response.json()) as AlbumType[];
       return albums;
     } catch (error) {
       console.error("Error fetching latest albums:", error);

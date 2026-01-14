@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
-import type { SearchFilters } from "../types";
 import FilterTag, { FilterTags } from "./FilterTags";
 import {
   LANGUAGE_OPTIONS,
   KEY_SIGNATURE_OPTIONS,
 } from "../constants/filterOptions";
 import { DatePicker } from "@/features/shared/ui/DatePicker";
+import type { SearchFilters } from "../types";
 
 interface SearchBarProps {
   onSearch: (filters: SearchFilters) => void;

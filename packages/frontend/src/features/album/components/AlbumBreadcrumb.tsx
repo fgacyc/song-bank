@@ -7,10 +7,10 @@ import {
 } from "@/features/shared/ui/Breadcrumb";
 import React from "react";
 import slugify from "slugify";
-import type { AlbumTypeWithSongs } from "../types/types";
+import type { AlbumType } from "@/types/types";
 
 interface AlbumBreadcrumbProps {
-  album: AlbumTypeWithSongs;
+  album: AlbumType;
 }
 
 const AlbumBreadcrumb = ({ album }: AlbumBreadcrumbProps) => {

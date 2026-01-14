@@ -14,8 +14,7 @@ const ArtistContent = ({ artist }: ArtistContentProps) => {
   return (
     <div className="relative flex w-full flex-col items-start justify-center overflow-hidden px-4 py-12 md:justify-start md:px-12 lg:px-24">
       <ToggleButton
-        left="Albums"
-        right="All Songs"
+        options={["Albums", "All Songs"]}
         selected={selected}
         setSelected={setSelected}
       />

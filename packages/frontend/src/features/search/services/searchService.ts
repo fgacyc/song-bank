@@ -26,7 +26,7 @@ class SearchService {
         throw new Error(`Search failed: ${response.statusText}`);
       }
 
-      const data: SearchResult = await response.json();
+      const data: SearchResult = (await response.json()) as SearchResult;
       return data;
     } catch (error) {
       console.error("Search service error:", error);
