@@ -15,7 +15,7 @@ const ToggleButton = ({
 }: ToggleButtonProps) => {
   return (
     <div
-      className={`flex items-center justify-center rounded-2xl bg-toggle-button p-1 text-sm font-semibold ${className}`}
+      className={`flex items-center justify-center rounded-2xl bg-toggle-button p-1 text-sm font-medium ${className}`}
     >
       {options.map((option) => (
         <button

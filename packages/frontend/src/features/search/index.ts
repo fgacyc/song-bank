@@ -1,5 +1,8 @@
 export { default as SearchBar } from "./components/SearchBar";
 export { default as SearchResults } from "./components/SearchResults";
+export { default as SearchSongs } from "./components/SearchSongs";
+export { default as SearchAlbums } from "./components/SearchAlbums";
+export { default as SearchArtists } from "./components/SearchArtists";
 export { default as FilterTag, FilterTags } from "./components/FilterTags";
 export { useSearch } from "./hooks/useSearch";
 export { searchService } from "./services/searchService";
