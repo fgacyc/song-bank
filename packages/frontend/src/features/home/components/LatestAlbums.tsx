@@ -58,7 +58,7 @@ const LatestAlbums = () => {
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <h2>Latest Albums</h2>
-        <Badge className="h-fit rounded-lg bg-bg-quaternary px-2.5 py-0.5 text-xs text-text-primary">
+        <Badge className="h-fit rounded-lg bg-bg-quaternary px-2.5 py-0.5 text-xs text-text-primary hover:bg-bg-quaternary">
           New
         </Badge>
       </div>
