@@ -1,46 +1,21 @@
-export interface SearchSong {
-  id: string;
-  name: string | null;
-  alt_name: string | null;
-  chord_lyrics: string | null;
-  original_key: string | null;
-  song_language: string | null;
-  cover_image_url: string | null;
-  original_youtube_url: string | null;
-  artist?: {
-    id: string;
-    name: string;
-  } | null;
-  album?: {
-    id: string;
-    name: string;
-  } | null;
-}
+import type { Song, Album, Artist, Tag } from "@prisma/client";
 
-export interface SearchAlbum {
-  id: string;
-  name: string;
-  release_date: Date;
-  image_cover_url: string | null;
-  artist: {
-    id: string;
-    name: string;
-  } | null;
-  _count?: {
-    Song: number;
-  };
-}
+// Simplified types for search results to avoid circular dependencies
+export type SearchArtist = Artist & {
+  album_count: number;
+  song_count: number;
+};
 
-export interface SearchArtist {
-  id: string;
-  name: string;
-  bio: string | null;
-  image_cover_url: string | null;
-  _count?: {
-    Song: number;
-    Album: number;
-  };
-}
+export type SearchAlbum = Album & {
+  artist: Artist | null;
+  song_count: number;
+};
+
+export type SearchSong = Song & {
+  artist: Artist | null;
+  album: Album | null;
+  tags: Tag[];
+};
 
 export interface SearchFilters {
   query: string;

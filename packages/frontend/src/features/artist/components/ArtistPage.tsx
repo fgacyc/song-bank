@@ -10,7 +10,7 @@ interface ArtistPageProps {
 
 const ArtistPage = ({ artist }: ArtistPageProps) => {
   return (
-    <div className="space-y-2 pt-6">
+    <div className="w-full space-y-2 pt-6">
       <ArtistBreadcrumb artist={artist} />
       <ArtistHero artist={artist} />
       <ArtistContent artist={artist} />

@@ -9,7 +9,7 @@ import React from "react";
 
 const SearchBreadcrumb = () => {
   return (
-    <div className="flex justify-center px-4 md:px-12 lg:px-24">
+    <div className="flex justify-center">
       <Breadcrumb className="w-full text-start">
         <BreadcrumbList>
           <BreadcrumbItem>

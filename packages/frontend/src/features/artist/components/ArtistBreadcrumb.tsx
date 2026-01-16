@@ -14,19 +14,21 @@ interface ArtistBreadcrumbProps {
 
 const ArtistBreadcrumb = ({ artist }: ArtistBreadcrumbProps) => {
   return (
-    <div className="flex justify-center px-4 md:px-12 lg:px-24">
-      <Breadcrumb className="w-full text-start">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
-          </BreadcrumbItem>
+    <div className="flex w-full items-center justify-center">
+      <div className="flex w-[80dvw] max-w-[80dvw] justify-center">
+        <Breadcrumb className="w-full text-start">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
 
-          <BreadcrumbSeparator />
-          <BreadcrumbItem className="text-text-primary">
-            {artist.name}
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem className="text-text-primary">
+              {artist.name}
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
     </div>
   );
 };

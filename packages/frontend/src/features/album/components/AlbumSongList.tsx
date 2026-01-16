@@ -8,9 +8,10 @@ interface AlbumSongListProps {
 
 const AlbumSongList = ({ album }: AlbumSongListProps) => {
   return (
-    <div className="flex items-center justify-center px-4 pb-12">
+    <div className="flex items-center justify-center px-4">
       <SongList
         songs={album.songs}
+        showArtistName={false}
         showAlbumName={false}
         containerClassName="w-full md:max-w-[60dvw]"
       />

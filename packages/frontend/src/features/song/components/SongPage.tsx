@@ -17,7 +17,7 @@ const SongPage = ({ song }: SongPageProps) => {
   return (
     <div className="space-y-2 pt-6">
       <SongBreadcrumb song={song} />
-      <div className="space-y-8 pb-20">
+      <div className="space-y-8">
         <SongHero song={song} />
         <SongTransposition />
         <SongLyrics lyrics={song.chord_lyrics} />

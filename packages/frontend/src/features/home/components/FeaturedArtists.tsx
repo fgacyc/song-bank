@@ -44,7 +44,7 @@ const FeaturedArtists = () => {
               className="w-full flex-shrink-0 md:w-fit"
             >
               <Polaroid
-                imageSrc={getArtistImage(artist)}
+                imageSrc={artist.image_cover_url ?? ""}
                 imageAlt={artist.name}
                 width={250}
                 height={400}

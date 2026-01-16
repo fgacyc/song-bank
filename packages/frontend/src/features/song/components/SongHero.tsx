@@ -31,7 +31,7 @@ const SongHero = ({ song }: SongHeroProps) => {
       ></div>
 
       {/* content */}
-      <div className="flex w-[80dvw] flex-col items-center justify-center gap-8 text-center sm:max-w-[80dvw] lg:max-w-[60dvw] lg:flex-row lg:items-start lg:justify-start lg:text-start">
+      <div className="flex w-full max-w-[80dvw] flex-col items-center justify-center gap-8 text-center lg:flex-row lg:items-start lg:justify-start lg:text-start">
         {/* img cover */}
         <div className="relative h-60 w-60 flex-shrink-0 overflow-hidden rounded-lg">
           {song.cover_image_url ? (

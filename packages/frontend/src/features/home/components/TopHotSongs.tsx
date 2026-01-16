@@ -8,33 +8,6 @@ import { CiImageOff } from "react-icons/ci";
 import slugify from "slugify";
 import type { SongType } from "@/types/types";
 
-const TopHotSongs = () => {
-  const { topHotSongs, isLoading, error } = useHome();
-
-  // TODO: loading and error ui
-  if (isLoading) {
-    return <div>loading</div>;
-  }
-
-  if (error) {
-    return <div>error</div>;
-  }
-
-  return (
-    <div>
-      <div className="flex items-center gap-2 pb-4">
-        <h2>Top 20 Hot Songs</h2>
-        <HiMiniArrowTrendingUp className="text-xl" />
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {topHotSongs.data?.map((song, index) => {
-          return <SongListItem key={song.id} song={song} index={index} />;
-        })}
-      </div>
-    </div>
-  );
-};
-
 const SongListItem = ({ song, index }: { song: SongType; index: number }) => {
   return (
     <Link
@@ -96,6 +69,33 @@ const SongListItem = ({ song, index }: { song: SongType; index: number }) => {
         )}
       </div>
     </Link>
+  );
+};
+
+const TopHotSongs = () => {
+  const { topHotSongs, isLoading, error } = useHome();
+
+  // TODO: loading and error ui
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
+  if (error) {
+    return <div>error</div>;
+  }
+
+  return (
+    <>
+      <div className="flex items-center gap-2 pb-4">
+        <h2>Top 20 Hot Songs</h2>
+        <HiMiniArrowTrendingUp className="text-xl" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        {topHotSongs.data?.map((song, index) => {
+          return <SongListItem key={song.id} song={song} index={index} />;
+        })}
+      </div>
+    </>
   );
 };
 

@@ -6,11 +6,13 @@ import TopHotSongs from "./TopHotSongs";
 
 const HomePage = () => {
   return (
-    <div className="space-y-12 px-6 pb-28 pt-12 md:px-12 lg:px-24">
-      <MainCarousel />
-      <LatestAlbums />
-      <FeaturedArtists />
-      <TopHotSongs />
+    <div className="flex w-full justify-center">
+      <div className="w-full max-w-[80dvw] space-y-12 pt-12">
+        <MainCarousel />
+        <LatestAlbums />
+        <FeaturedArtists />
+        <TopHotSongs />
+      </div>
     </div>
   );
 };

@@ -37,8 +37,8 @@ const Header = ({ title }: HeaderProps) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <header className="sticky top-0 z-50 flex flex-col gap-4 border-b border-border bg-bg-primary px-4 pb-2 pt-6 md:px-12 lg:px-24">
-        <div className="flex justify-between">
+      <header className="sticky top-0 z-50 flex flex-col items-center justify-center gap-4 border-b border-border bg-bg-primary pb-2 pt-6">
+        <div className="flex w-full max-w-[80dvw] justify-between">
           <Link href="/">
             <Image
               className="min-h-[40px] min-w-[40px] rounded transition-opacity hover:opacity-80"
@@ -60,7 +60,7 @@ const Header = ({ title }: HeaderProps) => {
         </div>
 
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          className={`w-full max-w-[80dvw] overflow-hidden transition-all duration-300 ease-in-out ${
             showSearchBar
               ? "pointer-events-none max-h-0 pb-0 opacity-0"
               : "max-h-64 pb-4 opacity-100"

@@ -1,5 +1,6 @@
 import { Badge } from "@/features/shared/ui/Badge";
 import type { SongType } from "@/types/types";
+import type { SearchSong } from "@/features/search/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -8,12 +9,20 @@ import { FiMusic } from "react-icons/fi";
 import slugify from "slugify";
 
 interface SongItemProps {
-  song: SongType;
+  song: SongType | SearchSong;
   index: number;
+  noIndex?: boolean;
+  showArtistName?: boolean;
   showAlbumName?: boolean;
 }
 
-const SongItem = ({ song, index, showAlbumName = false }: SongItemProps) => {
+const SongItem = ({
+  song,
+  index,
+  noIndex = false,
+  showArtistName = true,
+  showAlbumName = true,
+}: SongItemProps) => {
   return (
     <Link
       href={`/song/${song.id}/${slugify(song.name!, { lower: true })}`}
@@ -21,9 +30,11 @@ const SongItem = ({ song, index, showAlbumName = false }: SongItemProps) => {
     >
       <div className="flex w-full justify-between rounded p-4 transition-all duration-200 group-hover:bg-bg-quaternary">
         <div className="flex items-center justify-center gap-7">
-          <div className="text-sm font-semibold text-text-secondary">
-            {index + 1}
-          </div>
+          {!noIndex && (
+            <div className="text-sm font-semibold text-text-secondary">
+              {index + 1}
+            </div>
+          )}
           <div className="relative h-12 w-20 overflow-hidden rounded-md">
             {song.cover_image_url ? (
               <Image
@@ -40,11 +51,25 @@ const SongItem = ({ song, index, showAlbumName = false }: SongItemProps) => {
           </div>
           <div className="flex flex-col gap-1">
             <div className="text-sm text-text-primary">{song.name}</div>
-            {showAlbumName && song.album && (
-              <div className="text-sm font-medium text-text-secondary">
-                {song.album.name}
-              </div>
-            )}
+            <div className="flex gap-2">
+              {showArtistName && song.artist && (
+                <div className="text-sm font-medium text-text-secondary">
+                  {song.artist.name}
+                </div>
+              )}
+
+              {showArtistName && showAlbumName && song.artist && song.album && (
+                <div className="text-sm font-medium text-text-secondary">
+                  &bull;
+                </div>
+              )}
+
+              {showAlbumName && song.album && (
+                <div className="text-sm font-medium text-text-secondary">
+                  {song.album.name}
+                </div>
+              )}
+            </div>
             <div className="space-x-1">
               {song.song_language && (
                 <Badge variant="outline" className="rounded-md border-border">
@@ -66,7 +91,9 @@ const SongItem = ({ song, index, showAlbumName = false }: SongItemProps) => {
           </div>
         </div>
         <div className="flex items-center justify-center gap-4 text-text-secondary">
-          <div className="text-sm font-medium">Key: {song.original_key}</div>
+          <Badge variant="secondary" className="rounded-md border-border">
+            Key: {song.original_key}
+          </Badge>
           <FiMusic className="h-4 w-4 opacity-0 transition-all duration-200 group-hover:opacity-100" />
         </div>
       </div>
@@ -75,15 +102,19 @@ const SongItem = ({ song, index, showAlbumName = false }: SongItemProps) => {
 };
 
 interface SongListProps {
-  songs: SongType[];
+  songs: (SongType | SearchSong)[];
+  showArtistName?: boolean;
   showAlbumName?: boolean;
+  noIndex?: boolean;
   className?: string;
   containerClassName?: string;
 }
 
 const SongList = ({
   songs,
-  showAlbumName = false,
+  showArtistName = true,
+  showAlbumName = true,
+  noIndex = false,
   className = "",
   containerClassName = "",
 }: SongListProps) => {
@@ -101,6 +132,8 @@ const SongList = ({
             key={song.id}
             song={song}
             index={index}
+            noIndex={noIndex}
+            showArtistName={showArtistName}
             showAlbumName={showAlbumName}
           />
         ))}

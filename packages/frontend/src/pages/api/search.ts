@@ -57,18 +57,9 @@ export default async function handler(
       db.song.findMany({
         where: songWhere,
         include: {
-          artist: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          album: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
+          artist: true,
+          album: true,
+          tags: true,
         },
         take: ITEMS_PER_PAGE,
         skip,
@@ -86,16 +77,11 @@ export default async function handler(
       ...albumDateFilter,
     };
 
-    const [albums, albumsCount] = await Promise.all([
+    const [albumsRaw, albumsCount] = await Promise.all([
       db.album.findMany({
         where: albumWhere,
         include: {
-          artist: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
+          artist: true,
           _count: {
             select: {
               Song: true,
@@ -109,19 +95,25 @@ export default async function handler(
       db.album.count({ where: albumWhere }),
     ]);
 
+    // Map albums to include song_count
+    const albums = albumsRaw.map((album) => ({
+      ...album,
+      song_count: album._count.Song,
+    }));
+
     // Search artists
     const artistWhere: Prisma.ArtistWhereInput = {
       name: { contains: searchTerm, mode: "insensitive" },
     };
 
-    const [artists, artistsCount] = await Promise.all([
+    const [artistsRaw, artistsCount] = await Promise.all([
       db.artist.findMany({
         where: artistWhere,
         include: {
           _count: {
             select: {
-              Song: true,
               Album: true,
+              Song: true,
             },
           },
         },
@@ -131,6 +123,13 @@ export default async function handler(
       }),
       db.artist.count({ where: artistWhere }),
     ]);
+
+    // Map artists to include counts
+    const artists = artistsRaw.map((artist) => ({
+      ...artist,
+      album_count: artist._count.Album,
+      song_count: artist._count.Song,
+    }));
 
     const totalCount = songsCount + albumsCount + artistsCount;
     const totalItems = songs.length + albums.length + artists.length;
