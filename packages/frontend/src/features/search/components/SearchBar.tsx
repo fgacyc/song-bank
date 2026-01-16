@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import FilterTag, { FilterTags } from "./FilterTags";
 import {
@@ -13,6 +13,10 @@ interface SearchBarProps {
   placeholder?: string;
   className?: string;
   showFilters?: boolean;
+  initialQuery?: string;
+  initialLanguage?: string;
+  initialKeySignature?: string;
+  initialDate?: Date;
 }
 
 const SearchBar = ({
@@ -20,11 +24,23 @@ const SearchBar = ({
   placeholder = "Search songs, albums, or artists...",
   className = "",
   showFilters = true,
+  initialQuery = "",
+  initialLanguage = "all",
+  initialKeySignature = "all",
+  initialDate,
 }: SearchBarProps) => {
-  const [query, setQuery] = useState("");
-  const [language, setLanguage] = useState("all");
-  const [keySignature, setKeySignature] = useState("all");
-  const [date, setDate] = useState<Date | undefined>();
+  const [query, setQuery] = useState(initialQuery);
+  const [language, setLanguage] = useState(initialLanguage);
+  const [keySignature, setKeySignature] = useState(initialKeySignature);
+  const [date, setDate] = useState<Date | undefined>(initialDate);
+
+  // update internal state when initial values change
+  useEffect(() => {
+    setQuery(initialQuery);
+    setLanguage(initialLanguage);
+    setKeySignature(initialKeySignature);
+    setDate(initialDate);
+  }, [initialQuery, initialLanguage, initialKeySignature, initialDate]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -37,7 +53,7 @@ const SearchBar = ({
         if (language && language !== "all") filters.language = language;
         if (keySignature && keySignature !== "all")
           filters.keySignature = keySignature;
-        if (date) filters.date = date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+        if (date) filters.date = date.toISOString().split("T")[0];
 
         onSearch(filters);
       }

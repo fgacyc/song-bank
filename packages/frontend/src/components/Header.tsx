@@ -21,6 +21,20 @@ const Header = ({ title }: HeaderProps) => {
     threshold: 400,
   });
 
+  // determine search bar values based on current route
+  const isSearchPage = router.pathname === "/search";
+  const searchQuery = isSearchPage ? (router.query.query as string) || "" : "";
+  const searchLanguage = isSearchPage
+    ? (router.query.language as string) || "all"
+    : "all";
+  const searchKey = isSearchPage
+    ? (router.query.key as string) || "all"
+    : "all";
+  const searchDate =
+    isSearchPage && router.query.date
+      ? new Date(router.query.date as string)
+      : undefined;
+
   const handleSearch = async (filters: SearchFilters) => {
     const params = new URLSearchParams();
 
@@ -66,7 +80,13 @@ const Header = ({ title }: HeaderProps) => {
               : "max-h-64 pb-4 opacity-100"
           }`}
         >
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar
+            onSearch={handleSearch}
+            initialQuery={searchQuery}
+            initialLanguage={searchLanguage}
+            initialKeySignature={searchKey}
+            initialDate={searchDate}
+          />
         </div>
       </header>
     </>
