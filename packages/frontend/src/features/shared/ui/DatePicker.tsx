@@ -1,13 +1,13 @@
 import * as React from "react";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, ChevronDown, X } from "lucide-react";
 import { Button } from "@/features/shared/ui/Button";
 import { Calendar } from "@/features/shared/ui/Calendar";
-import { Input } from "@/features/shared/ui/Input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/features/shared/ui/Popover";
+import { useEffect } from "react";
 
 function formatDate(date: Date | undefined) {
   if (!date) {
@@ -19,13 +19,6 @@ function formatDate(date: Date | undefined) {
     month: "long",
     year: "numeric",
   });
-}
-
-function isValidDate(date: Date | undefined) {
-  if (!date) {
-    return false;
-  }
-  return !isNaN(date.getTime());
 }
 
 interface DatePickerProps {
@@ -40,69 +33,69 @@ export function DatePicker({
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState<Date | undefined>(controlledValue);
   const [month, setMonth] = React.useState<Date | undefined>(controlledValue);
-  const [value, setValue] = React.useState(formatDate(controlledValue));
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDate(controlledValue);
     setMonth(controlledValue);
-    setValue(formatDate(controlledValue));
   }, [controlledValue]);
 
+  const handleClear = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDate(undefined);
+    setMonth(undefined);
+    onChange?.(undefined);
+  };
+
   return (
-    <div className="relative flex items-center justify-center gap-2">
-      <Input
-        id="date"
-        value={value}
-        placeholder="Release Date"
-        className="!h-[36px] rounded-lg border border-border bg-background pl-5"
-        onChange={(e) => {
-          const date = new Date(e.target.value);
-          setValue(e.target.value);
-          if (isValidDate(date)) {
-            setDate(date);
-            setMonth(date);
-            onChange?.(date);
-          }
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
-            setOpen(true);
-          }
-        }}
-      />
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            id="date-picker"
-            variant="ghost"
-            className="absolute right-3 top-1/2 size-6 -translate-y-1/2"
-          >
-            <CalendarIcon className="size-3.5" />
-            <span className="sr-only">Select date</span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-auto overflow-hidden p-0"
-          align="end"
-          alignOffset={-8}
-          sideOffset={10}
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          id="date-picker"
+          variant="outline"
+          className="h-[36px] min-w-[180px] justify-between gap-2 rounded-lg border border-border bg-background px-3 text-left font-normal hover:bg-background/80"
         >
-          <Calendar
-            mode="single"
-            selected={date}
-            captionLayout="dropdown"
-            month={month}
-            onMonthChange={setMonth}
-            onSelect={(date) => {
-              setDate(date);
-              setValue(formatDate(date));
-              onChange?.(date);
-              setOpen(false);
-            }}
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+          <div className="flex items-center gap-2">
+            <CalendarIcon className="size-3.5 text-text-secondary" />
+            <span
+              className={date ? "text-text-primary" : "text-text-secondary"}
+            >
+              {date ? formatDate(date) : "Release Date"}
+            </span>
+          </div>
+          {date ? (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="flex h-6 w-6 items-center justify-center rounded hover:bg-bg-quaternary"
+              aria-label="Clear date"
+            >
+              <X className="size-4 text-text-secondary opacity-50 hover:opacity-100" />
+            </button>
+          ) : (
+            <ChevronDown className="size-4 text-text-secondary opacity-50" />
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-auto overflow-hidden p-0"
+        align="end"
+        alignOffset={-8}
+        sideOffset={10}
+      >
+        <Calendar
+          mode="single"
+          selected={date}
+          captionLayout="dropdown"
+          month={month}
+          onMonthChange={setMonth}
+          onSelect={(date) => {
+            setDate(date);
+            onChange?.(date);
+            setOpen(false);
+          }}
+        />
+      </PopoverContent>
+    </Popover>
   );
 }

@@ -9,8 +9,17 @@ import React, { useEffect } from "react";
 
 const Search = () => {
   const router = useRouter();
-  const { search, isLoading, songs, albums, artists, total, error } =
-    useSearch();
+  const {
+    search,
+    isLoading,
+    songs,
+    albums,
+    artists,
+    total,
+    error,
+    hasMore,
+    loadMore,
+  } = useSearch();
   const { query, language, keySignature, date } = router.query;
 
   useEffect(() => {
@@ -44,6 +53,8 @@ const Search = () => {
       error={error}
       hasResults={hasResults}
       total={total}
+      hasMore={hasMore}
+      onLoadMore={loadMore}
     />
   );
 };

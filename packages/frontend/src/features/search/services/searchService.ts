@@ -13,7 +13,7 @@ class SearchService {
       }
 
       if (filters.keySignature && filters.keySignature !== "all") {
-        params.append("keySignature", filters.keySignature);
+        params.append("key", filters.keySignature);
       }
 
       if (filters.date) {

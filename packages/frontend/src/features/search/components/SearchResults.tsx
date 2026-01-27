@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import type { SearchSong, SearchAlbum, SearchArtist } from "../types";
 import SearchSongs from "./SearchSongs";
 import SearchAlbums from "./SearchAlbums";
@@ -6,6 +6,7 @@ import SearchArtists from "./SearchArtists";
 import SearchHero from "./SearchHero";
 import SearchBreadcrumb from "./SearchBreadcrumb";
 import ToggleButton from "@/features/shared/ui/ToggleButton";
+import { Loader2 } from "lucide-react";
 
 interface SearchResultsProps {
   songs: SearchSong[];
@@ -16,6 +17,8 @@ interface SearchResultsProps {
   error: string | null;
   hasResults: boolean;
   total: number;
+  hasMore: boolean;
+  onLoadMore: () => void;
   className?: string;
 }
 
@@ -28,13 +31,48 @@ const SearchResults = ({
   error,
   hasResults,
   total,
+  hasMore,
+  onLoadMore,
   className = "",
 }: SearchResultsProps) => {
   const [selected, setSelected] = useState(`All (${total})`);
+  const observerTarget = useRef<HTMLDivElement>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     setSelected(`All (${total})`);
   }, [total]);
+
+  // Infinite scroll implementation
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target?.isIntersecting && hasMore && !isLoading && !isLoadingMore) {
+        setIsLoadingMore(true);
+        onLoadMore();
+        setTimeout(() => setIsLoadingMore(false), 500);
+      }
+    },
+    [hasMore, isLoading, isLoadingMore, onLoadMore],
+  );
+
+  useEffect(() => {
+    const element = observerTarget.current;
+    if (!element) return;
+
+    const option = {
+      root: null,
+      rootMargin: "200px",
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver(handleObserver, option);
+    observer.observe(element);
+
+    return () => {
+      observer.unobserve(element);
+    };
+  }, [handleObserver]);
 
   return (
     <div className="flex w-full items-center justify-center">
@@ -55,7 +93,7 @@ const SearchResults = ({
             className="w-fit"
           />
 
-          {!isLoading && !error && hasResults && (
+          {!error && hasResults && (
             <div className="space-y-8">
               {(selected.startsWith("All") ||
                 selected.startsWith("Artists")) && (
@@ -68,6 +106,38 @@ const SearchResults = ({
               {(selected.startsWith("All") || selected.startsWith("Songs")) && (
                 <SearchSongs songs={songs} selected={selected} />
               )}
+
+              {/* Infinite scroll trigger and loading indicator */}
+              {hasMore && (
+                <div ref={observerTarget} className="flex justify-center py-8">
+                  {(isLoading || isLoadingMore) && (
+                    <div className="flex items-center gap-2 text-text-secondary">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                      <span>Loading more results...</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {!hasMore &&
+                (songs.length > 10 ||
+                  albums.length > 10 ||
+                  artists.length > 10) && (
+                  <div className="flex justify-center py-8">
+                    <p className="text-text-secondary">
+                      No more results to load
+                    </p>
+                  </div>
+                )}
+            </div>
+          )}
+
+          {isLoading && !hasResults && (
+            <div className="flex justify-center py-16">
+              <div className="flex items-center gap-2 text-text-secondary">
+                <Loader2 className="h-8 w-8 animate-spin" />
+                <span>Searching...</span>
+              </div>
             </div>
           )}
         </div>

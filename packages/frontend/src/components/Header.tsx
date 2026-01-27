@@ -86,6 +86,7 @@ const Header = ({ title }: HeaderProps) => {
             initialLanguage={searchLanguage}
             initialKeySignature={searchKey}
             initialDate={searchDate}
+            isSearchPage={isSearchPage}
           />
         </div>
       </header>

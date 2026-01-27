@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { CiSearch } from "react-icons/ci";
+import { X } from "lucide-react";
 import FilterTag, { FilterTags } from "./FilterTags";
 import {
   LANGUAGE_OPTIONS,
@@ -17,6 +18,7 @@ interface SearchBarProps {
   initialLanguage?: string;
   initialKeySignature?: string;
   initialDate?: Date;
+  isSearchPage?: boolean;
 }
 
 const SearchBar = ({
@@ -28,11 +30,13 @@ const SearchBar = ({
   initialLanguage = "all",
   initialKeySignature = "all",
   initialDate,
+  isSearchPage = false,
 }: SearchBarProps) => {
   const [query, setQuery] = useState(initialQuery);
   const [language, setLanguage] = useState(initialLanguage);
   const [keySignature, setKeySignature] = useState(initialKeySignature);
   const [date, setDate] = useState<Date | undefined>(initialDate);
+  const isInitialMount = useRef(true);
 
   // update internal state when initial values change
   useEffect(() => {
@@ -40,26 +44,46 @@ const SearchBar = ({
     setLanguage(initialLanguage);
     setKeySignature(initialKeySignature);
     setDate(initialDate);
+    isInitialMount.current = true; // Mark as syncing from props
   }, [initialQuery, initialLanguage, initialKeySignature, initialDate]);
+
+  const performSearch = useCallback(() => {
+    if (query.trim()) {
+      const filters: SearchFilters = {
+        query: query.trim(),
+      };
+
+      if (language && language !== "all") filters.language = language;
+      if (keySignature && keySignature !== "all")
+        filters.keySignature = keySignature;
+      if (date) filters.date = date.toISOString().split("T")[0];
+
+      onSearch(filters);
+    }
+  }, [query, language, keySignature, date, onSearch]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      if (query.trim()) {
-        const filters: SearchFilters = {
-          query: query.trim(),
-        };
-
-        if (language && language !== "all") filters.language = language;
-        if (keySignature && keySignature !== "all")
-          filters.keySignature = keySignature;
-        if (date) filters.date = date.toISOString().split("T")[0];
-
-        onSearch(filters);
-      }
+      performSearch();
     },
-    [query, language, keySignature, date, onSearch],
+    [performSearch],
   );
+
+  // Auto-search when filters change (but only if there's a query)
+  // Skip if we're just syncing with initial props
+  // Only auto-search when on the search page
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    // Only trigger auto-search if we're on the search page
+    if (isSearchPage && query.trim()) {
+      performSearch();
+    }
+  }, [language, keySignature, date, performSearch, query, isSearchPage]);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +91,10 @@ const SearchBar = ({
     },
     [],
   );
+
+  const handleClearSearch = useCallback(() => {
+    setQuery("");
+  }, []);
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -81,6 +109,16 @@ const SearchBar = ({
             placeholder={placeholder}
             className="flex-1 bg-transparent text-sm text-text-primary placeholder-text-secondary focus:outline-none disabled:opacity-50"
           />
+          {query && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded hover:bg-bg-quaternary"
+              aria-label="Clear search"
+            >
+              <X className="size-4 text-text-secondary opacity-50 hover:opacity-100" />
+            </button>
+          )}
         </div>
       </form>
 

@@ -85,8 +85,8 @@ const TopHotSongs = () => {
   }
 
   return (
-    <>
-      <div className="flex items-center gap-2 pb-4">
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
         <h2>Top 20 Hot Songs</h2>
         <HiMiniArrowTrendingUp className="text-xl" />
       </div>
@@ -95,7 +95,7 @@ const TopHotSongs = () => {
           return <SongListItem key={song.id} song={song} index={index} />;
         })}
       </div>
-    </>
+    </div>
   );
 };
 
