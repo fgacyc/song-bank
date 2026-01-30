@@ -5,7 +5,7 @@ import {
   useSearch,
 } from "@/features/search";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Search = () => {
   const router = useRouter();
@@ -21,6 +21,7 @@ const Search = () => {
     loadMore,
   } = useSearch();
   const { query, language, key } = router.query;
+  const [hasActiveFilters, setHasActiveFilters] = useState(false);
 
   useEffect(() => {
     void (async () => {
@@ -39,6 +40,13 @@ const Search = () => {
     })();
   }, [router.isReady, query, language, key, search]);
 
+  useEffect(() => {
+    const hasLanguageFilter = (language && language !== "all") as boolean;
+    const hasKeyFilter = (key && key !== "all") as boolean;
+
+    setHasActiveFilters(hasLanguageFilter || hasKeyFilter);
+  }, [language, key]);
+
   const hasResults =
     songs.length > 0 || albums.length > 0 || artists.length > 0;
 
@@ -48,6 +56,7 @@ const Search = () => {
       albums={albums}
       artists={artists}
       query={query as string}
+      hasActiveFilters={hasActiveFilters}
       isLoading={isLoading}
       error={error}
       hasResults={hasResults}

@@ -13,6 +13,8 @@ interface SearchResultsProps {
   albums: SearchAlbum[];
   artists: SearchArtist[];
   query: string;
+  showArtistsOrAlbums?: boolean;
+  hasActiveFilters?: boolean;
   isLoading: boolean;
   error: string | null;
   hasResults: boolean;
@@ -27,6 +29,8 @@ const SearchResults = ({
   albums,
   artists,
   query,
+  showArtistsOrAlbums = true,
+  hasActiveFilters = false,
   isLoading,
   error,
   hasResults,
@@ -40,8 +44,16 @@ const SearchResults = ({
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
-    setSelected(`All (${total})`);
-  }, [total]);
+    if (hasActiveFilters) {
+      setSelected(`Songs (${songs.length})`);
+    } else {
+      setSelected(`All (${total})`);
+    }
+  }, [hasActiveFilters, total, songs.length]);
+
+  useEffect(() => {
+    console.log(query);
+  }, [query]);
 
   // infitinite scroll implementation
   const handleObserver = useCallback(
