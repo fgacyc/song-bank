@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/lib/prisma";
 import type { SearchResult } from "@/features/search";
 import type { Prisma } from "@prisma/client";
-import { normalizeKeySignature } from "@/features/shared/utils/chordParser";
 
 const ITEMS_PER_PAGE = 10;
 
