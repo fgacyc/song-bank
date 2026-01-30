@@ -20,7 +20,7 @@ const Search = () => {
     hasMore,
     loadMore,
   } = useSearch();
-  const { query, language, keySignature, date } = router.query;
+  const { query, language, key } = router.query;
 
   useEffect(() => {
     void (async () => {
@@ -31,14 +31,13 @@ const Search = () => {
 
         if (language && language !== "all")
           filters.language = language as string;
-        if (keySignature && keySignature !== "all")
-          filters.keySignature = keySignature as string;
-        if (date) filters.date = date as string;
+        if (key && key !== "all") filters.keySignature = key as string;
+        // if (date) filters.date = date as string;
 
         await search(filters);
       }
     })();
-  }, [router.isReady, query, language, keySignature, date, search]);
+  }, [router.isReady, query, language, key, search]);
 
   const hasResults =
     songs.length > 0 || albums.length > 0 || artists.length > 0;

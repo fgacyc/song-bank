@@ -21,7 +21,7 @@ export interface SearchFilters {
   query: string;
   language?: string;
   keySignature?: string;
-  date?: string;
+  // date?: string;
 }
 
 export interface SearchResult {

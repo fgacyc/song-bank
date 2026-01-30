@@ -1,4 +1,3 @@
-import { SearchBar } from "@/features/search";
 import { useScrollPosition } from "@/features/shared/hooks/useScrollPosition";
 import IconButton from "@/features/shared/ui/IconButton";
 import { ThemeToggle } from "@/features/theme";
@@ -8,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
-import type { SearchFilters } from "@/features/search";
+import { SearchBar, type SearchFilters } from "@/features/search";
 
 interface HeaderProps {
   title: string;
@@ -21,7 +20,6 @@ const Header = ({ title }: HeaderProps) => {
     threshold: 400,
   });
 
-  // determine search bar values based on current route
   const isSearchPage = router.pathname === "/search";
   const searchQuery = isSearchPage ? (router.query.query as string) || "" : "";
   const searchLanguage = isSearchPage
@@ -30,10 +28,10 @@ const Header = ({ title }: HeaderProps) => {
   const searchKey = isSearchPage
     ? (router.query.key as string) || "all"
     : "all";
-  const searchDate =
-    isSearchPage && router.query.date
-      ? new Date(router.query.date as string)
-      : undefined;
+  // const searchDate =
+  //   isSearchPage && router.query.date
+  //     ? new Date(router.query.date as string)
+  //     : undefined;
 
   const handleSearch = async (filters: SearchFilters) => {
     const params = new URLSearchParams();
@@ -41,9 +39,17 @@ const Header = ({ title }: HeaderProps) => {
     if (filters.query) params.set("query", filters.query);
     if (filters.language) params.set("language", filters.language);
     if (filters.keySignature) params.set("key", filters.keySignature);
-    if (filters.date) params.set("date", filters.date);
+    // if (filters.date) params.set("date", filters.date);
 
-    await router.push(`/search?${params.toString()}`);
+    // console.log("Search params:", params.toString());
+
+    const nextUrl = params.toString()
+      ? `/search?${params.toString()}`
+      : "/search";
+
+    if (router.asPath === nextUrl) return;
+
+    await router.push(nextUrl);
   };
 
   return (
@@ -85,7 +91,7 @@ const Header = ({ title }: HeaderProps) => {
             initialQuery={searchQuery}
             initialLanguage={searchLanguage}
             initialKeySignature={searchKey}
-            initialDate={searchDate}
+            // initialDate={searchDate}
             isSearchPage={isSearchPage}
           />
         </div>

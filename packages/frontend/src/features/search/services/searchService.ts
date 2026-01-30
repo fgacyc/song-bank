@@ -16,9 +16,9 @@ class SearchService {
         params.append("key", filters.keySignature);
       }
 
-      if (filters.date) {
-        params.append("date", filters.date);
-      }
+      // if (filters.date) {
+      //   params.append("date", filters.date);
+      // }
 
       const response = await fetch(`/api/search?${params.toString()}`);
 

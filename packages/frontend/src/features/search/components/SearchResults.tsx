@@ -43,7 +43,7 @@ const SearchResults = ({
     setSelected(`All (${total})`);
   }, [total]);
 
-  // Infinite scroll implementation
+  // infitinite scroll implementation
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
@@ -107,7 +107,7 @@ const SearchResults = ({
                 <SearchSongs songs={songs} selected={selected} />
               )}
 
-              {/* Infinite scroll trigger and loading indicator */}
+              {/* infinite scroll trigger and loading indicator */}
               {hasMore && (
                 <div ref={observerTarget} className="flex justify-center py-8">
                   {(isLoading || isLoadingMore) && (
