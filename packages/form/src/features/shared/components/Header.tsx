@@ -13,7 +13,7 @@ const Header = ({ title }: HeaderProps) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <header className="sticky top-0 z-50 bg-bg-primary px-8 py-4">
+      <header className="sticky top-0 z-50 border-b bg-bg-primary px-8 py-4">
         <div className="flex items-center justify-between">
           <Link
             href="/"

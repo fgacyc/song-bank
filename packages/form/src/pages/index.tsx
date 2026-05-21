@@ -4,7 +4,7 @@ import DashboardPage from "@/features/dashboard/components/DashboardPage";
 
 const Home = () => {
   return (
-    <Layout title="Home | Song Bank Admin">
+    <Layout title="Dashboard | Song Bank Admin">
       <DashboardPage />
     </Layout>
   );

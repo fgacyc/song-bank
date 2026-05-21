@@ -16,7 +16,7 @@ const DashboardQuickButtons = ({
   color,
 }: DashboardQuickButtonsProps) => {
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-bg-primary p-4 shadow-inner">
+    <div className="flex items-center justify-between rounded-2xl border bg-bg-primary p-4">
       <div className="flex items-center justify-center gap-4">
         <div
           style={{
@@ -35,13 +35,22 @@ const DashboardQuickButtons = ({
         </div>
       </div>
 
-      <div
-        style={{ backgroundColor: color }}
-        className="text-text-opposite flex h-fit items-center justify-center gap-2 rounded-lg px-3 py-2"
+      <button
+        onClick={() => {
+          null;
+        }}
+        className="group relative flex h-fit items-center justify-center gap-2 overflow-hidden rounded-lg px-3 py-2 text-text-opposite"
       >
-        <BiPlus className="text-sm" />
-        <p className="hidden text-xs font-semibold lg:block">Add {title}</p>
-      </div>
+        <div
+          style={{ backgroundColor: color }}
+          className="absolute inset-0 z-0 transition-all duration-200 group-hover:brightness-90 group-active:brightness-75"
+        />
+
+        <div className="pointer-events-none relative z-10 flex items-center justify-center gap-2">
+          <BiPlus className="text-sm" />
+          <p className="hidden text-xs font-semibold lg:block">Add {title}</p>
+        </div>
+      </button>
     </div>
   );
 };

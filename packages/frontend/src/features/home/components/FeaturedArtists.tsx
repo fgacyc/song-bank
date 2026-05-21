@@ -4,7 +4,6 @@ import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
 import Link from "next/link";
 import slugify from "slugify";
-import type { ArtistType } from "@/types/types";
 import { Disc3, Music } from "lucide-react";
 
 /* 
@@ -15,12 +14,7 @@ TODO:
 
 const FeaturedArtists = () => {
   const { featuredArtists, isLoading, error } = useHome();
-
   const [isMobile, setIsMobile] = useState(false);
-
-  const getArtistImage = (artist: ArtistType) => {
-    return artist.image_cover_url ?? "";
-  };
 
   useEffect(() => {
     const handleResize = () => {

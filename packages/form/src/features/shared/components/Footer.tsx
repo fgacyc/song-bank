@@ -5,7 +5,7 @@ import { TbSmartHome } from "react-icons/tb";
 
 const Footer = () => {
   return (
-    <footer className="sticky bottom-0 flex justify-evenly bg-bg-primary px-8 py-4 text-xs text-text-secondary sm:hidden">
+    <footer className="sticky bottom-0 flex justify-evenly border-t bg-bg-primary px-8 py-4 text-xs text-text-secondary sm:hidden">
       <div className="flex flex-col items-center justify-center gap-0.5">
         <TbSmartHome className="h-6 w-6" />
         <p>Home</p>
