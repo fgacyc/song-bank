@@ -71,10 +71,23 @@ export default async function handler(
             },
             take: ITEMS_PER_PAGE,
             skip,
-            orderBy: [{ name: "asc" }],
           }),
           db.song.count({ where: songWhere }),
         ]);
+
+        const orderedSongs = songs.sort((a, b) => {
+          const getScore = (song: typeof a) => {
+            if (song.name?.toLowerCase().includes(searchTerm)) return 5;
+            if (song.alt_name?.toLowerCase().includes(searchTerm)) return 4;
+            if (song.chord_lyrics?.toLowerCase().includes(searchTerm)) return 3;
+            if (song.artist?.name?.toLowerCase().includes(searchTerm)) return 2;
+            if (song.album?.name?.toLowerCase().includes(searchTerm)) return 1;
+
+            return 0;
+          };
+
+          return getScore(b) - getScore(a);
+        });
 
         // search albums
         const albumWhere: Prisma.AlbumWhereInput = {
@@ -144,7 +157,7 @@ export default async function handler(
         const hasMore = skip + totalItems < totalCount;
 
         return res.status(200).json({
-          songs,
+          songs: orderedSongs,
           albums,
           artists,
           total: totalCount,

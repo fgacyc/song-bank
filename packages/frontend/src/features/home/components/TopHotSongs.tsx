@@ -15,20 +15,15 @@ const SongListItem = ({ song, index }: { song: SongType; index: number }) => {
       className="group flex gap-4 rounded-lg border border-border bg-bg-tertiary p-4 transition-colors hover:bg-bg-secondary"
     >
       {/* index */}
-      <h3 className="flex w-12 px-2 pt-2 text-2xl font-semibold text-text-secondary">
+      <h3 className="flex w-4 px-0.5 pt-2 text-lg font-semibold text-text-secondary sm:w-12 sm:px-2 sm:text-2xl">
         {index + 1}
       </h3>
 
       {/* image */}
-      <div className="h-16 w-16 overflow-hidden rounded-md">
+      <div className="h-12 w-12 overflow-hidden rounded-md max-[300px]:hidden min-[301px]:block sm:h-16 sm:w-16">
         <div className="relative h-16 w-16 flex-shrink-0 transition group-hover:scale-105">
           {song.cover_image_url ? (
-            <Image
-              src={song.cover_image_url}
-              alt={`${song.name} cover`}
-              fill
-              className="object-cover"
-            />
+            <Image src={song.cover_image_url} alt={`${song.name} cover`} fill />
           ) : (
             <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-bg-secondary text-text-secondary">
               <CiImageOff />
@@ -39,14 +34,14 @@ const SongListItem = ({ song, index }: { song: SongType; index: number }) => {
 
       {/* song info */}
       <div className="min-w-0 flex-1 space-y-1">
-        <h3 className="truncate text-base font-semibold text-text-primary">
+        <h3 className="w-fill text-sm font-semibold text-text-primary sm:truncate sm:text-base">
           {song.name}
         </h3>
-        <p className="truncate text-sm text-text-secondary">
+        <p className="hidden truncate text-sm text-text-secondary sm:block">
           {song.original_band}
         </p>
         {song.album && (
-          <p className="truncate text-sm text-text-secondary">
+          <p className="hidden truncate text-sm text-text-secondary sm:block">
             {song.album.name}
           </p>
         )}
@@ -57,13 +52,16 @@ const SongListItem = ({ song, index }: { song: SongType; index: number }) => {
         {song.original_key && (
           <Badge
             variant="outline"
-            className="rounded-md border-border text-xs font-medium"
+            className="rounded-md border-border text-[10px] font-medium sm:text-xs"
           >
             {song.original_key}
           </Badge>
         )}
         {song.song_language && (
-          <Badge variant="secondary" className="rounded-md text-xs font-medium">
+          <Badge
+            variant="secondary"
+            className="rounded-md text-[10px] font-medium sm:text-xs"
+          >
             {song.song_language}
           </Badge>
         )}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
-import MainLayout from "@/layouts/MainLayout";
+import Layout from "@/layouts/Layout";
 
 interface Artist {
   id: string;
@@ -167,16 +167,16 @@ const Artist = () => {
 
   if (loading) {
     return (
-      <MainLayout title="Artists | Song Bank Admin">
+      <Layout title="Artists | Song Bank Admin">
         <div className="flex h-[calc(100vh-200px)] items-center justify-center">
           <div className="text-lg text-text-secondary">Loading...</div>
         </div>
-      </MainLayout>
+      </Layout>
     );
   }
 
   return (
-    <MainLayout title="Artists | Song Bank Admin">
+    <Layout title="Artists | Song Bank Admin">
       <div className="container mx-auto px-4 py-8 md:px-12 lg:px-24">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Manage Artists</h1>
@@ -401,7 +401,7 @@ const Artist = () => {
           </form>
         </Modal>
       </div>
-    </MainLayout>
+    </Layout>
   );
 };
 

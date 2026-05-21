@@ -10,6 +10,7 @@
   --color-bg-quaternary: #f1f1f1;
   --color-text-primary: #000000;
   --color-text-secondary: #737373;
+  --color-text-opposite: #ffffff;
   --color-border: #d8d8d8;
 
   --font-primary:
@@ -49,6 +50,7 @@
   --color-bg-quaternary: #202020;
   --color-text-primary: #ffffff;
   --color-text-secondary: #a7a7a7;
+  --color-text-opposite: #000000;
   --color-border: #2a2a2a;
 
   /* shadcn dark variables */

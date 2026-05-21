@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 import { useHome } from "../hooks/useHome";
 import Polaroid from "@/features/shared/ui/Polaroid";
@@ -16,9 +16,23 @@ TODO:
 const FeaturedArtists = () => {
   const { featuredArtists, isLoading, error } = useHome();
 
+  const [isMobile, setIsMobile] = useState(false);
+
   const getArtistImage = (artist: ArtistType) => {
     return artist.image_cover_url ?? "";
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // TODO: loading and error ui
   if (isLoading) {
@@ -35,7 +49,7 @@ const FeaturedArtists = () => {
         <h2>Featured Artists</h2>
         <HiMiniArrowTrendingUp className="text-xl" />
       </div>
-      <div className="grid w-fit grid-cols-2 items-center justify-center gap-6 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid w-full grid-cols-1 items-center justify-center gap-6 sm:w-fit sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {featuredArtists.data?.map((artist) => {
           return (
             <Link
@@ -46,6 +60,7 @@ const FeaturedArtists = () => {
               <Polaroid
                 imageSrc={artist.image_cover_url ?? ""}
                 imageAlt={artist.name}
+                fill={isMobile}
                 width={250}
                 height={400}
                 imgRatio={0.6}

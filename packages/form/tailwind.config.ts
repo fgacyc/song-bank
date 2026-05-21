@@ -24,6 +24,7 @@ export default {
         "bg-quaternary": "var(--color-bg-quaternary)",
         "text-primary": "var(--color-text-primary)",
         "text-secondary": "var(--color-text-secondary)",
+        "text-opposite": "var(--color-text-opposite)",
         border: "hsl(var(--border))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

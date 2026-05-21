@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -12,27 +13,33 @@ const Header = ({ title }: HeaderProps) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <header className="sticky top-0 z-50 border-b border-border bg-bg-primary px-4 py-6 md:px-12 lg:px-24">
+      <header className="sticky top-0 z-50 bg-bg-primary px-8 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="transition-opacity hover:opacity-80">
-            <h2 className="text-xl font-bold">Song Bank Admin</h2>
+          <Link
+            href="/"
+            className="flex items-center justify-center gap-4 transition-opacity hover:opacity-80"
+          >
+            <Image src="/logo.png" alt="Logo" width={32} height={32} />
+            <h1 className="hidden text-sm font-bold sm:inline">
+              Song Bank Admin
+            </h1>
           </Link>
-          <nav className="flex gap-4">
+          <nav className="hidden gap-4 text-xs font-semibold text-text-secondary sm:flex">
             <Link
               href="/song"
-              className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+              className="transition-colors hover:text-text-primary"
             >
               Songs
             </Link>
             <Link
               href="/album"
-              className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+              className="transition-colors hover:text-text-primary"
             >
               Albums
             </Link>
             <Link
               href="/artist"
-              className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+              className="transition-colors hover:text-text-primary"
             >
               Artists
             </Link>

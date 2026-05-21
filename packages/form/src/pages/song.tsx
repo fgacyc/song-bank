@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
-import MainLayout from "@/layouts/MainLayout";
+import Layout from "@/layouts/Layout";
 import { extractYoutubeVideoId } from "@/helpers/spotifyHelpers";
 import { SearchableSelect } from "@/components/Inputs/SearchableSelect";
 import Image from "next/image";
@@ -317,16 +317,16 @@ const Song = () => {
 
   if (loading) {
     return (
-      <MainLayout title="Songs | Song Bank Admin">
+      <Layout title="Songs | Song Bank Admin">
         <div className="flex h-[calc(100vh-200px)] items-center justify-center">
           <div className="text-lg text-text-secondary">Loading...</div>
         </div>
-      </MainLayout>
+      </Layout>
     );
   }
 
   return (
-    <MainLayout title="Songs | Song Bank Admin">
+    <Layout title="Songs | Song Bank Admin">
       <div className="container mx-auto px-4 py-8 md:px-12 lg:px-24">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Manage Songs</h1>
@@ -658,7 +658,7 @@ const Song = () => {
           </form>
         </Modal>
       </div>
-    </MainLayout>
+    </Layout>
   );
 };
 
