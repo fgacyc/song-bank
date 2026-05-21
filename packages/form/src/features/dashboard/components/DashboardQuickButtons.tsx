@@ -16,7 +16,7 @@ const DashboardQuickButtons = ({
   color,
 }: DashboardQuickButtonsProps) => {
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-bg-primary p-4">
+    <div className="flex items-center justify-between rounded-2xl bg-bg-primary p-4 shadow-inner">
       <div className="flex items-center justify-center gap-4">
         <div
           style={{

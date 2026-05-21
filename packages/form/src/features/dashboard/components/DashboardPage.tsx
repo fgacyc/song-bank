@@ -1,9 +1,11 @@
 import React from "react";
 import { FiMusic } from "react-icons/fi";
 import { LuDisc3, LuMicVocal } from "react-icons/lu";
-
 import DashboardQuickButtons from "./DashboardQuickButtons";
 import { useDashboard } from "../hooks/useDashboard";
+import { FaArrowTrendUp } from "react-icons/fa6";
+import Link from "next/link";
+import { GoArrowUpRight } from "react-icons/go";
 
 const DashboardPage = () => {
   const { counts, isLoading, error } = useDashboard();
@@ -66,8 +68,29 @@ const DashboardPage = () => {
           </div>
         )}
 
-        <div />
-        <div />
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <div className="overflow-hidden rounded-2xl bg-bg-primary shadow-inner">
+            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+              <div className="flex items-center justify-center gap-2">
+                <FaArrowTrendUp className="h-3.5 w-3.5 text-text-secondary" />
+                <h3 className="text-base text-primary">Top Artists</h3>
+              </div>
+              <Link
+                href="/artist"
+                className="flex items-center justify-center gap-1 text-xs text-text-secondary transition-all hover:text-text-primary"
+              >
+                View All
+                <GoArrowUpRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <div></div>
+          </div>
+          <div className="rounded-2xl bg-bg-primary px-5 py-4 shadow-inner">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <div></div>
       </div>
     </div>
   );

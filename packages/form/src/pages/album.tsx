@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Modal from "@/components/ui/Modal";
-import Button from "@/components/ui/Button";
+import { SearchableSelect } from "@/features/shared/components/Inputs/SearchableSelect";
+import Button from "@/features/shared/components/ui/Button";
+import Modal from "@/features/shared/components/ui/Modal";
 import Layout from "@/layouts/Layout";
-import { SearchableSelect } from "@/components/Inputs/SearchableSelect";
 
 interface Album {
   id: string;

@@ -3,12 +3,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useState, useEffect } from "react";
-import Modal from "@/components/ui/Modal";
-import Button from "@/components/ui/Button";
 import Layout from "@/layouts/Layout";
 import { extractYoutubeVideoId } from "@/helpers/spotifyHelpers";
-import { SearchableSelect } from "@/components/Inputs/SearchableSelect";
 import Image from "next/image";
+import { SearchableSelect } from "@/features/shared/components/Inputs/SearchableSelect";
+import Button from "@/features/shared/components/ui/Button";
+import Modal from "@/features/shared/components/ui/Modal";
 
 interface Song {
   id: string;
