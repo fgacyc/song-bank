@@ -23,7 +23,13 @@ const Header = ({ title }: HeaderProps) => {
             href="/"
             className="flex items-center justify-center gap-4 transition-opacity hover:opacity-80"
           >
-            <Image src="/logo.png" alt="Logo" width={32} height={32} />
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={32}
+              height={32}
+              className="rounded"
+            />
             <h1 className="hidden text-sm font-bold sm:inline">
               Song Bank Admin
             </h1>
@@ -31,19 +37,19 @@ const Header = ({ title }: HeaderProps) => {
           <nav className="hidden gap-1 text-xs font-semibold text-text-secondary sm:flex">
             <Link
               href="/songs"
-              className={`${path === "/songs" ? "bg-bg-tertiary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg p-2 transition-colors`}
+              className={`${path === "/songs" ? "bg-bg-quaternary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg px-3 py-2 transition-colors`}
             >
               Songs
             </Link>
             <Link
               href="/albums"
-              className={`${path === "/albums" ? "bg-bg-tertiary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg p-2 transition-colors`}
+              className={`${path === "/albums" ? "bg-bg-quaternary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg px-3 py-2 transition-colors`}
             >
               Albums
             </Link>
             <Link
               href="/artists"
-              className={`${path === "/artists" ? "bg-bg-tertiary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg p-2 transition-colors`}
+              className={`${path === "/artists" ? "bg-bg-quaternary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg px-3 py-2 transition-colors`}
             >
               Artists
             </Link>

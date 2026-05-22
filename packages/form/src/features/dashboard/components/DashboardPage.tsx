@@ -6,7 +6,6 @@ import { useDashboard } from "../hooks/useDashboard";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import DashboardSection from "./DashboardSection";
 import Image from "next/image";
-import { CiImageOff } from "react-icons/ci";
 import Polaroid from "@/features/shared/components/ui/Polaroid";
 import Link from "next/link";
 import slugify from "slugify";
@@ -55,8 +54,9 @@ const DashboardPage = () => {
       <div className="flex w-full max-w-6xl flex-col gap-6">
         <div>
           <h1 className="text-2xl text-primary">Dashboard</h1>
-          <p className="text-xs font-semibold text-text-secondary">
-            Welcome back! Here&apos;s what&apos;s happening today.
+          <p className="text-xs text-text-secondary">
+            Psalm 33:3 - Sing unto Him a new song; play skillfully with a loud
+            noise.
           </p>
         </div>
 
@@ -65,12 +65,12 @@ const DashboardPage = () => {
             {quickStats.map((stat) => (
               <div
                 key={stat.title}
-                className="h-[92px] animate-pulse rounded-2xl bg-bg-primary"
+                className="h-[92px] animate-pulse rounded-2xl border bg-bg-primary"
               />
             ))}
           </div>
         ) : error ? (
-          <div className="rounded-2xl border border-border bg-bg-primary px-4 py-3 text-sm text-destructive">
+          <div className="rounded-2xl border bg-bg-primary px-4 py-3 text-sm text-destructive">
             Failed to load dashboard counts.
           </div>
         ) : (
@@ -122,7 +122,7 @@ const DashboardPage = () => {
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center rounded-full border bg-bg-secondary text-text-secondary transition-transform duration-300 group-hover/polaroid:scale-110">
-                              <CiImageOff className="h-4 w-4" />{" "}
+                              <LuDisc3 className="h-4 w-4" />{" "}
                             </div>
                           )}
                         </div>
@@ -194,7 +194,7 @@ const DashboardPage = () => {
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center rounded-lg border bg-bg-secondary text-text-secondary transition-transform duration-300 group-hover/polaroid:scale-110">
-                            <CiImageOff className="h-4 w-4" />
+                            <LuMicVocal className="h-4 w-4" />
                           </div>
                         )}
                       </div>

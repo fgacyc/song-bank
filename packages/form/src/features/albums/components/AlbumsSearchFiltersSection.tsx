@@ -1,12 +1,12 @@
 import React from "react";
 import { FiFilter, FiGrid, FiList, FiSearch } from "react-icons/fi";
+import { FaFilter } from "react-icons/fa6";
 
 import Button from "@/features/shared/components/ui/Button";
 
-import type { AlbumRecord, ArtistRecord } from "../types";
-import { FaFilter } from "react-icons/fa6";
+import type { ArtistRecord } from "../types";
 
-interface SongsSearchFiltersSectionProps {
+interface AlbumsSearchFiltersSectionProps {
   searchQuery: string;
   onSearchQueryChange: React.Dispatch<React.SetStateAction<string>>;
   isFiltersOpen: boolean;
@@ -14,21 +14,17 @@ interface SongsSearchFiltersSectionProps {
   viewMode: "list" | "polaroid";
   onViewModeChange: React.Dispatch<React.SetStateAction<"list" | "polaroid">>;
   artistOptions: ArtistRecord[];
-  albumOptions: AlbumRecord[];
-  keyOptions: string[];
-  languageOptions: string[];
   selectedArtistFilter: string;
   onSelectedArtistFilterChange: React.Dispatch<React.SetStateAction<string>>;
-  onSelectedAlbumFilterChange: React.Dispatch<React.SetStateAction<string>>;
-  selectedAlbumFilter: string;
-  selectedKeyFilter: string;
-  onSelectedKeyFilterChange: React.Dispatch<React.SetStateAction<string>>;
-  selectedLanguageFilter: string;
-  onSelectedLanguageFilterChange: React.Dispatch<React.SetStateAction<string>>;
+  releaseYearOptions: string[];
+  selectedReleaseYearFilter: string;
+  onSelectedReleaseYearFilterChange: React.Dispatch<
+    React.SetStateAction<string>
+  >;
   onClearFilters: () => void;
 }
 
-const SongsSearchFiltersSection = ({
+const AlbumsSearchFiltersSection = ({
   searchQuery,
   onSearchQueryChange,
   isFiltersOpen,
@@ -36,19 +32,13 @@ const SongsSearchFiltersSection = ({
   viewMode,
   onViewModeChange,
   artistOptions,
-  albumOptions,
-  keyOptions,
-  languageOptions,
   selectedArtistFilter,
   onSelectedArtistFilterChange,
-  onSelectedAlbumFilterChange,
-  selectedAlbumFilter,
-  selectedKeyFilter,
-  onSelectedKeyFilterChange,
-  selectedLanguageFilter,
-  onSelectedLanguageFilterChange,
+  releaseYearOptions,
+  selectedReleaseYearFilter,
+  onSelectedReleaseYearFilterChange,
   onClearFilters,
-}: SongsSearchFiltersSectionProps) => {
+}: AlbumsSearchFiltersSectionProps) => {
   return (
     <div className="flex flex-col gap-4 rounded-2xl border bg-bg-primary p-4 sm:p-5">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -59,7 +49,7 @@ const SongsSearchFiltersSection = ({
               type="text"
               value={searchQuery}
               onChange={(event) => onSearchQueryChange(event.target.value)}
-              placeholder="Search by songs, artists, albums..."
+              placeholder="Search albums, artists..."
               className="h-full w-full bg-transparent text-xs text-text-primary placeholder:text-text-secondary focus:outline-none"
             />
           </label>
@@ -123,10 +113,9 @@ const SongsSearchFiltersSection = ({
               Artist
               <select
                 value={selectedArtistFilter}
-                onChange={(event) => {
-                  onSelectedArtistFilterChange(event.target.value);
-                  onSelectedAlbumFilterChange("");
-                }}
+                onChange={(event) =>
+                  onSelectedArtistFilterChange(event.target.value)
+                }
                 className="h-11 rounded-xl border bg-bg-primary px-4 text-xs text-text-primary outline-none transition-colors focus:border-primary"
               >
                 <option value="">All artists</option>
@@ -139,54 +128,18 @@ const SongsSearchFiltersSection = ({
             </label>
 
             <label className="flex flex-col gap-2 text-xs font-medium text-text-primary">
-              Album
+              Release Year
               <select
-                value={selectedAlbumFilter}
+                value={selectedReleaseYearFilter}
                 onChange={(event) =>
-                  onSelectedAlbumFilterChange(event.target.value)
+                  onSelectedReleaseYearFilterChange(event.target.value)
                 }
                 className="h-11 rounded-xl border bg-bg-primary px-4 text-xs text-text-primary outline-none transition-colors focus:border-primary"
               >
-                <option value="">All albums</option>
-                {albumOptions.map((album) => (
-                  <option key={album.id} value={album.id}>
-                    {album.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-xs font-medium text-text-primary">
-              Key
-              <select
-                value={selectedKeyFilter}
-                onChange={(event) =>
-                  onSelectedKeyFilterChange(event.target.value)
-                }
-                className="h-11 rounded-xl border bg-bg-primary px-4 text-xs text-text-primary outline-none transition-colors focus:border-primary"
-              >
-                <option value="">All keys</option>
-                {keyOptions.map((key) => (
-                  <option key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-xs font-medium text-text-primary">
-              Language
-              <select
-                value={selectedLanguageFilter}
-                onChange={(event) =>
-                  onSelectedLanguageFilterChange(event.target.value)
-                }
-                className="h-11 rounded-xl border bg-bg-primary px-4 text-xs text-text-primary outline-none transition-colors focus:border-primary"
-              >
-                <option value="">All languages</option>
-                {languageOptions.map((language) => (
-                  <option key={language} value={language}>
-                    {language}
+                <option value="">All years</option>
+                {releaseYearOptions.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
                   </option>
                 ))}
               </select>
@@ -198,4 +151,4 @@ const SongsSearchFiltersSection = ({
   );
 };
 
-export default SongsSearchFiltersSection;
+export default AlbumsSearchFiltersSection;

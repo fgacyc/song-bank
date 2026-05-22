@@ -9,13 +9,31 @@ import { randomUUID } from "crypto";
 const handler: NextApiHandler = async (req, res) => {
   try {
     switch (req.method) {
-      case "GET":
+      case "GET": {
         const albums = await db.album.findMany({
           orderBy: { release_date: "desc" },
+          include: {
+            _count: {
+              select: {
+                Song: true,
+              },
+            },
+          },
         });
-        return res.status(200).json(albums);
 
-      case "POST":
+        const albumsWithCounts = albums.map((album) => ({
+          id: album.id,
+          name: album.name,
+          release_date: album.release_date.toISOString(),
+          image_cover_url: album.image_cover_url,
+          artist_id: album.artist_id,
+          song_count: album._count.Song,
+        }));
+
+        return res.status(200).json(albumsWithCounts);
+      }
+
+      case "POST": {
         const newAlbum = await db.album.create({
           data: {
             id: req.body.id || randomUUID(),
@@ -26,8 +44,9 @@ const handler: NextApiHandler = async (req, res) => {
           },
         });
         return res.status(201).json(newAlbum);
+      }
 
-      case "PUT":
+      case "PUT": {
         const { id, ...updateData } = req.body;
         const updatedAlbum = await db.album.update({
           where: { id },
@@ -41,13 +60,15 @@ const handler: NextApiHandler = async (req, res) => {
           },
         });
         return res.status(200).json(updatedAlbum);
+      }
 
-      case "DELETE":
+      case "DELETE": {
         const { id: deleteId } = req.body;
         await db.album.delete({
           where: { id: deleteId },
         });
         return res.status(200).json({ message: "Album deleted successfully" });
+      }
 
       default:
         res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
