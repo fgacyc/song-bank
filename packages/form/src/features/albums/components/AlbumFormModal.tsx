@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { SearchableSelect } from "@/features/shared/components/Inputs/SearchableSelect";
+import { SearchableSelect } from "@/features/shared/components/ui/SearchableSelect";
 import Button from "@/features/shared/components/ui/Button";
 import Modal from "@/features/shared/components/ui/Modal";
 

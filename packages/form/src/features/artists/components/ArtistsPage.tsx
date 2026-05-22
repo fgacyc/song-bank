@@ -1,15 +1,11 @@
 import React from "react";
-
 import Layout from "@/layouts/Layout";
-
 import ArtistFormModal from "./ArtistFormModal";
 import ArtistsPageHeader from "./ArtistsPageHeader";
 import ArtistsPagination from "./ArtistsPagination";
 import ArtistsSearchFiltersSection from "./ArtistsSearchFiltersSection";
 import ArtistsSection from "./ArtistsSection";
-
 import { useArtists } from "../hooks/useArtists";
-import { ArtistRecord } from "../types";
 
 const ArtistsPage = () => {
   const {
@@ -74,20 +70,18 @@ const ArtistsPage = () => {
 
             <ArtistsSection
               viewMode={viewMode}
-              artists={pagedArtists as ArtistRecord[]}
+              artists={pagedArtists}
               filteredArtistsLength={filteredArtists.length}
-              showingStart={showingStart as number}
-              showingEnd={showingEnd as number}
+              showingStart={showingStart}
+              showingEnd={showingEnd}
               onEditArtist={handleEdit}
               onDeleteArtist={handleDelete}
             />
             <ArtistsPagination
-              currentPage={currentPage as number}
-              totalPages={totalPages as number}
-              safeCurrentPage={safeCurrentPage as number}
-              onPageChange={
-                setCurrentPage as React.Dispatch<React.SetStateAction<number>>
-              }
+              currentPage={currentPage}
+              totalPages={totalPages}
+              safeCurrentPage={safeCurrentPage}
+              onPageChange={setCurrentPage}
             />
           </section>
 

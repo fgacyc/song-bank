@@ -120,11 +120,12 @@ export const useArtists = () => {
       const data = await artistsService.searchSpotifyImages(searchTerm);
       setImageResults(data);
 
-      if (data.length > 0 && !selectedImage && data[0]) {
-        setSelectedImage(data[0].imageUrl);
+      if (data.length > 0 && !selectedImage && data[0]?.imageUrl) {
+        const firstImage = data[0].imageUrl;
+        setSelectedImage(firstImage);
         setFormData((current) => ({
           ...current,
-          imageUrl: data[0].imageUrl,
+          imageUrl: firstImage,
         }));
       }
     } catch (error) {
@@ -174,10 +175,6 @@ export const useArtists = () => {
     setSelectedImage(artist.image_cover_url ?? "");
     setImageSearchQuery(artist.name);
     setIsModalOpen(true);
-  };
-
-  const clearSearch = () => {
-    setSearchQuery("");
   };
 
   return {
