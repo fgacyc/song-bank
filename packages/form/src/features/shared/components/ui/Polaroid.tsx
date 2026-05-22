@@ -5,6 +5,7 @@ import { CiImageOff } from "react-icons/ci";
 interface PolaroidProps {
   imageSrc?: string | null;
   imageAlt?: string;
+  fallbackImageIcon?: React.ReactNode;
   width?: number | string;
   height?: number | string;
   fill?: boolean;
@@ -24,6 +25,7 @@ const toSize = (value: number | string) =>
 const Polaroid = ({
   imageSrc,
   imageAlt = "Untitled",
+  fallbackImageIcon,
   width = 220,
   height = 300,
   fill = false,
@@ -70,9 +72,11 @@ const Polaroid = ({
           />
         ) : (
           <div
-            className={`flex h-full w-full items-center justify-center bg-transparent ${imageClassName}`.trim()}
+            className={`flex h-full w-full items-center justify-center bg-bg-tertiary ${imageClassName}`.trim()}
           >
-            <CiImageOff className="h-7 w-7" />
+            {fallbackImageIcon ?? (
+              <CiImageOff className="h-6 w-6 text-text-secondary" />
+            )}
           </div>
         )}
       </div>

@@ -68,8 +68,10 @@ const SongsSection = ({
         </td>
         <td className="px-4 py-4 text-xs text-text-secondary">{artistName}</td>
         <td className="px-4 py-4 text-xs text-text-secondary">{albumName}</td>
-        <td className="px-4 py-4 text-xs text-text-secondary">
-          {song.original_key ?? "-"}
+        <td className="px-4 py-4 text-[10px] text-text-primary">
+          <span className="rounded-full bg-bg-quaternary px-2 py-1">
+            {song.original_key ?? "-"}
+          </span>
         </td>
         <td className="px-4 py-4 text-xs text-text-secondary">
           {song.song_language ?? "-"}
@@ -114,6 +116,7 @@ const SongsSection = ({
         className="h-[340px]"
         imageSrc={song.cover_image_url}
         imageAlt={song.name ?? "Song cover"}
+        fallbackImageIcon={<FiMusic className="h-6 w-6 text-text-secondary" />}
         imageContainerClassName="h-[170px]"
       >
         <div className="flex h-full flex-col justify-between gap-4">
@@ -122,18 +125,20 @@ const SongsSection = ({
               {song.name ?? "Untitled song"}
             </p>
             <p className="truncate text-xs text-text-secondary">{artistName}</p>
-            <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-text-secondary">
+            <div className="flex flex-wrap gap-2 pt-1 text-[10px] text-text-primary">
               <span className="rounded-full bg-bg-tertiary px-2 py-1">
                 {song.original_key ?? "-"}
               </span>
-              <span className="rounded-full bg-bg-tertiary px-2 py-1">
-                {song.song_language ?? "-"}
-              </span>
+              {song.song_language && (
+                <span className="rounded-full bg-bg-tertiary px-2 py-1">
+                  {song.song_language}
+                </span>
+              )}
             </div>
             <p className="truncate text-xs text-text-secondary">{albumName}</p>
           </div>
 
-          <div className="flex items-center justify-between gap-2">
+          {/* <div className="flex items-center justify-between gap-2">
             <button
               type="button"
               onClick={() => onEditSong(song)}
@@ -150,7 +155,7 @@ const SongsSection = ({
               <FiTrash2 className="h-3.5 w-3.5" />
               Delete
             </button>
-          </div>
+          </div> */}
         </div>
       </Polaroid>
     );

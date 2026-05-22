@@ -111,6 +111,7 @@ const ArtistsSection = ({
         imageSrc={artist.image_cover_url}
         imageAlt={artist.name}
         imageContainerClassName="h-[150px]"
+        contentClassName="pb-10"
       >
         <div className="flex h-full flex-col justify-between gap-4">
           <div className="space-y-2">
@@ -119,20 +120,18 @@ const ArtistsSection = ({
                 <h3 className="text-base font-semibold text-text-primary">
                   {artist.name}
                 </h3>
-                <p className="text-[11px] uppercase tracking-[0.24em] text-text-secondary">
-                  Artist profile
-                </p>
               </div>
               <span
                 style={countBadgeStyle.songs}
-                className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-[10px] font-semibold"
+                className="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold"
               >
-                {artist.song_count} songs
+                <FiMusic />
+                {artist.song_count}
               </span>
             </div>
           </div>
 
-          <div className="space-y-3">
+          {/* <div className="space-y-3">
             <div className="flex items-center justify-between gap-2 text-[10px] text-text-secondary">
               <span
                 style={countBadgeStyle.songs}
@@ -166,7 +165,7 @@ const ArtistsSection = ({
                 Delete
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </Polaroid>
     );

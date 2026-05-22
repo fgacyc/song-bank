@@ -82,7 +82,7 @@ const AlbumsSection = ({
             className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-medium text-[#a6a9c8]"
           >
             <FiMusic className="h-3 w-3" />
-            {album.song_count} {album.song_count === 1 ? "song" : "songs"}
+            {album.song_count}
           </span>
         </td>
         <td className="px-4 py-4">
@@ -119,6 +119,9 @@ const AlbumsSection = ({
         className="h-[340px]"
         imageSrc={album.image_cover_url}
         imageAlt={album.name}
+        fallbackImageIcon={
+          <LuMicVocal className="h-6 w-6 text-text-secondary" />
+        }
         imageContainerClassName="h-[170px]"
       >
         <div className="flex h-full flex-col justify-between gap-4">
@@ -127,8 +130,8 @@ const AlbumsSection = ({
               {album.name}
             </p>
             <p className="truncate text-xs text-text-secondary">{artistName}</p>
-            <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-text-secondary">
-              <span className="rounded-full bg-bg-tertiary px-2 py-1">
+            <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-text-primary">
+              <span className="flex items-center justify-center rounded-full bg-bg-quaternary px-2 py-1 text-text-primary">
                 <FiCalendar className="mr-1 inline-block h-3 w-3" />
                 {new Date(album.release_date).toLocaleDateString("en-US", {
                   day: "numeric",
@@ -141,12 +144,12 @@ const AlbumsSection = ({
                 className="rounded-full px-2 py-1 text-[#a6a9c8]"
               >
                 <FiMusic className="mr-1 inline-block h-3 w-3" />
-                {album.song_count} {album.song_count === 1 ? "song" : "songs"}
+                {album.song_count}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-2">
+          {/* <div className="flex items-center justify-between gap-2">
             <button
               type="button"
               onClick={() => onEditAlbum(album)}
@@ -163,7 +166,7 @@ const AlbumsSection = ({
               <FiTrash2 className="h-3.5 w-3.5" />
               Delete
             </button>
-          </div>
+          </div> */}
         </div>
       </Polaroid>
     );
