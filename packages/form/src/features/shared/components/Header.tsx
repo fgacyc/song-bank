@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 interface HeaderProps {
@@ -8,6 +9,9 @@ interface HeaderProps {
 }
 
 const Header = ({ title }: HeaderProps) => {
+  const router = useRouter();
+  const path = router.pathname;
+
   return (
     <>
       <Head>
@@ -24,22 +28,22 @@ const Header = ({ title }: HeaderProps) => {
               Song Bank Admin
             </h1>
           </Link>
-          <nav className="hidden gap-4 text-xs font-semibold text-text-secondary sm:flex">
+          <nav className="hidden gap-1 text-xs font-semibold text-text-secondary sm:flex">
             <Link
-              href="/song"
-              className="transition-colors hover:text-text-primary"
+              href="/songs"
+              className={`${path === "/songs" ? "bg-bg-tertiary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg p-2 transition-colors`}
             >
               Songs
             </Link>
             <Link
-              href="/album"
-              className="transition-colors hover:text-text-primary"
+              href="/albums"
+              className={`${path === "/albums" ? "bg-bg-tertiary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg p-2 transition-colors`}
             >
               Albums
             </Link>
             <Link
-              href="/artist"
-              className="transition-colors hover:text-text-primary"
+              href="/artists"
+              className={`${path === "/artists" ? "bg-bg-tertiary text-text-primary" : "hover:bg-bg-tertiary hover:text-text-primary"} rounded-lg p-2 transition-colors`}
             >
               Artists
             </Link>

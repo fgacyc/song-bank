@@ -10,7 +10,7 @@ import { SearchableSelect } from "@/features/shared/components/Inputs/Searchable
 import Button from "@/features/shared/components/ui/Button";
 import Modal from "@/features/shared/components/ui/Modal";
 
-interface Song {
+interface Songs {
   id: string;
   name: string | null;
   album_old: string | null;
@@ -44,13 +44,13 @@ interface SpotifyResult {
   imageUrl: string;
 }
 
-const Song = () => {
-  const [songs, setSongs] = useState<Song[]>([]);
+const Songs = () => {
+  const [songs, setSongs] = useState<Songs[]>([]);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSong, setEditingSong] = useState<Song | null>(null);
+  const [editingSong, setEditingSong] = useState<Songs | null>(null);
 
   // Form state
   const [youtubeUrl, setYoutubeUrl] = useState("");
@@ -87,7 +87,7 @@ const Song = () => {
   const fetchSongs = async () => {
     try {
       const response = await fetch("/api/songs");
-      const data = (await response.json()) as Song[];
+      const data = (await response.json()) as Songs[];
       setSongs(data);
     } catch (error) {
       console.error("Error fetching songs:", error);
@@ -260,7 +260,7 @@ const Song = () => {
     }
   };
 
-  const handleEdit = (song: Song) => {
+  const handleEdit = (song: Songs) => {
     setEditingSong(song);
     setYoutubeUrl(song.original_youtube_url ?? "");
     setFormData({
@@ -662,4 +662,4 @@ const Song = () => {
   );
 };
 
-export default Song;
+export default Songs;

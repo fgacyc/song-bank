@@ -4,7 +4,7 @@ import Button from "@/features/shared/components/ui/Button";
 import Modal from "@/features/shared/components/ui/Modal";
 import Layout from "@/layouts/Layout";
 
-interface Artist {
+interface Artists {
   id: string;
   name: string;
   bio: string | null;
@@ -20,11 +20,11 @@ interface SpotifyResult {
   albumName: string;
 }
 
-const Artist = () => {
-  const [artists, setArtists] = useState<Artist[]>([]);
+const Artists = () => {
+  const [artists, setArtists] = useState<Artists[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
+  const [editingArtist, setEditingArtist] = useState<Artists | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     bio: "",
@@ -44,7 +44,7 @@ const Artist = () => {
   const fetchArtists = async () => {
     try {
       const response = await fetch("/api/artists");
-      const data = (await response.json()) as Artist[];
+      const data = (await response.json()) as Artists[];
       setArtists(data);
     } catch (error) {
     } finally {
@@ -134,7 +134,7 @@ const Artist = () => {
     }
   };
 
-  const handleEdit = (artist: Artist) => {
+  const handleEdit = (artist: Artists) => {
     setEditingArtist(artist);
     setFormData({
       name: artist.name,
@@ -405,4 +405,4 @@ const Artist = () => {
   );
 };
 
-export default Artist;
+export default Artists;

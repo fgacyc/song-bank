@@ -5,7 +5,7 @@ import Button from "@/features/shared/components/ui/Button";
 import Modal from "@/features/shared/components/ui/Modal";
 import Layout from "@/layouts/Layout";
 
-interface Album {
+interface Albums {
   id: string;
   name: string;
   release_date: string;
@@ -25,12 +25,12 @@ interface SpotifyResult {
   albumName: string;
 }
 
-const Album = () => {
-  const [albums, setAlbums] = useState<Album[]>([]);
+const Albums = () => {
+  const [albums, setAlbums] = useState<Albums[]>([]);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingAlbum, setEditingAlbum] = useState<Album | null>(null);
+  const [editingAlbum, setEditingAlbum] = useState<Albums | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     releaseDate: "",
@@ -52,7 +52,7 @@ const Album = () => {
   const fetchAlbums = async () => {
     try {
       const response = await fetch("/api/albums");
-      const data = (await response.json()) as Album[];
+      const data = (await response.json()) as Albums[];
       setAlbums(data);
     } catch (error) {
       console.error("Error fetching albums:", error);
@@ -161,7 +161,7 @@ const Album = () => {
     }
   };
 
-  const handleEdit = (album: Album) => {
+  const handleEdit = (album: Albums) => {
     setEditingAlbum(album);
     setFormData({
       name: album.name,
@@ -453,4 +453,4 @@ const Album = () => {
   );
 };
 
-export default Album;
+export default Albums;
