@@ -42,9 +42,9 @@ const Modal = ({
 
       {/* Modal */}
       <div
-        className={`relative mx-4 my-8 w-full ${getSizeClasses()} max-h-[90vh] overflow-y-auto rounded-lg border border-border bg-card shadow-xl`}
+        className={`relative mx-4 my-8 w-full ${getSizeClasses()} max-h-[90vh] overflow-y-auto rounded-xl border bg-card shadow-xl`}
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card p-4">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-card p-4">
           <h3 className="text-lg font-semibold text-card-foreground">
             {title}
           </h3>

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -12,6 +14,7 @@ import type {
   SongRecord,
   SpotifyImageResult,
 } from "../types";
+import SongTextbox from "./SongTextbox";
 
 interface SongFormModalProps {
   isOpen: boolean;
@@ -64,7 +67,7 @@ const SongFormModal = ({
       size="lg"
     >
       <form onSubmit={onSubmit} className="space-y-6">
-        <div className="rounded-lg border border-border bg-bg-tertiary p-4">
+        <div className="rounded-xl border bg-bg-tertiary p-4">
           <h3 className="mb-3 text-sm font-semibold text-text-primary">
             Step 1: YouTube Link <span className="text-destructive">*</span>
           </h3>
@@ -74,7 +77,7 @@ const SongFormModal = ({
               value={youtubeUrl}
               onChange={(event) => onYoutubeUrlChange(event.target.value)}
               placeholder="https://youtube.com/watch?v=..."
-              className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex h-10 w-full rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               required
             />
             <Button
@@ -82,7 +85,7 @@ const SongFormModal = ({
               onClick={onExtractYoutubeInfo}
               disabled={!youtubeUrl || extracting}
               className="w-full"
-              variant="secondary"
+              variant="primary"
             >
               {extracting ? "Extracting..." : "Extract Information"}
             </Button>
@@ -105,7 +108,7 @@ const SongFormModal = ({
                 onChange={(event) =>
                   onFormDataChange({ ...formData, name: event.target.value })
                 }
-                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 required
               />
             </div>
@@ -119,7 +122,7 @@ const SongFormModal = ({
                 onChange={(event) =>
                   onFormDataChange({ ...formData, altName: event.target.value })
                 }
-                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
           </div>
@@ -177,7 +180,7 @@ const SongFormModal = ({
                   onFormDataChange({ ...formData, key: event.target.value })
                 }
                 placeholder="C, Dm, etc."
-                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
 
@@ -195,27 +198,18 @@ const SongFormModal = ({
                   })
                 }
                 placeholder="English, Chinese, etc."
-                className="flex h-10 w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
           </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-text-primary">
-              Lyrics/Chords <span className="text-destructive">*</span>
-            </label>
-            <textarea
-              value={formData.lyrics}
-              onChange={(event) =>
-                onFormDataChange({ ...formData, lyrics: event.target.value })
-              }
-              rows={4}
-              className="flex min-h-[80px] w-full rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            />
-          </div>
+          <SongTextbox
+            formData={formData}
+            onFormDataChange={onFormDataChange}
+          />
         </div>
 
-        <div className="rounded-lg border border-border bg-bg-tertiary p-4">
+        <div className="rounded-xl border bg-bg-tertiary p-4">
           <h3 className="mb-3 text-sm font-semibold text-text-primary">
             Step 3: Cover Image <span className="text-destructive">*</span>
           </h3>
@@ -226,13 +220,13 @@ const SongFormModal = ({
               value={imageSearchQuery}
               onChange={(event) => onImageSearchQueryChange(event.target.value)}
               placeholder="Search for cover image..."
-              className="flex h-10 flex-1 rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex h-10 flex-1 rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
             <Button
               type="button"
               onClick={() => onSearchSpotifyImages()}
               disabled={!imageSearchQuery || searchingImages}
-              variant="secondary"
+              variant="primary"
             >
               {searchingImages ? "Searching..." : "Search"}
             </Button>
@@ -248,7 +242,7 @@ const SongFormModal = ({
                 alt="Selected cover"
                 width={128}
                 height={128}
-                className="h-32 w-32 rounded-md object-cover"
+                className="h-32 w-32 rounded-xl object-cover"
               />
             </div>
           ) : null}
@@ -263,7 +257,7 @@ const SongFormModal = ({
                   <div
                     key={result.id}
                     onClick={() => onSelectImage(result.imageUrl)}
-                    className={`cursor-pointer rounded-md border-2 p-1 transition-all hover:scale-105 ${
+                    className={`cursor-pointer rounded-xl p-1 transition-all hover:scale-105 ${
                       selectedImage === result.imageUrl
                         ? "border-primary"
                         : "border-transparent"

@@ -24,17 +24,17 @@ const Button = ({
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
-        return "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring border-transparent shadow-sm";
+        return "bg-primary text-primary-foreground hover:bg-primary/90 disabled:hover:bg-primary/70 focus:ring-ring border-transparent";
       case "secondary":
-        return "bg-secondary text-secondary-foreground hover:bg-secondary/80 focus:ring-ring border-transparent shadow-sm";
+        return "bg-secondary text-secondary-foreground hover:bg-secondary/80 disabled:hover:bg-secondary/60 focus:ring-ring border-transparent";
       case "danger":
-        return "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus:ring-ring border-transparent shadow-sm";
+        return "bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:hover:bg-destructive/70 focus:ring-ring border-transparent";
       case "outline":
-        return "bg-transparent text-text-primary hover:bg-accent hover:text-accent-foreground focus:ring-ring border-border shadow-sm";
+        return "bg-transparent text-text-primary hover:bg-accent disabled:hover:bg-accent/80 hover:text-accent-foreground focus:ring-ring";
       case "ghost":
-        return "bg-transparent text-text-primary hover:bg-accent hover:text-accent-foreground focus:ring-ring border-transparent";
+        return "bg-transparent text-text-primary hover:bg-accent disabled:hover:bg-accent/80 hover:text-accent-foreground focus:ring-ring border-transparent";
       default:
-        return "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring border-transparent shadow-sm";
+        return "bg-primary text-primary-foreground hover:bg-primary/90 disabled:hover:bg-primary/70 focus:ring-ring border-transparent";
     }
   };
 
@@ -68,7 +68,7 @@ const Button = ({
         inline-flex
         items-center
         justify-center
-        rounded-md
+        rounded-xl
         border
         font-medium
         transition-all

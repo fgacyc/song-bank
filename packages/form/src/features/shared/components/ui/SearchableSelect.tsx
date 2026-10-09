@@ -105,7 +105,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="flex h-10 w-full items-center justify-between rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <span className={selectedOption ? "" : "text-text-secondary"}>
           {selectedOption ? selectedOption.name : placeholder}
@@ -127,9 +127,9 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full rounded-md border border-border bg-card shadow-lg">
+        <div className="absolute z-50 mt-1 w-full rounded-xl border bg-card shadow-lg">
           {/* Search input inside dropdown */}
-          <div className="border-b border-border p-2">
+          <div className="border-b p-2">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -137,7 +137,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Type to search..."
-                className="flex h-8 flex-1 rounded border border-input bg-bg-secondary px-2 text-sm text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="flex h-8 flex-1 rounded-lg border bg-bg-secondary px-2 text-sm text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 onClick={(e) => e.stopPropagation()}
               />
               {selectedOption && (

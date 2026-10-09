@@ -156,3 +156,39 @@ textarea:focus-within {
   background: white;
   z-index: 5;
 }
+
+/* tiptap */
+.tiptap {
+  outline: none;
+}
+
+.tiptap h3[data-type="title"],
+.song-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.tiptap p[data-type="lyrics"],
+.song-lyrics {
+  font-size: 0.875rem;
+}
+
+.tiptap p[data-type="chords"],
+.song-chords {
+  color: #796ea8;
+  font-weight: 600;
+}
+
+/* 
+<div>
+  <h3 data-type="title" className="song-title">
+    Verse 1
+  </h3>
+  <p data-type="chords" className="song-chords">
+    C Am F G
+  </p>
+  <p data-type="lyrics" className="song-lyrics">
+    Amazing grace, how sweet the sound
+  </p>
+</div>
+*/
