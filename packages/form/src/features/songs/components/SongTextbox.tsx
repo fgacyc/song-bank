@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import React, { useState } from "react";
+import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import type { SongFormState } from "../types";
 import Button from "@/features/shared/components/ui/Button";
@@ -13,6 +13,15 @@ interface SongTextboxProps {
 }
 
 const SongTextbox = ({ formData, onFormDataChange }: SongTextboxProps) => {
+  const getActiveStyle = (editor: Editor | null) => {
+    if (!editor) return "lyrics";
+    if (editor.isActive("songTitle")) return "title";
+    if (editor.isActive("songChords")) return "chords";
+    if (editor.isActive("songLyrics")) return "lyrics";
+
+    return "lyrics";
+  };
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -34,9 +43,14 @@ const SongTextbox = ({ formData, onFormDataChange }: SongTextboxProps) => {
         ...prev,
         lyrics: editor.getHTML(),
       }));
-      console.log("Updated lyrics:", editor.getHTML());
+    },
+
+    onSelectionUpdate: ({ editor }) => {
+      setActiveBtn(getActiveStyle(editor));
     },
   });
+
+  const [activeBtn, setActiveBtn] = useState<string>("lyrics");
 
   if (!editor) return null;
 
@@ -52,9 +66,10 @@ const SongTextbox = ({ formData, onFormDataChange }: SongTextboxProps) => {
             type="button"
             variant="outline"
             size="xs"
-            className=""
+            className={activeBtn === "lyrics" ? "bg-gray-200" : ""}
             onClick={() => {
               editor.chain().focus().setNode("songLyrics").run();
+              setActiveBtn("lyrics");
             }}
           >
             Lyrics
@@ -64,8 +79,10 @@ const SongTextbox = ({ formData, onFormDataChange }: SongTextboxProps) => {
             type="button"
             variant="outline"
             size="xs"
+            className={activeBtn === "title" ? "bg-gray-200" : ""}
             onClick={() => {
               editor.chain().focus().setNode("songTitle").run();
+              setActiveBtn("title");
             }}
           >
             Title
@@ -75,8 +92,10 @@ const SongTextbox = ({ formData, onFormDataChange }: SongTextboxProps) => {
             type="button"
             variant="outline"
             size="xs"
+            className={activeBtn === "chords" ? "bg-gray-200" : ""}
             onClick={() => {
               editor.chain().focus().setNode("songChords").run();
+              setActiveBtn("chords");
             }}
           >
             Chords
