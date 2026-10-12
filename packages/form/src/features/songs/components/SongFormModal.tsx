@@ -80,7 +80,7 @@ const SongFormModal = ({
               className="flex h-10 w-full rounded-xl border bg-bg-secondary px-3 py-2 text-sm text-text-primary ring-offset-background placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               required
             />
-            <Button
+            {/* <Button
               type="button"
               onClick={onExtractYoutubeInfo}
               disabled={!youtubeUrl || extracting}
@@ -88,7 +88,7 @@ const SongFormModal = ({
               variant="primary"
             >
               {extracting ? "Extracting..." : "Extract Information"}
-            </Button>
+            </Button> */}
           </div>
         </div>
 

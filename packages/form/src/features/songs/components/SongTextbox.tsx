@@ -38,6 +38,9 @@ const SongTextbox = ({ formData, onFormDataChange }: SongTextboxProps) => {
     ],
     content: formData.lyrics || "",
     immediatelyRender: false,
+    parseOptions: {
+      preserveWhitespace: "full",
+    },
     onUpdate: ({ editor }) => {
       onFormDataChange((prev) => ({
         ...prev,
